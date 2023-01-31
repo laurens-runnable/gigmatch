@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15.1-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.2
+    depends_on:
+      - postgres
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+    command:
+      - start-dev
+      - --import-realm
+      - --hostname-url=http://localhost:8080/auth/
+      - --hostname-admin-url=http://localhost:8080/auth/
+      - --hostname-strict-backchannel=true
+    volumes:
+      - ./realms/gigmatch-realm.json:/opt/keycloak/data/import/gigmatch-realm.json
+  rabbitmq:
+    image: rabbitmq:3.11.5-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  mongo:
+    image: mongo:6.0.3-focal
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"

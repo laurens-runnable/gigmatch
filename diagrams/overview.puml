@@ -1,0 +1,52 @@
+@startuml "overview"
+!include C4_Container.puml
+
+AddElementTag("microservice", $shape=EightSidedShape(), $bgColor="SteelBlue", $fontColor="white", $legendText="microservice")
+AddElementTag("microfrontend", $shape=EightSidedShape(), $bgColor="Salmon", $fontColor="white", $legendText="microfrontend")
+AddElementTag("consumer", $shape=RoundedBoxShape(), $bgColor="SeaGreen", $fontColor="white", $legendText="event consumer")
+AddElementTag("queue", $shape=RoundedBoxShape(), $bgColor="LightSeaGreen", $fontColor="white", $legendText="queue")
+AddElementTag("storage", $shape=RoundedBoxShape(), $bgColor="LightSkyBlue", $fontColor="white", $legendText="storage")
+AddElementTag("cms", $shape=RoundedBoxShape(), $bgColor="LightSteelBlue", $fontColor="white", $legendText="cms")
+
+SHOW_PERSON_PORTRAIT()
+
+Person(recruiter, Recruiter)
+Person(candidate, Candidate)
+
+System_Boundary(c1, "Gigmatch") {
+    ContainerQueue(message_bus, "Message Queue", "RabbitMQ", "* Commands\n* Events", $tags = "queue")
+
+    Container(dashboard, "Dashboard", "Vue.js, Nuxt, Node.js", "* Manage vacancies\n*Review applications", $tags = "microfrontend")
+    Container(dashboard_consumer, "Dashboard\nevent consumer", "Node.js", "Consume events\nrelevant to Dashboard", $tags = "consumer")
+    ContainerDb(dashboard_projections, "Dashboard\ndatabase", "MongoDB", "Projections", $tags = "storage")
+
+    Container(match_service, "Match Service", "Spring Boot, Axon framework", "Core business logic", $tags = "microservice")
+    ContainerDb(match_db, "Match\ndatabase", "PostgreSQL", "Source data", $tags = "storage")
+
+    Container(website_consumer, "Website\nevent consumer", "Quarkus", "Consume events\nrelevant to Website", $tags = "consumer")
+    Container(website, "Website", "Quarkus Qute", "* Browse vacancies\n*Apply for jobs\n* Manage profile", $tags = "microfrontend")
+'    Container(cms, "Website\nCMS", "Strapi", "Website content", $tags = "cms")
+    ContainerDb(vacancy_search_engine, "Website\nsearch engine", "Elasticsearch", "Projections", $tags = "storage")
+}
+
+Rel_D(recruiter, dashboard, "Uses")
+
+Rel_U(dashboard, match_service, "Sends\ncommands to", "REST API")
+Rel_U(dashboard_consumer, message_bus, "Receives\nevents from")
+Rel_D(dashboard, dashboard_projections, "Reads from")
+Rel_D(dashboard_consumer, dashboard_projections, "Writes projections to")
+
+Rel_U(match_service, message_bus, "Sends\nevents to")
+Rel(match_service, match_db, "Stores data in")
+'Rel_U(match_service, message_bus, "Receives\ncommands from")
+
+Rel_D(candidate, website, "Uses")
+Rel_U(website, match_service, "Sends\ncommands to")
+Rel_U(website_consumer, message_bus, "Receives\nevents from")
+Rel_D(website_consumer, vacancy_search_engine, "Writes projections to")
+Rel_D(website, vacancy_search_engine, "Reads from")
+'Rel_D(website, cms, "Reads from")
+
+SHOW_LEGEND($details=Small())
+
+@enduml

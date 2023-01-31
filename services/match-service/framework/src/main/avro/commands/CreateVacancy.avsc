@@ -1,0 +1,25 @@
+{
+  "namespace": "nl.runnable.gigmatch.commands",
+  "type": "record",
+  "name": "CreateVacancy",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "start",
+      "type": {
+        "type": "int",
+        "logicalType": "date"
+      }
+    }
+  ]
+}

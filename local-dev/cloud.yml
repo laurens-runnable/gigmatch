@@ -1,0 +1,27 @@
+version: '2.3'
+
+services:
+  config-server:
+    image: gigmatch/config-server
+    volumes:
+      - ../config:/config
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker,native
+    ports:
+      - "8071:8071"
+  discovery-server:
+    depends_on:
+      - config-server
+    image: gigmatch/discovery-server
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker
+    ports:
+      - "8070:8070"
+  gateway:
+    depends_on:
+      - discovery-server
+    image: gigmatch/gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: local-docker
+    ports:
+      - "8080:8080"

@@ -1,0 +1,7 @@
+{
+  "namespace": "nl.runnable.gigmatch.commands",
+  "type": "record",
+  "name": "TestCommand",
+  "fields": [
+  ]
+}

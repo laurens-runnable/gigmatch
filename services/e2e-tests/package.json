@@ -1,0 +1,21 @@
+{
+  "name": "playwright-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "npx playwright test",
+    "test-chromium": "npx playwright test --project=chromium",
+    "test-firefox": "npx playwright test --project=firefox",
+    "test-webkit": "npx playwright test --project=webkit"
+  },
+  "devDependencies": {
+    "@apollo/client": "3.7.2",
+    "@playwright/test": "1.29.2",
+    "graphql": "16.6.0",
+    "prettier": "2.8.2"
+  }
+}

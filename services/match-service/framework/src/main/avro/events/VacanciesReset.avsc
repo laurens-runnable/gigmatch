@@ -1,0 +1,7 @@
+{
+  "namespace": "nl.runnable.gigmatch.events",
+  "type": "record",
+  "name": "VacanciesReset",
+  "fields": [
+  ]
+}

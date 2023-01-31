@@ -1,0 +1,31 @@
+{
+  "name": "@gigmatch/dashboard-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "4.0.0",
+    "@types/amqplib": "0.10.1",
+    "nuxt": "3.1.1",
+    "prettier": "2.8.2",
+    "typescript": "4.9.4"
+  },
+  "dependencies": {
+    "amqplib": "0.10.3",
+    "avsc": "5.7.7",
+    "axios": "1.2.5",
+    "axios-retry": "3.4.0",
+    "crypto": "1.0.1",
+    "graphql-scalars": "1.20.1",
+    "graphql-yoga": "3.3.0",
+    "iron-session": "6.3.1",
+    "mongodb": "4.13.0",
+    "openid-client": "5.3.2"
+  }
+}

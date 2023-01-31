@@ -1,0 +1,14 @@
+{
+  "namespace": "nl.runnable.gigmatch.events",
+  "type": "record",
+  "name": "SkillDeleted",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    }
+  ]
+}
