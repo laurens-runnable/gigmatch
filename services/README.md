@@ -5,8 +5,8 @@
 | [match-service](./match-service)           | Match Service                | Spring Boot, Axon     | PostgreSQL    |
 | [dashboard](./dashboard/app)               | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
 | [dashboard-consumer](./dashboard/consumer) | Event consumer for dashboard | Node.js               |               |
-| [website](./website)                       | Website                      | Quarkus Qute          | Elasticsearch |
-| website-consumer                           | Event consumer for website   | TBD                   |               |
+| [website](./website)                       | Website                      | ASP.NET Core MVC      | Elasticsearch |
+| website-consumer                           | Event consumer for website   | .NET                  |               |
 | [e2e-tests](./e2e-tests)                   | End-to-end tests             | Playwright            |               |
 
 ## Avro schemas

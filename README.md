@@ -20,6 +20,7 @@ The example application is a job matching platform.
 ### Requirements
 
 * OpenJDK 17
+* .NET 7
 * Node.js 18
 * Docker
 

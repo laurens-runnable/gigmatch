@@ -14,6 +14,7 @@ Services are accessed through the Gateway.
 |--------------|--------------------------------------------|
 | `/dashboard` | [dashboard](../services/dashboard/app)     |
 | `/match`     | [match-service](../services/match-service) |
+| `/website`   | [website](../services/website)             |
 | `/auth`      | Keycloak                                   |
 
 > To reduce service registration overhead during local development, the services are mapped directly to their
