@@ -5,10 +5,10 @@
 ## Requirements
 
 * All components running on `localhost`.
+* The [Cloud Gateway](../../cloud) should be available at `http://localhost:8080`
 * Spring Boot active profiles:
   * `local`
   * `test-set` 
-* The [Gateway](../../cloud/gateway) should be available at the test base URL `http://localhost:8080`.
 
 ## Install and run
 
@@ -28,7 +28,7 @@ npx playwright test --project chromium
 npx playwright test --project firefox
 npx playwright test --project webkit
 
-## Or use scripts instead
+# Or use package.json scripts instead
 npm test
 npm start test-chromium
 npm start test-firefox

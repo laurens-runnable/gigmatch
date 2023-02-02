@@ -1,8 +1,25 @@
-# Cloud services
+# Spring Cloud services
 
-* Spring Cloud Config
-* Spring Cloud Eureka
-* [Spring Cloud Gateway](./gateway)
+Infrastructure for the main application.
+
+* [gateway](gateway) (Spring Cloud Gateway)
+* [config-server](config-server) (Spring Cloud Config)
+* [discovery-server](discovery-server) (Spring Cloud Eureka)
+
+## Gateway URL mapping
+
+Services are accessed through the Gateway.
+
+| Path         | Service                                    |
+|--------------|--------------------------------------------|
+| `/dashboard` | [dashboard](../services/dashboard/app)     |
+| `/match`     | [match-service](../services/match-service) |
+| `/auth`      | Keycloak                                   |
+
+> To reduce service registration overhead during local development, the services are mapped directly to their
+> `localhost` endpoints.
+>
+> [local configuration](./gateway/src/main/resources/application-local.properties)
 
 ## Build
 

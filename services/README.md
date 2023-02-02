@@ -1,11 +1,9 @@
 # Services
 
-## Components
-
 | Component                                  | Description                  | Implementation        | Storage       |
 |--------------------------------------------|------------------------------|-----------------------|---------------|
 | [match-service](./match-service)           | Match Service                | Spring Boot, Axon     | PostgreSQL    |
-| [dashboard](./dashboard)                   | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
+| [dashboard](./dashboard/app)               | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
 | [dashboard-consumer](./dashboard/consumer) | Event consumer for dashboard | Node.js               |               |
 | [website](./website)                       | Website                      | Quarkus Qute          | Elasticsearch |
 | website-consumer                           | Event consumer for website   | TBD                   |               |

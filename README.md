@@ -8,12 +8,12 @@ The example application is a job matching platform.
 
 ![Overview](./diagrams/overview.png)
 
-Additional infrastructure, not shown in the diagram:
+## Codebase
 
-* Keycloak  
-  Authentication and identity management
-* Spring Cloud  
-  Gateway, configuration and service discovery
+* [Application services](./services)  
+  The main application services, shown in the diagram above.
+* [Cloud services](./cloud)  
+  Additional Spring Cloud infrastructure services.
 
 ## Local development
 
@@ -43,13 +43,6 @@ the [Infrastructure](./local-dev/infrastructure.yml) and, optionally, the [Cloud
 docker system prune
 docker volume prune
 ```
-
-## Codebase
-
-* [Application services](./services)  
-  The main application services
-* [Cloud services](./cloud)  
-  Spring Cloud services
 
 ## License
 

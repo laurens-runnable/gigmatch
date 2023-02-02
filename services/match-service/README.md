@@ -1,4 +1,4 @@
-# Gig service
+# Match service
 
 * Domain-Driven Design
 * Event sourcing and CQRS
@@ -7,8 +7,7 @@
 ## Architecture
 
 The codebase uses a [Hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)), also
-known
-as Ports and Adapters.
+known as Ports and Adapters.
 
 ![Architecture](./images/hexagonal-architecture.png)
 
