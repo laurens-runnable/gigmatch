@@ -13,8 +13,8 @@ export default defineNuxtConfig({
     },
     openId: {
       discoveryUrl: 'http://localhost:8080/auth/realms/gigmatch',
-      clientId: 'gigmatch',
-      clientSecret: 'cltfejty22YelSYUk79WNgQ7pjL7DEia',
+      clientId: 'gigmatch-dashboard',
+      clientSecret: 'secret',
       redirectUri: 'http://localhost:8080/dashboard/api/authorize/end',
     },
     mongo: {

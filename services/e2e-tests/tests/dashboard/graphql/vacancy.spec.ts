@@ -1,4 +1,4 @@
-import { test } from '../../fixtures'
+import { testDashboard as test } from '../../fixtures'
 import { gql } from '@apollo/client/core'
 import { Page, expect } from '@playwright/test'
 import { print } from 'graphql/index'

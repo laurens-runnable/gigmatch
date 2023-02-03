@@ -7,10 +7,24 @@ export type LoginFixture = {
   testSet: TestSet
 }
 
-export const test = base.extend<LoginFixture>({
+export const testDashboard = base.extend<LoginFixture>({
   loginPage: async ({ page, request }, use) => {
     const loginPage = new LoginPage(page)
-    await loginPage.login('user1', 'user1')
+    await loginPage.login('/dashboard', 'recruiter1', 'recruiter1')
+    await use(loginPage)
+  },
+
+  testSet: async ({ request }, use) => {
+    const testSet = new TestSet(request)
+    await testSet.reset()
+    await use(testSet)
+  },
+})
+
+export const testWebsite = base.extend<LoginFixture>({
+  loginPage: async ({ page, request }, use) => {
+    const loginPage = new LoginPage(page)
+    await loginPage.login('/website', 'candidate1', 'candidate1')
     await use(loginPage)
   },
 
