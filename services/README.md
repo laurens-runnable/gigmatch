@@ -16,5 +16,5 @@ Services exchange commands and events using [Apache Avro](https://avro.apache.or
 Each service maintains its own version of a given schema. Schemas can evolve independently, but must remain compatible.
 
 * [match-service](./match-service/framework/src/main/avro) commands and events
-* [dashboard-consumer](./dashboard/consumer/src/avro/events) events
+* [dashboard-consumer](dashboard/consumer/src/application/avro) events
 * [dashboard](./dashboard/app/server/avro/commands) commands

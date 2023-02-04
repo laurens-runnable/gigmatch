@@ -8,6 +8,12 @@ The example application is a job matching platform.
 
 ![Overview](./diagrams/overview.png)
 
+* Services are loosely-coupled and run independently
+* Services are implemented with their own dedicated stack (i.e. Java, .NET, Node.js)
+
+Commands represent (user) actions and Events represent changes. Commands are synchronous and invoked
+through REST APIs, while Events are asynchronous and transported through an event store.
+
 ## Codebase
 
 * [Application services](./services)  
@@ -39,11 +45,9 @@ the [Infrastructure](./local-dev/infrastructure.yml) and, optionally, the [Cloud
 ./local-dev/bin/cloud/up.sh
 ./local-dev/bin/cloud/down.sh
 ./local-dev/bin/cloud/follow-logs.sh
-
-# Clean up Docker resources afterwards
-docker system prune
-docker volume prune
 ```
+
+You can then run the [application services](./services/README.md) manually.
 
 ## License
 

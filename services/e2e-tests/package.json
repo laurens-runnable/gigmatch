@@ -1,11 +1,7 @@
 {
-  "name": "playwright-example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "@gigmatch/e2e-tests",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
     "test": "npx playwright test",
     "test-chromium": "npx playwright test --project=chromium",
