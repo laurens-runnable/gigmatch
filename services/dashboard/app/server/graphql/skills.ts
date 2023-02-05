@@ -1,9 +1,14 @@
-import { SkillDocument } from '~/../shared/mongodb'
 import { getDb } from '~/server/lib/mongo'
 
-export async function fetchSkills(): Promise<SkillDocument[]> {
+export type Skill = {
+  id: string
+  name: string
+  slug: string
+}
+
+export async function fetchSkills(): Promise<Skill[]> {
   const db = await getDb()
-  const coll = db.collection<SkillDocument>('skill')
+  const coll = db.collection<Skill>('skill')
   const documents = coll.find().sort({ name: 1 })
   return documents.toArray()
 }

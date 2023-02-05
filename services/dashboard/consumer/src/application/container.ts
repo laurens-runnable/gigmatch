@@ -4,6 +4,7 @@ import {
   ExpressActuator,
   ExpressConfig,
 } from '../actuator/express'
+import { Config, RETRY_CONFIG_TYPE, RetryConfig } from '../config'
 import { EVENT_STORE_TYPE, EventStore } from '../event-store'
 import {
   KAFKA_CONFIG_TYPE,
@@ -18,19 +19,33 @@ import {
   MongoConfig,
   MongoRepository,
 } from '../repository/mongo'
-import { SkillCreatedOrUpdatedType, SkillDeletedType, VacanciesResetType, VacancyCreatedType } from "./avro";
-import { RETRY_CONFIG_TYPE, RetryConfig, createConfig } from './config'
-import { EventHandler } from './handlers'
+import { EVENT_DESERIALIZER_TYPE, EventDeserializer } from './events'
+import {
+  SkillCreatedOrUpdatedType,
+  SkillDeletedType,
+  VacanciesResetType,
+  VacancyCreatedType,
+} from './events/asvc'
+import { AsvcEventDeserializer } from './events/asvc'
+import {
+  ContainerEventHandlerRegistry,
+  EVENT_HANDLER_REGISTRY_TYPE,
+  EventHandler,
+  EventHandlerRegistry,
+} from './handlers'
 import {
   SkillCreatedOrUpdatedHandler,
   SkillDeletedHandler,
 } from './handlers/skills'
+import {
+  VacanciesResetHandler,
+  VacancyCreatedHandler,
+} from './handlers/vacancies'
+import { APPLICATION_TYPE, Application } from './index'
 import { Container } from 'inversify'
-import { VacanciesResetHandler, VacancyCreatedHandler } from "./handlers/vacancies";
 
-export function createContainer() {
+export function createContainer(config: Config) {
   const container = new Container()
-  const config = createConfig()
 
   container.bind<RetryConfig>(RETRY_CONFIG_TYPE).toConstantValue(config.retry)
 
@@ -48,28 +63,29 @@ export function createContainer() {
     .inSingletonScope()
 
   container.bind<KafkaConfig>(KAFKA_CONFIG_TYPE).toConstantValue(config.kafka)
+  container.bind<EventStore>(EVENT_STORE_TYPE).to(KafkaEventStore)
+
+  container.bind(Container).toDynamicValue((ctx) => ctx.container as Container)
   container
-    .bind<EventStore>(EVENT_STORE_TYPE)
-    .to(KafkaEventStore)
-    .inSingletonScope()
+    .bind<EventHandlerRegistry>(EVENT_HANDLER_REGISTRY_TYPE)
+    .to(ContainerEventHandlerRegistry)
+
+  container
+    .bind<EventDeserializer>(EVENT_DESERIALIZER_TYPE)
+    .to(AsvcEventDeserializer)
 
   container
     .bind<EventHandler>(SkillCreatedOrUpdatedType.name!)
     .to(SkillCreatedOrUpdatedHandler)
-    .inSingletonScope()
-  container
-    .bind<EventHandler>(SkillDeletedType.name!)
-    .to(SkillDeletedHandler)
-    .inSingletonScope()
-
+  container.bind<EventHandler>(SkillDeletedType.name!).to(SkillDeletedHandler)
   container
     .bind<EventHandler>(VacanciesResetType.name!)
     .to(VacanciesResetHandler)
-    .inSingletonScope()
   container
     .bind<EventHandler>(VacancyCreatedType.name!)
     .to(VacancyCreatedHandler)
-    .inSingletonScope()
+
+  container.bind<Application>(APPLICATION_TYPE).to(Application)
 
   return container
 }

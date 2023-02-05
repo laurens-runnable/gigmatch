@@ -1,6 +1,6 @@
-import { ExpressConfig } from '../actuator/express'
-import { KafkaConfig } from '../event-store/kafka'
-import { MongoConfig } from '../repository/mongo'
+import { ExpressConfig } from './actuator/express'
+import { KafkaConfig } from './event-store/kafka'
+import { MongoConfig } from './repository/mongo'
 
 const process = require('process')
 

@@ -1,7 +1,10 @@
-import { Application } from './application'
+import { createApplication } from './application'
+import { createConfig } from './config'
 
 ;(async function () {
-  const application = new Application()
+  const config = createConfig()
+  const application = createApplication(config)
+
   await application.startup()
   process.on('SIGTERM', async () => {
     await application.shutdown()

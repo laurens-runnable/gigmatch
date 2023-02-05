@@ -1,4 +1,4 @@
-import { RETRY_CONFIG_TYPE, RetryConfig } from '../application/config'
+import { RETRY_CONFIG_TYPE, RetryConfig } from '../config'
 import { LOGGER_TYPE, Logger } from '../logger'
 import { Repository, Skill, Vacancy } from './index'
 import { inject, injectable } from 'inversify'
@@ -51,7 +51,7 @@ export class MongoRepository implements Repository {
     const url = this.resolveConnectionUrl()
     const { retries, timeout, factor } = this._retryConfig
 
-    let client = await promiseRetry(
+    const client = await promiseRetry(
       (retry: any) => MongoClient.connect(url).catch(retry),
       {
         retries,
@@ -64,6 +64,10 @@ export class MongoRepository implements Repository {
       this._logger.info("Using database '%s'", database)
       this._client = client
       this._db = client.db(database)
+      await this.skillCollection().createIndex('id')
+      await this.vacancyCollection().createIndex('id')
+    } else {
+      throw new Error('Error initializing MongoClient')
     }
   }
 
@@ -90,15 +94,14 @@ export class MongoRepository implements Repository {
   }
 
   private vacancyCollection(): Collection<Vacancy> {
-    return this._db!.collection<Vacancy>('vacancy');
+    return this._db!.collection<Vacancy>('vacancy')
   }
 
   async removeAllVacancies(): Promise<void> {
-    await this.vacancyCollection().deleteMany({});
+    await this.vacancyCollection().deleteMany({})
   }
 
   async updateVacancy(vacancy: Vacancy): Promise<void> {
-    await this.vacancyCollection().insertOne(vacancy);
+    await this.vacancyCollection().insertOne(vacancy)
   }
-
 }

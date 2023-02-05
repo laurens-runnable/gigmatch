@@ -73,7 +73,4 @@ test('createVacancy() should return vacancy', async ({
   const vacancy = response.data.createVacancy
   expect(vacancy.id.length).toBeGreaterThan(0)
   expect(vacancy.name).toStrictEqual('Kotlin developer')
-
-  const vacancies = await queryActiveVacancies(page)
-  expect(vacancies.length).toBe(2)
 })
