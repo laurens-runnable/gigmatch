@@ -67,17 +67,3 @@ Example:
 
 * [Designing Hexagonal Architecture with Java ](https://www.packtpub.com/product/designing-hexagonal-architecture-with-java/9781801816489)
 * [Patterns, Principles, and Practices of Domain-Driven Design](https://www.oreilly.com/library/view/patterns-principles-and/9781118714706/)
-
-## Test set
-
-To facilitate end-to-end testing, the application exposes an Actuator endpoint for resetting the test set.
-
-```bash
-# Invoke directly
-curl -X POST http://localhost:4000/actuator/test-set
-
-# Invoke through Gateway
-curl -X POST http://localhost:8080/matches/actuator/test-set
-```
-
-This endpoint is available when the `test-set` profile is active.

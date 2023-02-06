@@ -3,8 +3,8 @@
 cd "${BASH_SOURCE%/*}/.." || exit
 
 echo "Copying Avro schemas to dashboard-consumer"
-cp ./match-service/framework/src/main/avro/events/*.avsc ./dashboard/consumer/src/avro/events
-for name in ./dashboard/consumer/src/avro/events/*.avsc
+cp ./match-service/framework/src/main/avro/events/*.avsc ./dashboard/consumer/src/application/events
+for name in ./dashboard/consumer/src/application/events/*.avsc
 do
     mv $name "$name.json"
 done

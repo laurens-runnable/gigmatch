@@ -7,8 +7,8 @@
 * All components running on `localhost`.
 * The [Cloud Gateway](../../cloud) should be available at `http://localhost:8080`
 * Spring Boot active profiles:
-  * `local`
-  * `test-set` 
+    * `local`
+    * `test-set`
 
 ## Install and run
 
