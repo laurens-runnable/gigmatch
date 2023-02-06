@@ -1,0 +1,14 @@
+{
+  "namespace": "nl.runnable.gigmatch.events",
+  "type": "record",
+  "name": "TestSetupStarted",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    }
+  ]
+}

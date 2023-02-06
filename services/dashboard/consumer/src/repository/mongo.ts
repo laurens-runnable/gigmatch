@@ -10,9 +10,15 @@ export interface MongoConfig {
   readonly username: string
   readonly password: string
   readonly database: string
+  readonly useTestSetupCollection: boolean
 }
 
 export const MONGO_CONFIG_TYPE = Symbol.for('MongoConfigg')
+
+interface TestSetup {
+  id: string
+  isActive: boolean
+}
 
 @injectable()
 export class MongoRepository implements Repository {
@@ -23,6 +29,7 @@ export class MongoRepository implements Repository {
   private _db: Db | null = null
   private _skillCollection?: Collection<Skill>
   private _vacancyCollection?: Collection<Vacancy>
+  private _testSetupCollection?: Collection<TestSetup>
 
   constructor(
     @inject(MONGO_CONFIG_TYPE) mongoConfig: MongoConfig,
@@ -65,6 +72,9 @@ export class MongoRepository implements Repository {
     this._db = client.db(database)
     this._skillCollection = this._db.collection<Skill>('skill')
     this._vacancyCollection = this._db.collection<Vacancy>('vacancy')
+    if (this._mongoConfig.useTestSetupCollection) {
+      this._testSetupCollection = this._db?.collection<TestSetup>('test_setup')
+    }
     await this._skillCollection.createIndex('id')
     await this._vacancyCollection.createIndex('id')
   }
@@ -93,5 +103,22 @@ export class MongoRepository implements Repository {
 
   async updateVacancy(vacancy: Vacancy): Promise<void> {
     await this._vacancyCollection?.insertOne(vacancy)
+  }
+
+  async startTestSetup(id: string): Promise<void> {
+    await this._testSetupCollection?.insertOne({
+      id,
+      isActive: true,
+    })
+  }
+
+  async completeTestSetup(id: string): Promise<void> {
+    await this._testSetupCollection?.findOneAndUpdate(
+      { id },
+      {
+        $set: {
+          isActive: false
+        }
+      })
   }
 }

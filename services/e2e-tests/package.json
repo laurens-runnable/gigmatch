@@ -6,12 +6,24 @@
     "test": "npx playwright test",
     "test-chromium": "npx playwright test --project=chromium",
     "test-firefox": "npx playwright test --project=firefox",
-    "test-webkit": "npx playwright test --project=webkit"
+    "test-webkit": "npx playwright test --project=webkit",
+    "format": "prettier --write .",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ."
   },
   "devDependencies": {
     "@apollo/client": "3.7.2",
     "@playwright/test": "1.29.2",
+    "@trivago/prettier-plugin-sort-imports": "4.0.0",
+    "eslint": "8.33.0",
+    "eslint-config-standard-with-typescript": "34.0.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-n": "15.6.1",
+    "eslint-plugin-promise": "6.1.1",
     "graphql": "16.6.0",
     "prettier": "2.8.2"
+  },
+  "dependencies": {
+    "mongodb": "5.0.0",
+    "uuid": "9.0.0"
   }
 }

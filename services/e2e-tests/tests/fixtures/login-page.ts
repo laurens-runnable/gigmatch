@@ -1,13 +1,13 @@
-import { expect, Page } from '@playwright/test'
+import { type Page, expect } from '@playwright/test'
 
-class LoginPage {
+export default class LoginPage {
   readonly page: Page
 
   constructor(page: Page) {
     this.page = page
   }
 
-  async login(path: string, username: string, password: string) {
+  async login(path: string, username: string, password: string): Promise<void> {
     const page = this.page
     await page.goto(path)
 
@@ -20,5 +20,3 @@ class LoginPage {
     await expect(page).toHaveURL(new RegExp(path))
   }
 }
-
-export default LoginPage

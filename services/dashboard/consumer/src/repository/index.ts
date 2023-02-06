@@ -24,6 +24,10 @@ export interface Repository {
   updateVacancy: (vacancy: Vacancy) => Promise<void>
 
   removeAllVacancies: () => Promise<void>
+
+  startTestSetup: (id: string) => Promise<void>
+
+  completeTestSetup: (id: string) => Promise<void>
 }
 
 export const REPOSITORY_TYPE = Symbol.for('Repository')

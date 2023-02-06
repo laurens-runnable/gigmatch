@@ -1,5 +1,7 @@
 import SkillCreatedOrUpdatedSchema from './SkillCreatedOrUpdated.avsc.json'
 import SkillDeletedSchema from './SkillDeleted.avsc.json'
+import TestSetupCompletedSchema from './TestSetupCompleted.avsc.json'
+import TestSetupStartedSchema from './TestSetupStarted.avsc.json'
 import VacanciesResetSchema from './VacanciesReset.avsc.json'
 import VacancyCreatedSchema from './VacancyCreated.avsc.json'
 import { type EventDeserializer } from './index'
@@ -12,6 +14,12 @@ export const SkillCreatedOrUpdatedType = Type.forSchema(
   SkillCreatedOrUpdatedSchema as Schema
 )
 export const SkillDeletedType = Type.forSchema(SkillDeletedSchema as Schema)
+export const TestSetupStartedType = Type.forSchema(
+  TestSetupStartedSchema as Schema
+)
+export const TestSetupCompletedType = Type.forSchema(
+  TestSetupCompletedSchema as Schema
+)
 
 @injectable()
 export class AsvcEventDeserializer implements EventDeserializer {
@@ -23,6 +31,8 @@ export class AsvcEventDeserializer implements EventDeserializer {
       [VacancyCreatedType.name as string]: VacancyCreatedType,
       [SkillCreatedOrUpdatedType.name as string]: SkillCreatedOrUpdatedType,
       [SkillDeletedType.name as string]: SkillDeletedType,
+      [TestSetupStartedType.name as string]: TestSetupStartedType,
+      [TestSetupCompletedType.name as string]: TestSetupCompletedType,
     }
   }
 

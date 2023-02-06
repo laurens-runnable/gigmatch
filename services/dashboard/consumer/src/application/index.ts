@@ -65,7 +65,7 @@ export class Application {
       !this._eventDeserializer.handlesType(type) ||
       !this._eventHandlerRegistry.containsEventHandler(type)
     ) {
-      this._logger.error("Unhandled event '%s'", type)
+      this._logger.debug("Unhandled event '%s'", type)
       return
     }
 

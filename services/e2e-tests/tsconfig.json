@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "outDir": "build",
+    "lib": ["es2019", "es6"],
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "incremental": true,
+    "baseUrl": "./src"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}
