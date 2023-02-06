@@ -2,4 +2,4 @@
 
 cd "${BASH_SOURCE%/*}/.." || exit
 
-docker build . -t gigmatch/admin-consumer
+docker build . -t gigmatch/dashboard-consumer

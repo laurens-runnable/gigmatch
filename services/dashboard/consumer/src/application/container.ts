@@ -1,37 +1,37 @@
-import { ACTUATOR_TYPE, Actuator } from '../actuator'
+import { ACTUATOR_TYPE, type Actuator } from '../actuator'
 import {
   EXPRESS_CONFIG_TYPE,
   ExpressActuator,
-  ExpressConfig,
+  type ExpressConfig,
 } from '../actuator/express'
-import { Config, RETRY_CONFIG_TYPE, RetryConfig } from '../config'
-import { EVENT_STORE_TYPE, EventStore } from '../event-store'
+import { type Config, RETRY_CONFIG_TYPE, type RetryConfig } from '../config'
+import { EVENT_STORE_TYPE, type EventStore } from '../event-store'
 import {
   KAFKA_CONFIG_TYPE,
-  KafkaConfig,
+  type KafkaConfig,
   KafkaEventStore,
 } from '../event-store/kafka'
-import { LOGGER_TYPE, Logger } from '../logger'
+import { LOGGER_TYPE, type Logger } from '../logger'
 import { WinstonLogger } from '../logger/winston'
-import { REPOSITORY_TYPE, Repository } from '../repository'
+import { REPOSITORY_TYPE, type Repository } from '../repository'
 import {
   MONGO_CONFIG_TYPE,
-  MongoConfig,
+  type MongoConfig,
   MongoRepository,
 } from '../repository/mongo'
-import { EVENT_DESERIALIZER_TYPE, EventDeserializer } from './events'
+import { EVENT_DESERIALIZER_TYPE, type EventDeserializer } from './events'
 import {
+  AsvcEventDeserializer,
   SkillCreatedOrUpdatedType,
   SkillDeletedType,
   VacanciesResetType,
   VacancyCreatedType,
 } from './events/asvc'
-import { AsvcEventDeserializer } from './events/asvc'
 import {
   ContainerEventHandlerRegistry,
   EVENT_HANDLER_REGISTRY_TYPE,
-  EventHandler,
-  EventHandlerRegistry,
+  type EventHandler,
+  type EventHandlerRegistry,
 } from './handlers'
 import {
   SkillCreatedOrUpdatedHandler,
@@ -44,7 +44,7 @@ import {
 import { APPLICATION_TYPE, Application } from './index'
 import { Container } from 'inversify'
 
-export function createContainer(config: Config) {
+export function createContainer(config: Config): Container {
   const container = new Container()
 
   container.bind<RetryConfig>(RETRY_CONFIG_TYPE).toConstantValue(config.retry)
@@ -75,14 +75,16 @@ export function createContainer(config: Config) {
     .to(AsvcEventDeserializer)
 
   container
-    .bind<EventHandler>(SkillCreatedOrUpdatedType.name!)
+    .bind<EventHandler>(SkillCreatedOrUpdatedType.name as string)
     .to(SkillCreatedOrUpdatedHandler)
-  container.bind<EventHandler>(SkillDeletedType.name!).to(SkillDeletedHandler)
   container
-    .bind<EventHandler>(VacanciesResetType.name!)
+    .bind<EventHandler>(SkillDeletedType.name as string)
+    .to(SkillDeletedHandler)
+  container
+    .bind<EventHandler>(VacanciesResetType.name as string)
     .to(VacanciesResetHandler)
   container
-    .bind<EventHandler>(VacancyCreatedType.name!)
+    .bind<EventHandler>(VacancyCreatedType.name as string)
     .to(VacancyCreatedHandler)
 
   container.bind<Application>(APPLICATION_TYPE).to(Application)

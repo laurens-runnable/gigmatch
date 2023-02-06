@@ -1,11 +1,11 @@
 import { LOGGER_TYPE, Logger } from '../logger'
-import { Actuator } from './'
-import express, { Express } from 'express'
+import { type Actuator } from './'
+import express, { type Express } from 'express'
 import actuator from 'express-actuator'
-import { Server } from 'http'
+import { type Server } from 'http'
 import { inject, injectable } from 'inversify'
 
-export type ExpressConfig = {
+export interface ExpressConfig {
   port: number
 }
 
@@ -28,8 +28,8 @@ export class ExpressActuator implements Actuator {
     this._config = config
   }
 
-  start(): Promise<void> {
-    return new Promise((resolve) => {
+  async start(): Promise<void> {
+    await new Promise<void>((resolve) => {
       this._logger.info('Starting Actuator on port %d', this._config.port)
       this._server = this._app.listen(this._config.port, () => {
         resolve()
@@ -37,9 +37,9 @@ export class ExpressActuator implements Actuator {
     })
   }
 
-  stop(): Promise<void> {
-    if (this._server) {
-      return new Promise((resolve) => {
+  async stop(): Promise<void> {
+    if (this._server != null) {
+      await new Promise<void>((resolve) => {
         this._logger.info('Stopping Actuator')
         this._server?.close(() => {
           this._server = null
@@ -47,7 +47,7 @@ export class ExpressActuator implements Actuator {
         })
       })
     } else {
-      return Promise.resolve()
+      await Promise.resolve()
     }
   }
 }

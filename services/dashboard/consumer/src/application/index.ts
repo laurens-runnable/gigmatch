@@ -1,6 +1,6 @@
 import { ACTUATOR_TYPE, Actuator } from '../actuator'
-import { Config } from '../config'
-import { EVENT_STORE_TYPE, EventStore, Message } from '../event-store'
+import { type Config } from '../config'
+import { EVENT_STORE_TYPE, EventStore, type Message } from '../event-store'
 import { LOGGER_TYPE, Logger } from '../logger'
 import { REPOSITORY_TYPE, Repository } from '../repository'
 import { createContainer } from './container'
@@ -10,7 +10,7 @@ import { inject, injectable } from 'inversify'
 
 export const APPLICATION_TYPE = Symbol.for('Application')
 
-export function createApplication(config: Config) {
+export function createApplication(config: Config): Application {
   const container = createContainer(config)
   return container.get<Application>(APPLICATION_TYPE)
 }
@@ -58,7 +58,7 @@ export class Application {
     await this._repository.close()
   }
 
-  private async handleMessage(message: Message) {
+  private async handleMessage(message: Message): Promise<any> {
     const { type } = message
 
     if (

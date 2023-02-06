@@ -1,20 +1,20 @@
 import { Container, injectable } from 'inversify'
 
-export type Event = {
+export interface Event {
   type: string
   payload: any
 }
 
 export interface EventHandler {
-  handleEvent(event: Event): Promise<void>
+  handleEvent: (event: Event) => Promise<void>
 }
 
 export const EVENT_HANDLER_REGISTRY_TYPE = Symbol.for('EventHandlerRegistry')
 
 export interface EventHandlerRegistry {
-  containsEventHandler(type: string): boolean
+  containsEventHandler: (type: string) => boolean
 
-  resolveEventHandler(type: string): EventHandler
+  resolveEventHandler: (type: string) => EventHandler
 }
 
 @injectable()

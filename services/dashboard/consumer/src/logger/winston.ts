@@ -1,4 +1,4 @@
-import { Logger } from './index'
+import { type Logger } from './index'
 import { injectable } from 'inversify'
 import winston from 'winston'
 
@@ -14,6 +14,10 @@ export class WinstonLogger implements Logger {
         winston.format.simple()
       ),
     })
+  }
+
+  getWinstonLogger(): winston.Logger {
+    return this._logger
   }
 
   error(message: string, ...variables: any[]): void {

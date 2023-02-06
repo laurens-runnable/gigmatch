@@ -7,12 +7,19 @@ npm install
 # Run in development mode
 npm run dev
 
+# Format code (using Prettier)
+npm run format
+
+# Lint
+npm run lint
+
 # Build Docker image
 ./bin/build-image.sh
-
-# Format code (using Prettier)
-npm run format-code
 ```
+
+## Configuration
+
+See [config.ts](./src/config.ts) for the environment variables and their defaults.
 
 ## Actuator endpoints
 

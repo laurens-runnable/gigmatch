@@ -1,5 +1,5 @@
 import { REPOSITORY_TYPE, Repository } from '../../repository'
-import { Event, EventHandler } from './index'
+import { type Event, type EventHandler } from './index'
 import { inject, injectable } from 'inversify'
 
 @injectable()
@@ -10,7 +10,7 @@ export class VacanciesResetHandler implements EventHandler {
     this._repository = repository
   }
 
-  async handleEvent(event: Event): Promise<void> {
+  async handleEvent(_: Event): Promise<void> {
     await this._repository.removeAllVacancies()
   }
 }

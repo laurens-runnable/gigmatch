@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-export type Message = {
+export interface Message {
   type: string
   payload: any
 }
@@ -8,9 +8,9 @@ export type Message = {
 export type MessageHandler = (message: Message) => Promise<void>
 
 export interface EventStore {
-  connect(handler: MessageHandler): Promise<void>
+  connect: (handler: MessageHandler) => Promise<void>
 
-  disconnect(): Promise<void>
+  disconnect: () => Promise<void>
 }
 
 export const EVENT_STORE_TYPE = Symbol.for('EventStore')

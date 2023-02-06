@@ -1,5 +1,5 @@
 import { REPOSITORY_TYPE, Repository } from '../../repository'
-import { Event, EventHandler } from './index'
+import { type Event, type EventHandler } from './index'
 import { inject, injectable } from 'inversify'
 
 @injectable()

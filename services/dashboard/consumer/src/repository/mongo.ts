@@ -1,11 +1,11 @@
 import { RETRY_CONFIG_TYPE, RetryConfig } from '../config'
 import { LOGGER_TYPE, Logger } from '../logger'
-import { Repository, Skill, Vacancy } from './index'
+import { type Repository, type Skill, type Vacancy } from './index'
 import { inject, injectable } from 'inversify'
-import { Collection, Db, MongoClient } from 'mongodb'
+import { type Collection, type Db, MongoClient } from 'mongodb'
 import promiseRetry from 'promise-retry'
 
-export type MongoConfig = {
+export interface MongoConfig {
   readonly url: string
   readonly username: string
   readonly password: string
@@ -21,6 +21,8 @@ export class MongoRepository implements Repository {
   private readonly _logger: Logger
   private _client: MongoClient | null = null
   private _db: Db | null = null
+  private _skillCollection?: Collection<Skill>
+  private _vacancyCollection?: Collection<Vacancy>
 
   constructor(
     @inject(MONGO_CONFIG_TYPE) mongoConfig: MongoConfig,
@@ -32,17 +34,15 @@ export class MongoRepository implements Repository {
     this._logger = logger
   }
 
-  private resolveConnectionUrl() {
+  private resolveConnectionUrl(): string {
     let { url } = this._mongoConfig
     this._logger.info('Connecting to %s', url)
 
     const { username, password } = this._mongoConfig
-    if (username && password) {
-      url = url.replace(
-        /^mongodb:\/\/(.+)$/,
-        `mongodb://${username}:${password}@$1`
-      )
-    }
+    url = url.replace(
+      /^mongodb:\/\/(.+)$/,
+      `mongodb://${username}:${password}@$1`
+    )
 
     return url
   }
@@ -52,23 +52,21 @@ export class MongoRepository implements Repository {
     const { retries, timeout, factor } = this._retryConfig
 
     const client = await promiseRetry(
-      (retry: any) => MongoClient.connect(url).catch(retry),
+      async (retry: any) => await MongoClient.connect(url).catch(retry),
       {
         retries,
         minTimeout: timeout,
         factor,
       }
     )
-    if (client) {
-      const { database } = this._mongoConfig
-      this._logger.info("Using database '%s'", database)
-      this._client = client
-      this._db = client.db(database)
-      await this.skillCollection().createIndex('id')
-      await this.vacancyCollection().createIndex('id')
-    } else {
-      throw new Error('Error initializing MongoClient')
-    }
+    const { database } = this._mongoConfig
+    this._logger.info("Using database '%s'", database)
+    this._client = client
+    this._db = client.db(database)
+    this._skillCollection = this._db.collection<Skill>('skill')
+    this._vacancyCollection = this._db.collection<Vacancy>('vacancy')
+    await this._skillCollection.createIndex('id')
+    await this._vacancyCollection.createIndex('id')
   }
 
   async close(): Promise<void> {
@@ -77,31 +75,23 @@ export class MongoRepository implements Repository {
     this._client = null
   }
 
-  private skillCollection(): Collection<Skill> {
-    return this._db!.collection<Skill>('skill')
-  }
-
   async removeSkill(id: string): Promise<void> {
-    await this.skillCollection().deleteOne({ id })
+    await this._skillCollection?.deleteOne({ id })
   }
 
   async updateSkill(skill: Skill): Promise<void> {
-    await this.skillCollection().findOneAndUpdate(
+    await this._skillCollection?.findOneAndUpdate(
       { id: skill.id },
       { $set: skill },
       { upsert: true }
     )
   }
 
-  private vacancyCollection(): Collection<Vacancy> {
-    return this._db!.collection<Vacancy>('vacancy')
-  }
-
   async removeAllVacancies(): Promise<void> {
-    await this.vacancyCollection().deleteMany({})
+    await this._vacancyCollection?.deleteMany({})
   }
 
   async updateVacancy(vacancy: Vacancy): Promise<void> {
-    await this.vacancyCollection().insertOne(vacancy)
+    await this._vacancyCollection?.insertOne(vacancy)
   }
 }
