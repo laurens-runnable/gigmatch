@@ -21,19 +21,13 @@ npm run lint
 
 See [config.ts](./src/config.ts) for the environment variables and their defaults.
 
-For integration with the [end-to-end tests](../../e2e-tests) `GIGMATCH_E2E` must be set to `true`.
-
-With this setting enabled, the Consumer maintains a Mongo test IDs.
-
-## Test synchronization
-
-Enable test synchronization using the environment variable:
+For synchronization with the end-to-end tests:
 
 ```
 GIGMATCH_TEST_SYNCHRONIZATION=true
 ```
 
-For more details [see here](../../e2e-tests/README.md)
+For more details [see here](../../e2e-tests/README.md#test-synchronization)
 
 ## Actuator endpoints
 
