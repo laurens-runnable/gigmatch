@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class CreateVacancyTest {
 
-    private val fixture= AggregateTestFixture(Vacancy::class.java)
+    private val fixture = AggregateTestFixture(Vacancy::class.java)
 
     @Test
     fun `with valid data`() {

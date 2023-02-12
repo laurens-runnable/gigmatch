@@ -1,8 +1,8 @@
 package nl.runnable.gigmatch.testset
 
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
-import nl.runnable.gigmatch.framework.genre.SkillEntity
 import nl.runnable.gigmatch.framework.genre.GenreEntityRepository
+import nl.runnable.gigmatch.framework.genre.SkillEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
