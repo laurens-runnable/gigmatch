@@ -15,3 +15,6 @@ for name in ./dashboard/app/server/avro/commands/*.avsc
 do
     mv $name "$name.json"
 done
+
+echo "Copying Avro schemas to website-consumer"
+cp ./match-service/framework/src/main/avro/events/*.avsc ./website/Gigmatch.Website.Consumer/avro/events

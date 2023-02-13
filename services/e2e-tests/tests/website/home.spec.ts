@@ -3,6 +3,7 @@ import { expect } from '@playwright/test'
 
 // noinspection JSUnusedLocalSymbols
 test('Home', async ({ page, loginPage, testSet }) => {
-  await page.goto('/website')
+  const response = await page.goto('/website')
+  expect(response?.ok()).toBeTruthy()
   await expect(page).toHaveTitle(/Gigmatch/)
 })

@@ -7,4 +7,50 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="AvroConvert" Version="3.3.2"/>
+        <PackageReference Include="Confluent.Kafka" Version="2.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0"/>
+        <PackageReference Include="NEST" Version="7.17.5"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="appsettings.json"/>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="avro\events\SkillCreatedOrUpdated.avsc"/>
+        <Content Include="avro\events\SkillCreatedOrUpdated.avsc">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="avro\events\SkillDeleted.avsc"/>
+        <Content Include="avro\events\SkillDeleted.avsc">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="avro\events\TestSetupCompleted.avsc"/>
+        <Content Include="avro\events\TestSetupCompleted.avsc">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="avro\events\TestSetupStarted.avsc"/>
+        <Content Include="avro\events\TestSetupStarted.avsc">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="avro\events\VacanciesReset.avsc"/>
+        <Content Include="avro\events\VacanciesReset.avsc">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="avro\events\VacancyCreated.avsc"/>
+        <Content Include="avro\events\VacancyCreated.avsc">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="avro\events"/>
+    </ItemGroup>
+
 </Project>

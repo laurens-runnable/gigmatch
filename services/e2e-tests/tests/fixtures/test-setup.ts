@@ -12,11 +12,11 @@ interface MongoConfig {
 let _db: any
 
 async function getMongoDb({
-                            url,
-                            username,
-                            password,
-                            database,
-                          }: MongoConfig): Promise<Db> {
+  url,
+  username,
+  password,
+  database,
+}: MongoConfig): Promise<Db> {
   if (_db === undefined) {
     url = url.replace(
       /^mongodb:\/\/(.+)$/,
@@ -33,7 +33,11 @@ interface TestSetupDocument {
   readonly isActive: boolean
 }
 
-async function testSetupSynchronization(id: string, timeout = 5000, pollInterval = 100): Promise<void> {
+async function testSetupSynchronization(
+  id: string,
+  timeout = 5000,
+  pollInterval = 100
+): Promise<void> {
   const db = await getMongoDb({
     url: 'mongodb://localhost',
     username: 'root',

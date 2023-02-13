@@ -1,3 +1,5 @@
+using Gigmatch.Website.Mvc.Elastic;
+using Gigmatch.Website.Mvc.Elastic.DependencyInjection;
 using Gigmatch.Website.Mvc.Middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 var gigmatchConfig = builder.Configuration.GetSection("Gigmatch");
+
+services.Configure<ElasticOptions>(gigmatchConfig.GetSection("Elastic"));
+services.AddElasticRepositories();
 
 services.AddAuthentication(options =>
     {
