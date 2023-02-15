@@ -16,16 +16,15 @@
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
         <!-- Dependencies -->
         <avro.version>1.11.1</avro.version>
-        <axon.version>4.6.3</axon.version>
+        <axon.version>4.7.1</axon.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>5.8.2</junit.version>
         <kluent.version>1.72</kluent.version>
-        <keycloak.version>20.0.2</keycloak.version>
         <kotlin-csv-jvm.version>1.7.0</kotlin-csv-jvm.version>
         <postgresql.version>42.5.1</postgresql.version>
         <slf4j.version>2.0.5</slf4j.version>
-        <spring-boot.version>2.7.8</spring-boot.version>
-        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <spring-boot.version>3.0.2</spring-boot.version>
+        <spring-cloud.version>2022.0.1</spring-cloud.version>
     </properties>
 
     <groupId>nl.runnable.gigmatch</groupId>
@@ -57,23 +56,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.keycloak.bom</groupId>
-                <artifactId>keycloak-adapter-bom</artifactId>
-                <version>${keycloak.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <!-- Compile -->
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-jdk8</artifactId>
                 <version>${kotlin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>1</version>
             </dependency>
             <dependency>
                 <groupId>org.axonframework</groupId>

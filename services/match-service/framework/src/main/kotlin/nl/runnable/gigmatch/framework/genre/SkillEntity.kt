@@ -2,10 +2,10 @@ package nl.runnable.gigmatch.framework.genre
 
 import nl.runnable.gigmatch.framework.jpa.JpaEntity
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EntityListeners
-import javax.persistence.Table
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EntityListeners
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "genre")

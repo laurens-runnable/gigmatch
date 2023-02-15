@@ -9,8 +9,9 @@ export default class LoginPage {
 
   async login(path: string, username: string, password: string): Promise<void> {
     const page = this.page
-    await page.goto(path)
+    const response = await page.goto(path)
 
+    expect(response?.status()).toBe(200)
     await expect(page).toHaveURL(/auth/)
 
     await page.locator('#username').fill(username)

@@ -1,13 +1,13 @@
 package nl.runnable.gigmatch.application.vacancy
 
 import nl.runnable.gigmatch.domain.vacancy.CreateVacancy
-import javax.inject.Inject
-import javax.inject.Named
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
-@Named
+@Component
 class VacancyInputPort : VacancyUseCase {
 
-    @Inject
+    @Autowired
     private lateinit var outputPort: VacancyOutputPort
 
     override fun createVacancy(params: VacancyUseCase.CreateVacancyParams) {
