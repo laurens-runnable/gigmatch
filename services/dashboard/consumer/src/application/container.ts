@@ -28,7 +28,7 @@ import {
   TestSetupStartedType,
   VacanciesResetType,
   VacancyCreatedType,
-} from './events/asvc'
+} from './events/avsc'
 import {
   ContainerEventHandlerRegistry,
   EVENT_HANDLER_REGISTRY_TYPE,
