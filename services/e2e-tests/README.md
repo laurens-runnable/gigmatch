@@ -38,18 +38,12 @@ npm start test-webkit
 
 ## Test synchronization
 
-An inherent difficulty in testing event-driven architecture is that it is asynchronous. There is no easy way of knowing
-when a given test setup has completed.
+Testing an asynchronous event-driven architecture requires explicit synchronization during test setup. I.e. tests must
+be able to await the asynchronous completion of their setup. The architecture uses dedicated synchronization events to
+achieve this.
 
-To synchronize setup, tests use the following synchronization mechanism:
-
-1. The test sends a command to the `match-service` that results in a `TestSetupStarted` event.
-2. In response to `TestSetupStarted`, the `dashboard-consumer` inserts an entry in a synchronization table.
-3. After setup has completed, the test sends a command that results in a `TestSetupCompleted` event.
-4. In response to `TestSetupCompleted`, the `dashboard-consumer` updates the synchronization entry.
-5. Finally, the test queries the synchronization entries for test setup completion, subject to a timeout.
-
-Relevant code:
-
-* [test-setup fixture](./tests/fixtures/test-setup.ts)
-* [test-setup event handlers](../dashboard/consumer/src/application/handlers/test-setup.ts)
+1. Tests signal the start and completion of their setup by sending commands to `match-service`. These commands result in
+   `TestSetupStarted` and `TestSetupCompleted` events respectively.
+2. In response to these events, `dashboard-consumer` updates a dedicated synchronization table. (Which happens to be a
+   MongoDB collection.)
+3. The test then polls the synchronization table for setup completion, throwing an exception in case of a timeout.

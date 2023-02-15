@@ -7,6 +7,12 @@ npm install
 # Run in development mode
 npm run dev
 
+# Build
+npm run build
+
+# Run, with test synchronization enabled (see below)
+npm run start-e2e
+
 # Format code (using Prettier)
 npm run format
 
@@ -21,13 +27,11 @@ npm run lint
 
 See [config.ts](./src/config.ts) for the environment variables and their defaults.
 
-For synchronization with the end-to-end tests:
+[Test synchronization](../../e2e-tests/README.md#test-synchronization) should be enabled when running end-to-end tests:
 
 ```
 GIGMATCH_TEST_SYNCHRONIZATION=true
 ```
-
-For more details [see here](../../e2e-tests/README.md#test-synchronization)
 
 ## Actuator endpoints
 

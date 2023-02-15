@@ -6,7 +6,7 @@ void (async function () {
   const application = createApplication(config)
 
   await application.startup()
-  process.on('SIGTERM', () => {
+  process.on('SIGINT', () => {
     application
       .shutdown()
       .then(() => {})
