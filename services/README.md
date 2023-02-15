@@ -9,6 +9,8 @@
 | [website-consumer](./website/Gigmatch.Website.Consumer) | Event consumer for website   | .NET                  |               |
 | [e2e-tests](./e2e-tests)                                | End-to-end tests             | Playwright            |               |
 
+> To initialize the main Kafka topic `match-service` must be run first.
+
 ## Avro schemas
 
 Services exchange commands and events in [Apache Avro](https://avro.apache.org/) format.

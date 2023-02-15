@@ -36,18 +36,23 @@ To get started with local development, you can run Docker containers for
 the [Infrastructure](./local-dev/infrastructure.yml) and, optionally, the [Cloud services](./local-dev/cloud.yml).
 
 ```bash
-# Start/Stop only Infrastructure containers
-./local-dev/bin/up.sh
-./local-dev/bin/down.sh
-./local-dev/bin/follow-logs.sh
-
-# Start/Stop both Infrastructure and Cloud containers
+# Start/Stop both Infrastructure and Cloud containers (recommended)
 ./local-dev/bin/cloud/up.sh
 ./local-dev/bin/cloud/down.sh
 ./local-dev/bin/cloud/follow-logs.sh
+
+# Start/Stop only Infrastructure containers
+# Useful when debugging the Cloud containers
+./local-dev/bin/up.sh
+./local-dev/bin/down.sh
+./local-dev/bin/follow-logs.sh
 ```
 
 You can then run the [application services](./services/README.md) manually.
+
+> The containers are in-memory, meaning their storage is empty after startup.
+>
+> To initialize the main Kafka topic, start `match-service` first.
 
 ## License
 
