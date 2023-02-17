@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.testset
+package nl.runnable.gigmatch.app.testset
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

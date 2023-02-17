@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.stream
+package nl.runnable.gigmatch.app.stream
 
 import org.apache.kafka.common.header.Headers
 import org.springframework.kafka.support.DefaultKafkaHeaderMapper

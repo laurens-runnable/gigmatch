@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.api.v1
+package nl.runnable.gigmatch.app.api.v1
 
 import nl.runnable.gigmatch.api.AVRO_MEDIA_TYPE
 import nl.runnable.gigmatch.api.toByteArray

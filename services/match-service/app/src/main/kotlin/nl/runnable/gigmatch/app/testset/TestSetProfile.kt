@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.testset
+package nl.runnable.gigmatch.app.testset
 
 import org.springframework.context.annotation.Profile
 

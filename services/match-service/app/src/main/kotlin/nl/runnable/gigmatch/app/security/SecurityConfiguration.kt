@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.security
+package nl.runnable.gigmatch.app.security
 
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean

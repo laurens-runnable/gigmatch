@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.testset
+package nl.runnable.gigmatch.app.testset
 
 import nl.runnable.gigmatch.events.TestSetupStarted
 import nl.runnable.gigmatch.framework.messaging.MATCH_EVENTS

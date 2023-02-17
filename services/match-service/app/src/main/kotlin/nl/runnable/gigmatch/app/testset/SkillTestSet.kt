@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.testset
+package nl.runnable.gigmatch.app.testset
 
 import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import nl.runnable.gigmatch.framework.genre.GenreEntityRepository

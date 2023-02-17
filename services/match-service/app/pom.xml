@@ -16,7 +16,7 @@
         <dependency>
             <groupId>nl.runnable.gigmatch</groupId>
             <artifactId>match-framework</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,6 +100,21 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                    <workingDirectory>${project.parent.basedir}</workingDirectory>
+                    <profiles>
+                        <profile>local</profile>
+                        <profile>test-set</profile>
+                    </profiles>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.avro</groupId>
@@ -118,11 +133,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <!--                <configuration>-->
-                <!--                    <imports>-->
-                <!--                        <import>${basedir}/src/main/avro/types</import>-->
-                <!--                    </imports>-->
-                <!--                </configuration>-->
             </plugin>
 
         </plugins>

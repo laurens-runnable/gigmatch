@@ -1,8 +1,10 @@
 # Match service
 
-* Domain-Driven Design
-* Event sourcing and CQRS
-* Message-driven
+## Local development
+
+```bash
+./mvnw spring-boot:run
+```
 
 ## Architecture
 
@@ -11,7 +13,7 @@ known as Ports and Adapters.
 
 ![Architecture](./images/hexagonal-architecture.png)
 
-> The "Framework" layer is often called the "Infrastructure" layer, but these terms mean the same.
+> The "Framework" layer is also called the "Infrastructure" layer in Domain-Driven Design.
 
 | Module                       | Description                                          |
 |------------------------------|------------------------------------------------------|

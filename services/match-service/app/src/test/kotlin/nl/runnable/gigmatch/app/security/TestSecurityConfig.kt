@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.security
+package nl.runnable.gigmatch.app.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -10,7 +10,7 @@ class TestSecurityConfig {
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http.authorizeRequests().anyRequest().permitAll()
+        http.authorizeHttpRequests().anyRequest().permitAll()
         return http.build()
     }
 }

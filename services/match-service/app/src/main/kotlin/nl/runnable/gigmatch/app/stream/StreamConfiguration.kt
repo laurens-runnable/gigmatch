@@ -1,6 +1,7 @@
-package nl.runnable.gigmatch.stream
+package nl.runnable.gigmatch.app.stream
 
 import org.springframework.cloud.stream.schema.registry.avro.AvroSchemaMessageConverter
+import org.springframework.cloud.stream.schema.registry.avro.AvroSchemaServiceManagerImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.messaging.converter.MessageConverter
 import org.springframework.context.annotation.Configuration
@@ -13,6 +14,6 @@ class StreamConfiguration {
     fun kafkaHeaderMapper(): KafkaHeaderMapper = CustomKafkaHeaderMapper()
 
     @Bean
-    fun avroSchemaMessageConverter(): MessageConverter = AvroSchemaMessageConverter()
+    fun avroSchemaMessageConverter(): MessageConverter = AvroSchemaMessageConverter(AvroSchemaServiceManagerImpl())
 
 }

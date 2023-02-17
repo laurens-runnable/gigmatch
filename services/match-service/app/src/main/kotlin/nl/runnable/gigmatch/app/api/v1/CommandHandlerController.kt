@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.api.v1
+package nl.runnable.gigmatch.app.api.v1
 
 import nl.runnable.gigmatch.framework.commands.CommandResolver
 import org.springframework.beans.factory.annotation.Autowired
