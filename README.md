@@ -32,17 +32,17 @@ through REST APIs, while Events are asynchronous and transported through an even
 
 ### Docker containers
 
-To get started with local development, you can run Docker containers for
-the [Infrastructure](./local-dev/infrastructure.yml) and, optionally, the [Cloud services](./local-dev/cloud.yml).
+To get started with local development, you can run Docker containers for the [Cloud services](./local-dev/cloud.yml) and
+the [Infrastructure](./local-dev/infrastructure.yml)
 
 ```bash
-# Start/Stop both Infrastructure and Cloud containers (recommended)
+# Start/Stop containers for Infrastructure and Cloud services (recommended)
 ./local-dev/bin/cloud/up.sh
 ./local-dev/bin/cloud/down.sh
 ./local-dev/bin/cloud/follow-logs.sh
 
-# Start/Stop only Infrastructure containers
-# Useful when debugging the Cloud containers
+# Start/Stop Infrastructure containers only
+# Useful when debugging Cloud services
 ./local-dev/bin/up.sh
 ./local-dev/bin/down.sh
 ./local-dev/bin/follow-logs.sh

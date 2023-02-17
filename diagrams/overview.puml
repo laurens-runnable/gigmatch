@@ -16,11 +16,11 @@ Person(candidate, Candidate)
 System_Boundary(c1, "Gigmatch") {
     ContainerQueue(event_store, "Event Store", "Kafka", $tags = "eventstore")
 
-    Container(dashboard, "Dashboard", "Vue.js, Nuxt, Node.js", "* Manage vacancies\n*Review applications", $tags = "microfrontend")
+    Container(dashboard, "Dashboard", "Vue.js, Nuxt", "* Manage vacancies\n*Review applications", $tags = "microfrontend")
     Container(dashboard_consumer, "Dashboard\nconsumer", "Node.js", "Handle events\nrelevant to Recruiters", $tags = "consumer")
     ContainerDb(dashboard_projections, "Dashboard\ndatabase", "MongoDB", "Projections", $tags = "storage")
 
-    Container(match_service, "Match Service", "Spring Boot, Axon framework", "Core business logic", $tags = "microservice")
+    Container(match_service, "Match Service", "Spring Boot, Axon", "Core business logic", $tags = "microservice")
     ContainerDb(match_db, "Match\ndatabase", "PostgreSQL", "Source data", $tags = "storage")
 
     Container(website_consumer, "Website\nconsumer", ".NET", "Handle events\nrelevant to Candidates", $tags = "consumer")

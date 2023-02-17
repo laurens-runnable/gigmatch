@@ -2,6 +2,7 @@
   "namespace": "nl.runnable.gigmatch.commands",
   "type": "record",
   "name": "TestCommand",
+  "javaAnnotation": "jakarta.annotation.security.RolesAllowed(\"recruiter\")",
   "fields": [
   ]
 }

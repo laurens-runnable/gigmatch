@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @TestSetProfile
-class AxonTestSetConfig {
+class AxonTestSetConfiguration {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(AxonTestSetConfig::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(AxonTestSetConfiguration::class.java)
     }
 
     @Bean

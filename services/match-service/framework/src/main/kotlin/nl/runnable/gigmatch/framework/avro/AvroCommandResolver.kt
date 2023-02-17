@@ -1,5 +1,6 @@
 package nl.runnable.gigmatch.framework.avro
 
+import jakarta.annotation.security.RolesAllowed
 import nl.runnable.gigmatch.framework.COMMAND_HANDLER_SUFFIX
 import nl.runnable.gigmatch.framework.commands.CommandHandler
 import nl.runnable.gigmatch.framework.commands.CommandResolver
@@ -9,6 +10,7 @@ import org.apache.avro.specific.SpecificRecord
 import org.springframework.beans.BeansException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import org.springframework.util.ClassUtils
 import java.io.InputStream
@@ -17,7 +19,8 @@ import java.util.function.Consumer
 /**
  * Avro-based [CommandResolver] implementation.
  *
- * This implementation resolves [CommandHandler] beans from the ApplicationContext.
+ * This implementation uses [RolesAllowed] annotations on the Command classes and resolves [CommandHandler]
+ * beans from the ApplicationContext.
  */
 @Component
 internal class AvroCommandResolver : CommandResolver {
@@ -41,6 +44,11 @@ internal class AvroCommandResolver : CommandResolver {
         val reader = ReflectDatumReader(clazz)
         val binaryDecoder = DecoderFactory.get().binaryDecoder(input, null)
         return reader.read(null, binaryDecoder)
+    }
+
+    override fun isAllowed(authentication: Authentication, command: Any): Boolean {
+        val rolesAllowed = command.javaClass.getAnnotation(RolesAllowed::class.java) ?: return false
+        return authentication.authorities.any { rolesAllowed.value.contains(it.toString()) }
     }
 
     override fun resolveCommandHandler(type: String): CommandHandler? =

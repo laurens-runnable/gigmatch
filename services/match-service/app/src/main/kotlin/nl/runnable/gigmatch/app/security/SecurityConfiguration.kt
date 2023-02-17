@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @Profile("!test")
 class SecurityConfiguration {
+
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http.authorizeHttpRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
@@ -19,4 +20,5 @@ class SecurityConfiguration {
         http.csrf().disable()
         return http.build()
     }
+
 }
