@@ -1,9 +1,9 @@
 package nl.runnable.gigmatch.framework.jpa
 
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Id
-import javax.persistence.MappedSuperclass
+import jakarta.persistence.Column
+import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
 
 /**
  * Abstract base class for JPA Entities that have a programmatically managed primary key.

@@ -3,7 +3,7 @@ package nl.runnable.gigmatch.framework.axon
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionTemplate
-import javax.persistence.EntityManager
+import jakarta.persistence.EntityManager
 
 @Component
 class RepositoryHelper {
