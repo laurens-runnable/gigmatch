@@ -1,10 +1,19 @@
 <script setup>
 import { useSeoMeta } from '#head'
 
-useSeoMeta({
-  title: 'Vacancies - Gigmatch',
+definePageMeta({
+  layout: 'index',
 })
+
+useSeoMeta({ title: 'Vacancies' })
 </script>
+
 <template>
-  <div>Vacancies</div>
+  <v-container>
+    <v-row>
+      <v-col>
+        <h1>Vacancies</h1>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>

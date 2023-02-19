@@ -1,20 +1,18 @@
 <script setup>
 import { useSeoMeta } from '#head'
 
+definePageMeta({
+  layout: 'index',
+})
 useSeoMeta({ title: 'Home' })
 </script>
 
 <template>
-  <header>
-    <nav>
-      <ul>
-        <li>
-          <NuxtLink to="/"> Home </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/vacancies"> Vacancies </NuxtLink>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <v-container>
+    <v-row>
+      <v-col>
+        <h1>Home</h1>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
