@@ -8,4 +8,10 @@ npm install
 
 # Run development server
 npm run dev
+
+# Format code (using Prettier)
+npm run format
+
+# Lint
+npm run lint
 ```

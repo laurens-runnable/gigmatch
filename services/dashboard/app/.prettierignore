@@ -1,0 +1,9 @@
+.nuxt
+.output
+dist
+node_modules
+
+README.md
+Dockerfile
+
+*.avsc.json

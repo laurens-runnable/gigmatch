@@ -1,6 +1,5 @@
-import assert from 'assert'
-import { H3Event, sendError } from 'h3'
-import { BaseClient, Issuer, custom, generators } from 'openid-client'
+import { H3Event } from 'h3'
+import { Client, Issuer, custom, generators } from 'openid-client'
 import { useSession } from '~/server/lib/session'
 
 custom.setHttpOptionsDefaults({
@@ -9,7 +8,7 @@ custom.setHttpOptionsDefaults({
 
 let issuer: Issuer
 
-async function getOpenIdClient(): Promise<BaseClient> {
+async function getOpenIdClient(): Promise<Client> {
   const { openId } = useRuntimeConfig()
 
   if (!issuer) {

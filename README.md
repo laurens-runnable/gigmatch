@@ -8,11 +8,14 @@ The example application is a job matching platform.
 
 ![Overview](./diagrams/overview.png)
 
-* Services are loosely-coupled and run independently
-* Services are implemented with their own dedicated stack (i.e. Java, .NET, Node.js)
+Services are loosely-coupled, maintain their own storage and use their own dedicated stack. (i.e. Java, .NET, Node.js)
 
-Commands represent (user) actions and Events represent changes. Commands are synchronous and invoked
-through REST APIs, while Events are asynchronous and transported through an event store.
+| Commands                               | Events                                   |
+|----------------------------------------|------------------------------------------|
+| Represent (user) actions               | Represent changes                        |
+| Invoked synchronously through REST API | Consumed asynchronously from Event Store |
+| Point-to-point                         | Publish/subscribe                        |
+| Authenticated                          | Not authenticated                        |
 
 ## Codebase
 

@@ -1,6 +1,6 @@
-import { resolvers, typeDefs } from '../graphql/schema'
 import { createSchema, createYoga } from 'graphql-yoga'
 import { H3EventContext, send, setHeaders } from 'h3'
+import { resolvers, typeDefs } from '../graphql/schema'
 
 const yoga = createYoga<H3EventContext>({
   graphqlEndpoint: '/api/graphql',

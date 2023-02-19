@@ -1,13 +1,10 @@
 <script setup>
-import { useSeoMeta } from "#head";
+import { useSeoMeta } from '#head'
 
 useSeoMeta({
-  title: "Vacancies - Gigmatch"
-});
-
+  title: 'Vacancies - Gigmatch',
+})
 </script>
 <template>
-  <div>
-    Vacancies
-  </div>
+  <div>Vacancies</div>
 </template>

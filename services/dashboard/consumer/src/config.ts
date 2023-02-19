@@ -25,7 +25,8 @@ export interface Config {
 export function createConfig(): Config {
   const port = Number(process.env.GIGMATCH_ACTUATOR_PORT ?? 3001)
 
-  const isTestSynchronizationEnabled = (process.env.GIGMATCH_TEST_SYNCHRONIZATION ?? 'false') === 'true'
+  const isTestSynchronizationEnabled =
+    (process.env.GIGMATCH_TEST_SYNCHRONIZATION ?? 'false') === 'true'
   return {
     mongo: {
       url: process.env.GIGMATCH_MONGO_URL ?? 'mongodb://localhost',

@@ -117,8 +117,9 @@ export class MongoRepository implements Repository {
       { id },
       {
         $set: {
-          isActive: false
-        }
-      })
+          isActive: false,
+        },
+      }
+    )
   }
 }

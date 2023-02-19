@@ -1,11 +1,11 @@
+import { DateResolver, UUIDResolver } from 'graphql-scalars'
+import { H3Event } from 'h3'
 import { fetchSkills } from './skills'
 import {
   CreateVacancyParams,
   createVacancy,
   fetchActiveVacancies,
 } from './vacancies'
-import { DateResolver, UUIDResolver } from 'graphql-scalars'
-import { H3Event } from 'h3'
 
 export const typeDefs = /* GraphQL */ `
   scalar Date
@@ -46,7 +46,7 @@ export const resolvers = {
   },
   Mutation: {
     createVacancy: (
-      parent: unknown,
+      _: unknown,
       params: CreateVacancyParams,
       context: H3EventContext
     ) => {

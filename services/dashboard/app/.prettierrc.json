@@ -4,11 +4,11 @@
   "semi": false,
   "singleQuote": true,
   "importOrder": [
+    "<THIRD_PARTY_MODULES>",
     "^@pages/(.*)$",
     "^@components/(.*)$",
     "^@lib/(.*)$",
-    "^[./]",
-    "<THIRD_PARTY_MODULES>"
+    "^[./]"
   ],
   "importOrderSortSpecifiers": true
 }
