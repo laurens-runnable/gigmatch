@@ -1,6 +1,7 @@
 import { DateResolver, UUIDResolver } from 'graphql-scalars'
 import { H3Event } from 'h3'
 import { fetchSkills } from './skills'
+import { fetchCurrentUser } from './user'
 import {
   CreateVacancyParams,
   createVacancy,
@@ -10,6 +11,10 @@ import {
 export const typeDefs = /* GraphQL */ `
   scalar Date
   scalar UUID
+
+  type User {
+    username: String!
+  }
 
   type Skill {
     id: UUID!
@@ -24,6 +29,7 @@ export const typeDefs = /* GraphQL */ `
   }
 
   type Query {
+    currentUser: User!
     allSkills: [Skill]!
     activeVacancies: [Vacancy]!
   }
@@ -41,6 +47,8 @@ export const resolvers = {
   UUID: UUIDResolver,
   Date: DateResolver,
   Query: {
+    currentUser: (_: unknown, __: unknown, context: H3EventContext) =>
+      fetchCurrentUser(context.event),
     allSkills: () => fetchSkills(),
     activeVacancies: () => fetchActiveVacancies(),
   },

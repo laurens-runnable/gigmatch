@@ -1,6 +1,6 @@
 import { getDb } from '~/server/lib/mongo'
 
-export type Skill = {
+export interface Skill {
   id: string
   name: string
   slug: string

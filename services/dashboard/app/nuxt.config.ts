@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
+  ssr: false,
   alias: {
     'dashboard-shared': './node_modules/@gigmatch/dashboard-shared',
   },

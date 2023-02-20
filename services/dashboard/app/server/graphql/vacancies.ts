@@ -5,7 +5,7 @@ import { CreateVacancy } from '~/server/avro/commands'
 import { createMatchServiceClient } from '~/server/lib/axios'
 import { getDb } from '~/server/lib/mongo'
 
-export type Vacancy = {
+export interface Vacancy {
   id: string
   name: string
   start: Date

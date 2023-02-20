@@ -8,7 +8,8 @@
     "^@pages/(.*)$",
     "^@components/(.*)$",
     "^@lib/(.*)$",
-    "^[./]"
+    "^[./]",
+    "^[~]"
   ],
   "importOrderSortSpecifiers": true
 }
