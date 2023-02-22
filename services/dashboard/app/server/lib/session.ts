@@ -1,5 +1,5 @@
 import { H3Event } from 'h3'
-import { getIronSession } from 'iron-session'
+import { IronSessionData, getIronSession } from 'iron-session'
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -11,7 +11,7 @@ declare module 'iron-session' {
   }
 }
 
-export async function useSession(event: H3Event) {
+export async function useSession(event: H3Event): Promise<IronSessionData> {
   if (event.context.session) {
     return event.context.session
   }

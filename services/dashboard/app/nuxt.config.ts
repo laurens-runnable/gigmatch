@@ -27,6 +27,13 @@ export default defineNuxtConfig({
       timeout: 6000,
       retries: 3,
     },
+    keycloak: {
+      url: 'http://localhost:8080/auth',
+      username: 'admin',
+      password: 'admin',
+      realm: 'gigmatch',
+      clientId: 'admin-cli',
+    },
   },
   css: ['vuetify/lib/styles/main.sass'],
   build: { transpile: ['vuetify'] },

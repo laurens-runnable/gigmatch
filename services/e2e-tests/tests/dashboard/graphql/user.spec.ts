@@ -18,7 +18,8 @@ test('currentUser() should return user', async ({
       query: print(gql`
         query {
           currentUser {
-            username
+            firstName
+            lastName
           }
         }
       `),
@@ -27,6 +28,7 @@ test('currentUser() should return user', async ({
 
   expect(query.status()).toBe(200)
 
-  const { username } = (await query.json()).data.currentUser
-  expect(username).toBe('recruiter1')
+  const { firstName, lastName } = (await query.json()).data.currentUser
+  expect(firstName).toBe('Ricky')
+  expect(lastName).toBe('Recruiter')
 })

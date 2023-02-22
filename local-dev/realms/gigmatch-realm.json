@@ -2172,8 +2172,8 @@
     "enabled" : true,
     "totp" : false,
     "emailVerified" : true,
-    "firstName" : "",
-    "lastName" : "",
+    "firstName" : "Ricky",
+    "lastName" : "Recruiter",
     "email" : "recruiter1@test.com",
     "credentials" : [ {
       "id" : "789fd9a0-5cd0-45df-8607-39ef94163fe1",

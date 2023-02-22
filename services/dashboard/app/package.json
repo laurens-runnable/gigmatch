@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.7.9",
+    "@keycloak/keycloak-admin-client": "20.0.5",
     "@vue/apollo-composable": "4.0.0-beta.2",
     "avsc": "5.7.7",
     "axios": "1.2.5",
@@ -33,6 +34,7 @@
     "graphql-tag": "2.12.6",
     "graphql-yoga": "3.3.0",
     "iron-session": "6.3.1",
+    "jwt-decode": "3.1.2",
     "mongodb": "4.13.0",
     "openid-client": "5.3.2",
     "sass": "1.58.3",
