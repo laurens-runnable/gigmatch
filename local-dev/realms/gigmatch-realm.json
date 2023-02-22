@@ -81,7 +81,6 @@
       "composite" : true,
       "composites" : {
         "client" : {
-          "gigmatch-match-service" : [ "recruiter" ],
           "gigmatch-dashboard" : [ "recruiter" ]
         }
       },
@@ -95,7 +94,6 @@
       "composite" : true,
       "composites" : {
         "client" : {
-          "gigmatch-match-service" : [ "candidate" ],
           "gigmatch-website" : [ "candidate" ]
         }
       },
@@ -104,30 +102,6 @@
       "attributes" : { }
     } ],
     "client" : {
-      "gigmatch-match-service" : [ {
-        "id" : "2fc11754-ba9c-4a40-86d1-79bcafaa81cb",
-        "name" : "uma_protection",
-        "composite" : false,
-        "clientRole" : true,
-        "containerId" : "59898c29-c39f-4662-9d7c-f8f43f08dbea",
-        "attributes" : { }
-      }, {
-        "id" : "04dc3c5a-e82f-43c4-97c2-67012abb28ca",
-        "name" : "candidate",
-        "description" : "",
-        "composite" : false,
-        "clientRole" : true,
-        "containerId" : "59898c29-c39f-4662-9d7c-f8f43f08dbea",
-        "attributes" : { }
-      }, {
-        "id" : "24fa0108-1701-4736-b567-9f9d55f4878c",
-        "name" : "recruiter",
-        "description" : "",
-        "composite" : false,
-        "clientRole" : true,
-        "containerId" : "59898c29-c39f-4662-9d7c-f8f43f08dbea",
-        "attributes" : { }
-      } ],
       "realm-management" : [ {
         "id" : "59d240c7-7094-4faf-9909-1b490a6f23a7",
         "name" : "create-client",
@@ -673,100 +647,6 @@
         "ownerManagedAccess" : false,
         "attributes" : { },
         "_id" : "317edec3-33bc-4fea-9e86-9bc545c376c0",
-        "uris" : [ "/*" ]
-      } ],
-      "policies" : [ ],
-      "scopes" : [ ],
-      "decisionStrategy" : "UNANIMOUS"
-    }
-  }, {
-    "id" : "59898c29-c39f-4662-9d7c-f8f43f08dbea",
-    "clientId" : "gigmatch-match-service",
-    "name" : "Gigmatch Dashboard Client",
-    "description" : "",
-    "rootUrl" : "",
-    "adminUrl" : "",
-    "baseUrl" : "",
-    "surrogateAuthRequired" : false,
-    "enabled" : true,
-    "alwaysDisplayInConsole" : false,
-    "clientAuthenticatorType" : "client-secret",
-    "secret" : "secret",
-    "redirectUris" : [ "http://localhost:*" ],
-    "webOrigins" : [ "", "*" ],
-    "notBefore" : 0,
-    "bearerOnly" : false,
-    "consentRequired" : false,
-    "standardFlowEnabled" : true,
-    "implicitFlowEnabled" : false,
-    "directAccessGrantsEnabled" : true,
-    "serviceAccountsEnabled" : true,
-    "authorizationServicesEnabled" : true,
-    "publicClient" : false,
-    "frontchannelLogout" : true,
-    "protocol" : "openid-connect",
-    "attributes" : {
-      "oidc.ciba.grant.enabled" : "false",
-      "client.secret.creation.time" : "1675428226",
-      "backchannel.logout.session.required" : "true",
-      "oauth2.device.authorization.grant.enabled" : "false",
-      "display.on.consent.screen" : "false",
-      "backchannel.logout.revoke.offline.tokens" : "false"
-    },
-    "authenticationFlowBindingOverrides" : { },
-    "fullScopeAllowed" : false,
-    "nodeReRegistrationTimeout" : -1,
-    "protocolMappers" : [ {
-      "id" : "211ce43d-4ec4-48b6-8546-fd6b51a610e1",
-      "name" : "Client ID",
-      "protocol" : "openid-connect",
-      "protocolMapper" : "oidc-usersessionmodel-note-mapper",
-      "consentRequired" : false,
-      "config" : {
-        "user.session.note" : "clientId",
-        "id.token.claim" : "true",
-        "access.token.claim" : "true",
-        "claim.name" : "clientId",
-        "jsonType.label" : "String"
-      }
-    }, {
-      "id" : "f78f0f39-64a2-4e3b-8abc-a66e7cb28763",
-      "name" : "Client Host",
-      "protocol" : "openid-connect",
-      "protocolMapper" : "oidc-usersessionmodel-note-mapper",
-      "consentRequired" : false,
-      "config" : {
-        "user.session.note" : "clientHost",
-        "id.token.claim" : "true",
-        "access.token.claim" : "true",
-        "claim.name" : "clientHost",
-        "jsonType.label" : "String"
-      }
-    }, {
-      "id" : "79e3f6f1-238c-4558-99ee-888704329cfe",
-      "name" : "Client IP Address",
-      "protocol" : "openid-connect",
-      "protocolMapper" : "oidc-usersessionmodel-note-mapper",
-      "consentRequired" : false,
-      "config" : {
-        "user.session.note" : "clientAddress",
-        "id.token.claim" : "true",
-        "access.token.claim" : "true",
-        "claim.name" : "clientAddress",
-        "jsonType.label" : "String"
-      }
-    } ],
-    "defaultClientScopes" : [ "roles", "profile" ],
-    "optionalClientScopes" : [ "web-origins", "acr", "address", "phone", "offline_access", "microprofile-jwt", "email" ],
-    "authorizationSettings" : {
-      "allowRemoteResourceManagement" : true,
-      "policyEnforcementMode" : "ENFORCING",
-      "resources" : [ {
-        "name" : "Default Resource",
-        "type" : "urn:gigmatch-match-service:resources:default",
-        "ownerManagedAccess" : false,
-        "attributes" : { },
-        "_id" : "7804e8ae-8964-4c5c-95ad-ae0abbcf873b",
         "uris" : [ "/*" ]
       } ],
       "policies" : [ ],
@@ -2186,23 +2066,6 @@
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
     "realmRoles" : [ "default-roles-gigmatch", "recruiter" ],
-    "notBefore" : 0,
-    "groups" : [ ]
-  }, {
-    "id" : "5259d71b-eabf-4ab1-8ed9-026767dbc3d3",
-    "createdTimestamp" : 1675428226829,
-    "username" : "service-account-gigmatch-match-service",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : false,
-    "serviceAccountClientId" : "gigmatch-match-service",
-    "credentials" : [ ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-gigmatch" ],
-    "clientRoles" : {
-      "gigmatch-match-service" : [ "uma_protection" ]
-    },
     "notBefore" : 0,
     "groups" : [ ]
   } ]
