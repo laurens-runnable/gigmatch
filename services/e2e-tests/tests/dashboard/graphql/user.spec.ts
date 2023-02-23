@@ -6,7 +6,7 @@ import { print } from 'graphql/index'
 // noinspection JSUnusedLocalSymbols
 test('currentUser() should return user', async ({
   page,
-  loginPage,
+  user,
   testSet,
   testSetup,
 }) => {

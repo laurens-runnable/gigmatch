@@ -1,10 +1,10 @@
-import LoginPage from './login-page'
+import User from './user'
 import TestSet from './test-set'
 import TestSetup from './test-setup'
 import { test as base } from '@playwright/test'
 
 export interface LoginFixture {
-  loginPage: LoginPage
+  user: User
   testSet: TestSet
   testSetup: TestSetup
 }
@@ -22,20 +22,28 @@ const testSetup = async ({ request }: any, use: any): Promise<void> => {
 }
 
 export const testDashboard = base.extend<LoginFixture>({
-  loginPage: async ({ page, request }, use) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.login('/dashboard', 'recruiter1', 'recruiter1')
-    await use(loginPage)
+  user: async ({ page, request }, use) => {
+    const user = new User(page)
+    await user.login('/dashboard', 'recruiter1', 'recruiter1')
+    try {
+      await use(user)
+    } finally {
+      await user.logout()
+    }
   },
   testSet,
   testSetup,
 })
 
 export const testWebsite = base.extend<LoginFixture>({
-  loginPage: async ({ page, request }, use) => {
-    const loginPage = new LoginPage(page)
-    await loginPage.login('/website', 'candidate1', 'candidate1')
-    await use(loginPage)
+  user: async ({ page, request }, use) => {
+    const user = new User(page)
+    await user.login('/website', 'candidate1', 'candidate1')
+    try {
+      await use(user)
+    } finally {
+      await user.logout()
+    }
   },
   testSet,
   testSetup,

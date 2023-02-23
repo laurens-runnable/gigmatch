@@ -6,7 +6,7 @@ import { print } from 'graphql/index'
 // noinspection JSUnusedLocalSymbols
 test('allSkills() should return skills', async ({
   page,
-  loginPage,
+  user,
   testSet,
   testSetup,
 }) => {

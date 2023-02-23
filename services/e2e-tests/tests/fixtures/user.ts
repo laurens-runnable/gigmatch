@@ -1,6 +1,6 @@
 import { type Page, expect } from '@playwright/test'
 
-export default class LoginPage {
+export default class User {
   readonly page: Page
 
   constructor(page: Page) {
@@ -19,5 +19,17 @@ export default class LoginPage {
     await page.getByRole('button').click()
 
     await expect(page).toHaveURL(new RegExp(path))
+  }
+
+  async logout(): Promise<void> {
+    const page = this.page
+    const response = await page.goto(
+      '/auth/realms/gigmatch/protocol/openid-connect/logout'
+    )
+    expect(response?.status()).toBe(200)
+
+    await page.getByRole('button').click()
+
+    await expect(page).toHaveURL(/logout-confirm/)
   }
 }

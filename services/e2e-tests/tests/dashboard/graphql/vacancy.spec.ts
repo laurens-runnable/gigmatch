@@ -36,7 +36,7 @@ async function queryActiveVacancies(page: Page): Promise<any> {
 
 test('activeVacancies() should return vacancies', async ({
   page,
-  loginPage,
+  user,
   testSet,
   testSetup,
 }) => {
@@ -49,7 +49,7 @@ test('activeVacancies() should return vacancies', async ({
 // noinspection JSUnusedLocalSymbols
 test('createVacancy() should return vacancy', async ({
   page,
-  loginPage,
+  user,
   testSet,
   testSetup,
 }) => {
