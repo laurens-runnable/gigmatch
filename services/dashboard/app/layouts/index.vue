@@ -24,7 +24,7 @@ const links = [
 
         <v-spacer />
 
-        <gm-user-avatar name="Qwiff" />
+        <gm-user-avatar />
       </v-container>
     </v-app-bar>
 

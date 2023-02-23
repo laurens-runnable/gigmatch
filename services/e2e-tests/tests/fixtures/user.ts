@@ -2,6 +2,7 @@ import { type Page, expect } from '@playwright/test'
 
 export default class User {
   readonly page: Page
+  private _skipLogout = false
 
   constructor(page: Page) {
     this.page = page
@@ -22,6 +23,10 @@ export default class User {
   }
 
   async logout(): Promise<void> {
+    if (this._skipLogout) {
+      return
+    }
+
     const page = this.page
     const response = await page.goto(
       '/auth/realms/gigmatch/protocol/openid-connect/logout'
@@ -31,5 +36,9 @@ export default class User {
     await page.getByRole('button').click()
 
     await expect(page).toHaveURL(/logout-confirm/)
+  }
+
+  skipLogout(): void {
+    this._skipLogout = true
   }
 }

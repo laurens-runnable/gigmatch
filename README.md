@@ -36,7 +36,7 @@ Services are loosely-coupled, maintain their own storage and use their own dedic
 ### Docker containers
 
 To get started with local development, you can run in-memory Docker containers for the
-[Cloud services](./local-dev/cloud.yml) and [Infrastructure](./local-dev/infrastructure.yml)
+[Infrastructure](./local-dev/infrastructure.yml) and [Cloud services](./local-dev/cloud.yml).
 
 ```bash
 # Start/Stop containers for Infrastructure and Cloud services (recommended)

@@ -1,6 +1,6 @@
-import User from './user'
 import TestSet from './test-set'
 import TestSetup from './test-setup'
+import User from './user'
 import { test as base } from '@playwright/test'
 
 export interface LoginFixture {

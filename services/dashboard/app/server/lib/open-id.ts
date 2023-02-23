@@ -1,6 +1,7 @@
 import { H3Event } from 'h3'
 import { Client, Issuer, custom, generators } from 'openid-client'
 import { useSession } from '~/server/lib/session'
+import { useAppUrl } from '~/server/lib/url'
 
 custom.setHttpOptionsDefaults({
   timeout: 10000,
@@ -53,7 +54,6 @@ export async function endAuthorizationFlow(event: H3Event) {
   }
 
   const {
-    app: { baseURL },
     openId: { redirectUri },
   } = useRuntimeConfig()
 
@@ -80,7 +80,7 @@ export async function endAuthorizationFlow(event: H3Event) {
   session.refreshToken = refreshToken
   await session.save()
 
-  await sendRedirect(event, `${baseURL}${originalUrl}`)
+  await sendRedirect(event, useAppUrl(originalUrl))
 }
 
 export async function renewTokens(event: H3Event) {
@@ -92,4 +92,21 @@ export async function renewTokens(event: H3Event) {
   session.accessToken = accessToken
   session.refreshToken = refreshToken
   await session.save()
+}
+
+export async function startLogout(event: H3Event) {
+  const client = await getOpenIdClient()
+  const url = client.endSessionUrl({
+    post_logout_redirect_uri: useAppUrl('/api/logout/end'),
+  })
+  await sendRedirect(event, url)
+}
+
+export async function endLogout(event: H3Event) {
+  const session = await useSession(event)
+  session.accessToken = undefined
+  session.refreshToken = undefined
+  await session.save()
+
+  await sendRedirect(event, useAppUrl())
 }
