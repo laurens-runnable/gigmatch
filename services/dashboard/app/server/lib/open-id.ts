@@ -70,7 +70,6 @@ export async function endAuthorizationFlow(event: H3Event) {
   const tokenSet = await client.callback(redirectUri, params, {
     code_verifier: codeVerifier,
   })
-  const userInfo = await client.userinfo(tokenSet)
 
   const originalUrl = session.originalUrl ?? ''
   session.codeVerifier = undefined
@@ -79,8 +78,18 @@ export async function endAuthorizationFlow(event: H3Event) {
   const { access_token: accessToken, refresh_token: refreshToken } = tokenSet
   session.accessToken = accessToken
   session.refreshToken = refreshToken
-  session.username = userInfo.name ?? userInfo.preferred_username
   await session.save()
 
   await sendRedirect(event, `${baseURL}${originalUrl}`)
+}
+
+export async function renewTokens(event: H3Event) {
+  const client = await getOpenIdClient()
+  const session = await useSession(event)
+
+  const tokenSet = await client.refresh(session.refreshToken as string)
+  const { access_token: accessToken, refresh_token: refreshToken } = tokenSet
+  session.accessToken = accessToken
+  session.refreshToken = refreshToken
+  await session.save()
 }

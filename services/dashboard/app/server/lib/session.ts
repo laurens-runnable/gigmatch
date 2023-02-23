@@ -7,7 +7,6 @@ declare module 'iron-session' {
     accessToken?: string
     refreshToken?: string
     originalUrl?: string
-    username?: string
   }
 }
 
