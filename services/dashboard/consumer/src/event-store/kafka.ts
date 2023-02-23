@@ -53,6 +53,36 @@ export class KafkaEventStore implements EventStore {
     }
   }
 
+  private async _monitorIfTopicExists(
+    kafka: Kafka,
+    timeout = 60000,
+    pollInterval = 1000
+  ): Promise<void> {
+    const { topic } = this._config
+    const admin = kafka.admin()
+    let topicExists = false
+    let timePassed = 0
+
+    do {
+      const before = new Date().getUTCMilliseconds()
+      const topics = await admin.listTopics()
+      topicExists = topics.includes(topic)
+      const after = new Date().getUTCMilliseconds()
+      timePassed += after - before
+      if (!topicExists) {
+        this._logger.info("Waiting for topic '%s'", topic)
+      }
+      await new Promise((resolve) => {
+        setTimeout(resolve, pollInterval)
+      })
+    } while (!topicExists && timePassed < timeout)
+
+    if (!topicExists && timePassed > timeout) {
+      this._logger.error("Timeout waiting for topic '%s'", topic)
+      throw new Error('Timeout')
+    }
+  }
+
   async connect(eventHandler: MessageHandler): Promise<void> {
     const { clientId, brokers } = this._config
 
@@ -71,6 +101,8 @@ export class KafkaEventStore implements EventStore {
       groupId
     )
     await this._consumer.connect()
+
+    await this._monitorIfTopicExists(kafka)
 
     const { topic } = this._config
     this._logger.info("Subscribing to topic '%s'", topic)

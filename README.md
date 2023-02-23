@@ -35,8 +35,8 @@ Services are loosely-coupled, maintain their own storage and use their own dedic
 
 ### Docker containers
 
-To get started with local development, you can run Docker containers for the [Cloud services](./local-dev/cloud.yml) and
-the [Infrastructure](./local-dev/infrastructure.yml)
+To get started with local development, you can run in-memory Docker containers for the
+[Cloud services](./local-dev/cloud.yml) and [Infrastructure](./local-dev/infrastructure.yml)
 
 ```bash
 # Start/Stop containers for Infrastructure and Cloud services (recommended)
@@ -52,10 +52,6 @@ the [Infrastructure](./local-dev/infrastructure.yml)
 ```
 
 You can then run the [application services](./services/README.md) manually.
-
-> The containers are in-memory, meaning their storage is empty after startup.
->
-> To initialize the main Kafka topic, start `match-service` first.
 
 ## License
 

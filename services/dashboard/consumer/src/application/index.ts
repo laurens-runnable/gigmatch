@@ -23,6 +23,8 @@ export class Application {
   private readonly _actuator: Actuator
   private readonly _eventHandlerRegistry: EventHandlerRegistry
   private readonly _eventDeserializer: EventDeserializer
+  private _isRunning = false
+  private _isShuttingDown = false
 
   constructor(
     @inject(LOGGER_TYPE) logger: Logger,
@@ -43,6 +45,8 @@ export class Application {
   }
 
   async startup(): Promise<void> {
+    this._isRunning = true
+
     this._logger.info('Starting up application')
     await this._repository.open()
     await this._eventStore.connect(async (message) => {
@@ -52,10 +56,21 @@ export class Application {
   }
 
   async shutdown(): Promise<void> {
+    if (this._isShuttingDown) {
+      return
+    }
+    this._isShuttingDown = true
+
     this._logger.info('Shutting down application')
     await this._actuator.stop()
     await this._eventStore.disconnect()
     await this._repository.close()
+
+    this._isRunning = false
+  }
+
+  get isRunning(): boolean {
+    return this._isRunning
   }
 
   private async handleMessage(message: Message): Promise<any> {
