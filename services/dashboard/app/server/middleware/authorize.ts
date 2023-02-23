@@ -18,7 +18,12 @@ export default defineEventHandler(async (event) => {
   const session = await useSession(event)
   if (session.accessToken) {
     if (isExpired(session.accessToken)) {
-      await renewTokens(event)
+      try {
+        await renewTokens(event)
+      } catch (e) {
+        // Tokens are invalid
+        await startAuthorizationFlow(event)
+      }
     }
   } else {
     await startAuthorizationFlow(event)
