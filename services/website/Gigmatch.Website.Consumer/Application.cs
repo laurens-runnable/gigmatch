@@ -1,6 +1,7 @@
 using Gigmatch.Website.Consumer.Elastic;
 using Gigmatch.Website.Consumer.Elastic.DependencyInjection;
 using Gigmatch.Website.Consumer.Events.DependencyInjection;
+using Gigmatch.Website.Consumer.Kafka;
 using Gigmatch.Website.Consumer.Kafka.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

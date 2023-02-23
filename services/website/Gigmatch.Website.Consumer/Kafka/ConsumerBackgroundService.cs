@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Gigmatch.Website.Consumer;
+namespace Gigmatch.Website.Consumer.Kafka;
 
 using MessageConsumer = IConsumer<Ignore, byte[]>;
 
@@ -17,19 +17,40 @@ public class ConsumerBackgroundService : BackgroundService
 
     private readonly MessageConsumer _consumer;
 
+    private readonly IAdminClient _adminClient;
+
     private readonly EventHandlerResolver _eventHandlerResolver;
 
     public ConsumerBackgroundService(ILogger<ConsumerBackgroundService> logger,
-        IOptions<KafkaOptions> options, MessageConsumer consumer, EventHandlerResolver eventHandlerResolver)
+        IOptions<KafkaOptions> options, MessageConsumer consumer, IAdminClient adminClient,
+        EventHandlerResolver eventHandlerResolver)
     {
         _logger = logger;
         _options = options.Value;
         _consumer = consumer;
+        _adminClient = adminClient;
         _eventHandlerResolver = eventHandlerResolver;
+    }
+
+    private async Task MonitorIfTopicExists(CancellationToken cancellationToken)
+    {
+        var topicExists = false;
+        do
+        {
+            var metadata = _adminClient.GetMetadata(TimeSpan.FromSeconds(5));
+            topicExists = metadata.Topics.Exists(x => x.Topic == _options.Topic);
+            if (!topicExists)
+            {
+                _logger.LogInformation("Waiting for topic '{topic}'", _options.Topic);
+                await Task.Delay(1000, cancellationToken);
+            }
+        } while (!topicExists || cancellationToken.IsCancellationRequested);
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+        await MonitorIfTopicExists(cancellationToken);
+
         _logger.LogInformation("Subscribing to topic '{topic}'", _options.Topic);
         _consumer.Subscribe(_options.Topic);
 

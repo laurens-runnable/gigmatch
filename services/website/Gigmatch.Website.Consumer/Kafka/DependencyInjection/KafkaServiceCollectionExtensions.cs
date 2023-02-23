@@ -19,6 +19,15 @@ internal static class KafkaServiceCollectionExtensions
             };
             return new ConsumerBuilder<Ignore, byte[]>(consumerConfig).Build();
         });
+        services.AddSingleton<IAdminClient>(s =>
+        {
+            var options = s.GetRequiredService<IOptions<KafkaOptions>>().Value;
+            var config = new AdminClientConfig
+            {
+                BootstrapServers = string.Join(",", options.Brokers),
+            };
+            return new AdminClientBuilder(config).Build();
+        });
         return services;
     }
 }
