@@ -13,7 +13,7 @@ known as Ports and Adapters.
 
 ![Architecture](./images/hexagonal-architecture.png)
 
-> The "Framework" layer is also called the "Infrastructure" layer in Domain-Driven Design.
+> In Domain-Driven Design the "Framework" layer is also called the "Infrastructure" layer.
 
 | Module                       | Description                                          |
 |------------------------------|------------------------------------------------------|
@@ -41,7 +41,9 @@ Example:
 * [VacancyInputPort](./application/src/main/kotlin/nl/runnable/gigmatch/application/vacancy/VacancyInputPort.kt)  
   Implements the use case interface
 * [VacancyCommandHandlers](./framework/src/main/kotlin/nl/runnable/gigmatch/framework/vacancy/VacancyCommandHandlers.kt)  
-  The Driving operations, implemented as `java.util.function.Consumer`
+  The Command handler that invokes the use case
+* [CommandHandlerController](./app/src/main/kotlin/nl/runnable/gigmatch/app/api/v1/CommandHandlerController.kt)  
+  The Driving operation, in this case a REST API that accepts Commands.
 
 ### Driven operations and Output Ports
 

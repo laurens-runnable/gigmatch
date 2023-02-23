@@ -13,7 +13,7 @@ internal class AxonVacancyAdapter : VacancyOutputPort {
     private lateinit var commandGateway: CommandGateway
 
     override fun send(command: CreateVacancy) {
-        commandGateway.sendAndWait<Void>(command)
+        commandGateway.send<Void>(command)
     }
 
 }
