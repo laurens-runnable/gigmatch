@@ -5,25 +5,25 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.7.22</kotlin.version>
+        <kotlin.version>1.8.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
         <kotlin.code.style>official</kotlin.code.style>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-        <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
+        <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
         <!-- Dependencies -->
         <avro.version>1.11.1</avro.version>
         <axon.version>4.7.1</axon.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <junit.version>5.8.2</junit.version>
+        <junit.version>5.9.2</junit.version>
         <kluent.version>1.72</kluent.version>
         <kotlin-csv-jvm.version>1.7.0</kotlin-csv-jvm.version>
-        <postgresql.version>42.5.1</postgresql.version>
-        <slf4j.version>2.0.5</slf4j.version>
-        <spring-boot.version>3.0.2</spring-boot.version>
+        <postgresql.version>42.5.4</postgresql.version>
+        <slf4j.version>2.0.6</slf4j.version>
+        <spring-boot.version>3.0.3</spring-boot.version>
         <spring-cloud.version>2022.0.1</spring-cloud.version>
     </properties>
 
