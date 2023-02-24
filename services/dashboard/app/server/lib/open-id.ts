@@ -95,9 +95,13 @@ export async function renewTokens(event: H3Event) {
 }
 
 export async function startLogout(event: H3Event) {
+  const {
+    openId: { postLogoutRedirectUri },
+  } = useRuntimeConfig()
   const client = await getOpenIdClient()
+
   const url = client.endSessionUrl({
-    post_logout_redirect_uri: useAppUrl('/api/logout/end'),
+    post_logout_redirect_uri: postLogoutRedirectUri,
   })
   await sendRedirect(event, url)
 }

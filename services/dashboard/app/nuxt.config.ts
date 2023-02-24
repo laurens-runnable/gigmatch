@@ -17,6 +17,7 @@ export default defineNuxtConfig({
       clientId: 'gigmatch-dashboard',
       clientSecret: 'secret',
       redirectUri: 'http://localhost:8080/dashboard/api/authorize/end',
+      postLogoutRedirectUri: 'http://localhost:8080/dashboard/api/logout/end',
     },
     mongo: {
       url: 'mongodb://root:root@localhost',

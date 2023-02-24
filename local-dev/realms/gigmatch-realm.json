@@ -586,6 +586,7 @@
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
+      "post.logout.redirect.uris" : "http://localhost*",
       "oidc.ciba.grant.enabled" : "false",
       "client.secret.creation.time" : "1675432738",
       "backchannel.logout.session.required" : "true",
