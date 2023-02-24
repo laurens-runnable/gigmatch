@@ -21,7 +21,7 @@ services.AddAuthentication(options =>
     {
         options.Cookie.Name = "gm.website";
         options.Cookie.SameSite = SameSiteMode.Strict;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
     })
     .AddOpenIdConnect(options =>
     {
@@ -33,8 +33,10 @@ services.AddAuthentication(options =>
         options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
         options.GetClaimsFromUserInfoEndpoint = true;
         options.SaveTokens = true;
-        options.NonceCookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.NonceCookie.SameSite = SameSiteMode.Strict;
+        options.NonceCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        options.CorrelationCookie.SameSite = SameSiteMode.Strict;
+        options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
     });
 services.AddAuthorization();
 services.AddMvc();
