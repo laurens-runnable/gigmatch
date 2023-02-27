@@ -29,5 +29,4 @@ class TestSetupStartEndpoint {
         logger.info("Started test setup {}", id)
         streamBridge.send(MATCH_EVENTS, TypedMessage(TestSetupStarted(id)))
     }
-
 }

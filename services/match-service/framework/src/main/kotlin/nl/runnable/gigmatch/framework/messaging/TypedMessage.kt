@@ -12,5 +12,4 @@ class TypedMessage<T : Any>(private val event: T) : Message<T> {
     override fun getPayload(): T = event
 
     override fun getHeaders() = MessageHeaders(mapOf(TYPE_HEADER to event::class.qualifiedName))
-
 }

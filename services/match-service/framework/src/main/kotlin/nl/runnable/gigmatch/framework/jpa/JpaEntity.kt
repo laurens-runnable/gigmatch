@@ -1,9 +1,9 @@
 package nl.runnable.gigmatch.framework.jpa
 
-import java.util.*
 import jakarta.persistence.Column
 import jakarta.persistence.Id
 import jakarta.persistence.MappedSuperclass
+import java.util.*
 
 /**
  * Abstract base class for JPA Entities that have a programmatically managed primary key.
@@ -12,7 +12,7 @@ import jakarta.persistence.MappedSuperclass
 abstract class JpaEntity(
     @Id
     @Column(name = "id", columnDefinition = "uuid")
-    val id: UUID
+    val id: UUID,
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -26,5 +26,4 @@ abstract class JpaEntity(
     override fun hashCode(): Int {
         return javaClass.hashCode()
     }
-
 }

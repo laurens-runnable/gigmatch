@@ -9,5 +9,4 @@ class SkillId @JsonCreator constructor(uuid: UUID) : Id(uuid) {
     companion object {
         fun generateRandom(): SkillId = SkillId(UUID.randomUUID())
     }
-
 }

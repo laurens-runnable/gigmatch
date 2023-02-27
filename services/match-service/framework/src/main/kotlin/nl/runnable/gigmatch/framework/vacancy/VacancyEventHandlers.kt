@@ -18,14 +18,15 @@ internal class VacancyEventHandlers {
     @EventHandler
     private fun on(event: VacancyCreatedDomainEvent) {
         streamBridge.send(
-            MATCH_EVENTS, TypedMessage(
+            MATCH_EVENTS,
+            TypedMessage(
                 VacancyCreatedSystemEvent(
                     event.id.toUUID(),
-                    event.jobTitle,
-                    event.start
-                )
-            )
+                    event.job.title,
+                    event.job.skills.first().toUUID(),
+                    event.start,
+                ),
+            ),
         )
     }
-
 }

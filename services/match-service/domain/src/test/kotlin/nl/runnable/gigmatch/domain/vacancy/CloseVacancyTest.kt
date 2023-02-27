@@ -41,5 +41,4 @@ class CloseVacancyTest {
             .`when`(CloseVacancy(id))
             .expectException(IllegalStateException::class.java)
     }
-
 }

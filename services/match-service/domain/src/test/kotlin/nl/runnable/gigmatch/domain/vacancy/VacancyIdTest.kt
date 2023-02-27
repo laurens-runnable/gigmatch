@@ -23,5 +23,4 @@ class VacancyIdTest {
         val deserialized = objectMapper.readValue<VacancyId>(json)
         deserialized shouldBeEqualTo vacancyId
     }
-
 }

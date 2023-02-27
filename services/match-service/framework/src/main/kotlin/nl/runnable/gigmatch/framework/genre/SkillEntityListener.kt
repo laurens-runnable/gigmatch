@@ -1,5 +1,8 @@
 package nl.runnable.gigmatch.framework.genre
 
+import jakarta.persistence.PostPersist
+import jakarta.persistence.PostRemove
+import jakarta.persistence.PostUpdate
 import nl.runnable.gigmatch.events.SkillCreatedOrUpdated
 import nl.runnable.gigmatch.events.SkillDeleted
 import nl.runnable.gigmatch.framework.messaging.MATCH_EVENTS
@@ -7,9 +10,6 @@ import nl.runnable.gigmatch.framework.messaging.TypedMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.stream.function.StreamBridge
 import org.springframework.stereotype.Component
-import jakarta.persistence.PostPersist
-import jakarta.persistence.PostRemove
-import jakarta.persistence.PostUpdate
 
 @Component
 internal class SkillEntityListener {
@@ -31,5 +31,4 @@ internal class SkillEntityListener {
             streamBridge.send(MATCH_EVENTS, TypedMessage(SkillDeleted(id)))
         }
     }
-
 }

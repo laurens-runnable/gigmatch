@@ -16,5 +16,4 @@ internal class AggregateConfigurer {
     fun registerAggregates() {
         configurer.configureAggregate(Vacancy::class.java)
     }
-
 }

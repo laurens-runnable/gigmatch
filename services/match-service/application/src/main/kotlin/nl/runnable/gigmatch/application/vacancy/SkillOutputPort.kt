@@ -5,10 +5,9 @@ import nl.runnable.gigmatch.domain.vacancy.SkillId
 
 interface SkillOutputPort {
 
-    fun findGenre(id: SkillId): Skill?
+    fun findSkill(id: SkillId): Skill?
 
-    fun saveGenre(skill: Skill)
+    fun saveSkill(skill: Skill)
 
-    fun deleteGenre(skillId: SkillId)
-
+    fun deleteSkill(skillId: SkillId)
 }

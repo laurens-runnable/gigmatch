@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 class VacancyCancelled(
     @JsonProperty("id")
-    val id: VacancyId
+    val id: VacancyId,
 )

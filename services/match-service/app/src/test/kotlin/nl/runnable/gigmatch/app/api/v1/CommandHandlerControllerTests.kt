@@ -1,13 +1,19 @@
 package nl.runnable.gigmatch.app.api.v1
 
-import nl.runnable.gigmatch.api.AVRO_MEDIA_TYPE
-import nl.runnable.gigmatch.api.toByteArray
+import nl.runnable.gigmatch.app.AVRO_MEDIA_TYPE
+import nl.runnable.gigmatch.app.receiveEvent
+import nl.runnable.gigmatch.app.testset.SkillTestSet
+import nl.runnable.gigmatch.app.toByteArray
 import nl.runnable.gigmatch.commands.CreateVacancy
 import nl.runnable.gigmatch.commands.TestCommand
+import nl.runnable.gigmatch.events.VacancyCreated
+import org.amshove.kluent.shouldBeEqualTo
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.cloud.stream.binder.test.OutputDestination
 import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
@@ -22,7 +28,18 @@ import java.util.*
 class CommandHandlerControllerTests {
 
     @Autowired
-    lateinit var mockMvc: MockMvc
+    private lateinit var mockMvc: MockMvc
+
+    @Autowired
+    private lateinit var skillTestSet: SkillTestSet
+
+    @Autowired
+    private lateinit var outputDestination: OutputDestination
+
+    @BeforeEach
+    fun resetTestSets() {
+        skillTestSet.reset()
+    }
 
     private fun useRecruiterAuthentication() {
         SecurityContextHolder.getContext().authentication =
@@ -38,17 +55,43 @@ class CommandHandlerControllerTests {
         SecurityContextHolder.getContext().authentication = null
     }
 
+    private fun testSkillId() = UUID.fromString("2baaef78-eb31-4f82-a1c4-883bda3a50ff")
+
     @Test
-    fun `should return 202 Accepted`() {
+    fun `should return 202 Accepted and result in VacancyCreated event`() {
+        val vacancyId = UUID.randomUUID()
+        val jobTitle = "Test engineer"
+        val start = LocalDate.now().plusMonths(1)
+
         useRecruiterAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = CreateVacancy(UUID.randomUUID(), "Test engineer", LocalDate.now().plusMonths(1))
+            val command = CreateVacancy(vacancyId, jobTitle, testSkillId(), start)
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
         }.andExpect {
             status { isAccepted() }
+        }
+
+        val event = outputDestination.receiveEvent(VacancyCreated::class.java, "match-events")
+        event.id.shouldBeEqualTo(vacancyId)
+        event.jobTitle.shouldBeEqualTo(jobTitle)
+        event.start.shouldBeEqualTo(start)
+    }
+
+    @Test
+    fun `should return 422 Unprocessable Entity for invalid commands`() {
+        useRecruiterAuthentication()
+
+        mockMvc.post("/api/v1/commands") {
+            val command =
+                CreateVacancy(UUID.randomUUID(), "Test engineer", UUID.randomUUID(), LocalDate.now().plusMonths(1))
+            contentType = AVRO_MEDIA_TYPE
+            header("X-gm.type", command.javaClass.name)
+            content = command.toByteArray()
+        }.andExpect {
+            status { isUnprocessableEntity() }
         }
     }
 
@@ -57,7 +100,8 @@ class CommandHandlerControllerTests {
         useNoAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = CreateVacancy(UUID.randomUUID(), "Test engineer", LocalDate.now().plusMonths(1))
+            val command =
+                CreateVacancy(UUID.randomUUID(), "Test engineer", testSkillId(), LocalDate.now().plusMonths(1))
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -71,7 +115,8 @@ class CommandHandlerControllerTests {
         useCandidateAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = CreateVacancy(UUID.randomUUID(), "Test engineer", LocalDate.now().plusMonths(1))
+            val command =
+                CreateVacancy(UUID.randomUUID(), "Test engineer", testSkillId(), LocalDate.now().plusMonths(1))
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -81,14 +126,28 @@ class CommandHandlerControllerTests {
     }
 
     @Test
-    fun `should return 400 Bad Request for unknown command types`() {
+    fun `should return 415 Unsupported Media Type for unknown command types`() {
         useRecruiterAuthentication()
 
         mockMvc.post("/api/v1/commands") {
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", "unknown.type")
         }.andExpect {
-            status { isBadRequest() }
+            status { isUnsupportedMediaType() }
+        }
+    }
+
+    @Test
+    fun `should return 415 Unsupported Media Type for unhandled commands`() {
+        useRecruiterAuthentication()
+
+        mockMvc.post("/api/v1/commands") {
+            val command = TestCommand()
+            contentType = AVRO_MEDIA_TYPE
+            header("X-gm.type", command.javaClass.name)
+            content = command.toByteArray()
+        }.andExpect {
+            status { isUnsupportedMediaType() }
         }
     }
 
@@ -104,20 +163,4 @@ class CommandHandlerControllerTests {
             status { isBadRequest() }
         }
     }
-
-
-    @Test
-    fun `should return 422 Unprocessable Entity for unhandled commands`() {
-        useRecruiterAuthentication()
-
-        mockMvc.post("/api/v1/commands") {
-            val command = TestCommand()
-            contentType = AVRO_MEDIA_TYPE
-            header("X-gm.type", command.javaClass.name)
-            content = command.toByteArray()
-        }.andExpect {
-            status { isUnprocessableEntity() }
-        }
-    }
-
 }

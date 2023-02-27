@@ -23,5 +23,4 @@ class ProjectionHelper {
         return configuration.eventProcessingConfiguration().eventProcessors()
             .map { it.value as TrackingEventProcessor }
     }
-
 }

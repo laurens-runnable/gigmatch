@@ -1,7 +1,8 @@
 package nl.runnable.gigmatch.app.testset
 
-import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import com.opencsv.bean.CsvToBeanBuilder
 import nl.runnable.gigmatch.application.vacancy.VacancyUseCase
+import nl.runnable.gigmatch.domain.vacancy.SkillId
 import nl.runnable.gigmatch.domain.vacancy.VacancyId
 import nl.runnable.gigmatch.events.VacanciesReset
 import nl.runnable.gigmatch.framework.axon.RepositoryHelper
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.stream.function.StreamBridge
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
+import java.io.InputStreamReader
 import java.time.LocalDate
 import java.util.*
 
@@ -36,16 +38,19 @@ class VacancyTestSet {
 
         streamBridge.send(MATCH_EVENTS, TypedMessage(VacanciesReset()))
 
-        val rows = csvReader().readAllWithHeader(resource.inputStream)
-        rows.map {
-            val id = VacancyId(UUID.fromString(it["id"]))
-            val name = it["name"]!!
-            val monthsFromNow = Integer.parseInt(it["monthsFromNow"])
-            val start = LocalDate.now().plusMonths(monthsFromNow.toLong()).withDayOfMonth(1)
-            VacancyUseCase.CreateVacancyParams(id, name, start)
+        val csvToBean = CsvToBeanBuilder<VacancyRow>(InputStreamReader(resource.inputStream))
+            .withType(VacancyRow::class.java)
+            .withSeparator(',')
+            .withQuoteChar('"')
+            .build()
+        csvToBean.map {
+            val id = VacancyId(it.id)
+            val jobTitle = it.jobTitle
+            val skillId = SkillId(it.skillId)
+            val start = LocalDate.now().plusMonths(it.monthsFromNow.toLong()).withDayOfMonth(1)
+            VacancyUseCase.CreateVacancyParams(id, jobTitle, skillId, start)
         }.forEach {
             vacancyUseCase.createVacancy(it)
         }
     }
-
 }

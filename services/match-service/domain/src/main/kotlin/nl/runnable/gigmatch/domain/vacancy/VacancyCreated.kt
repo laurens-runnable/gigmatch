@@ -6,8 +6,8 @@ import java.time.LocalDate
 class VacancyCreated(
     @JsonProperty("id")
     val id: VacancyId,
-    @JsonProperty("name")
-    val jobTitle: String,
+    @JsonProperty("job")
+    val job: Job,
     @JsonProperty("start")
     val start: LocalDate,
 )

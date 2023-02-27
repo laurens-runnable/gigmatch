@@ -10,5 +10,4 @@ internal class CustomKafkaHeaderMapper : DefaultKafkaHeaderMapper() {
         super.fromHeaders(headers, target)
         target.remove(JSON_TYPES)
     }
-
 }

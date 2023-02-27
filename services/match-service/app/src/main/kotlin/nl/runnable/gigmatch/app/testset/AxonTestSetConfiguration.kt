@@ -21,5 +21,4 @@ class AxonTestSetConfiguration {
             it.eventProcessing { it.usingSubscribingEventProcessors() }
         }
     }
-
 }

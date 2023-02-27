@@ -4,5 +4,5 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier
 
 class CancelVacancy(
     @TargetAggregateIdentifier
-    val id: VacancyId
+    val id: VacancyId,
 )

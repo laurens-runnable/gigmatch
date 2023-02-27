@@ -11,22 +11,26 @@ class Vacancy {
     @AggregateIdentifier
     private lateinit var id: VacancyId
 
-    private lateinit var jobTitle: String
+    private lateinit var job: Job
 
     private lateinit var start: LocalDate
 
     private lateinit var status: VacancyStatus
 
     @CommandHandler
-    private constructor(command: CreateVacancy) {
-        require(command.jobTitle.isNotBlank()) { "Job title cannot be blank" }
+    private constructor(command: CreateVacancy, skillSpec: SkillSpec) {
+        require(command.job.skills.isNotEmpty()) { "Skills cannot be empty" }
+
+        for (skill in command.job.skills) {
+            require(skillSpec.skillExists(skill)) { "Skill does not exist $skill" }
+        }
 
         AggregateLifecycle.apply(
             VacancyCreated(
                 command.id,
-                command.jobTitle,
-                command.start
-            )
+                command.job,
+                command.start,
+            ),
         )
     }
 
@@ -36,7 +40,7 @@ class Vacancy {
     @EventHandler
     private fun on(event: VacancyCreated) {
         id = event.id
-        jobTitle = event.jobTitle
+        job = event.job
         start = event.start
         status = VacancyStatus.OPEN
     }
@@ -64,5 +68,4 @@ class Vacancy {
     private fun on(event: VacancyCancelled) {
         status = VacancyStatus.CANCELLED
     }
-
 }

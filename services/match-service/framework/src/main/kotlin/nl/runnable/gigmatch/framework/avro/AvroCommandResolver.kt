@@ -2,6 +2,7 @@ package nl.runnable.gigmatch.framework.avro
 
 import jakarta.annotation.security.RolesAllowed
 import nl.runnable.gigmatch.framework.COMMAND_HANDLER_SUFFIX
+import nl.runnable.gigmatch.framework.commands.CommandDeserializationException
 import nl.runnable.gigmatch.framework.commands.CommandHandler
 import nl.runnable.gigmatch.framework.commands.CommandResolver
 import org.apache.avro.io.DecoderFactory
@@ -31,19 +32,25 @@ internal class AvroCommandResolver : CommandResolver {
     override fun isCommandType(type: String): Boolean =
         try {
             val clazz = Class.forName(type)
-            clazz.packageName == "nl.runnable.gigmatch.commands" &&
-                    ClassUtils.isAssignable(SpecificRecord::class.java, clazz)
+            clazz.packageName == "nl.runnable.gigmatch.commands" && ClassUtils.isAssignable(
+                SpecificRecord::class.java,
+                clazz,
+            )
         } catch (e: ClassNotFoundException) {
             false
         }
 
     override fun deserializeCommand(type: String, input: InputStream): Any {
-        require(isCommandType(type)) { "$type is not a valid command type" }
+        try {
+            require(isCommandType(type)) { "$type is not a valid command type" }
 
-        val clazz = Class.forName(type)
-        val reader = ReflectDatumReader(clazz)
-        val binaryDecoder = DecoderFactory.get().binaryDecoder(input, null)
-        return reader.read(null, binaryDecoder)
+            val clazz = Class.forName(type)
+            val reader = ReflectDatumReader(clazz)
+            val binaryDecoder = DecoderFactory.get().binaryDecoder(input, null)
+            return reader.read(null, binaryDecoder)
+        } catch (e: IllegalArgumentException) {
+            throw CommandDeserializationException("Error deserializing command: $e.message")
+        }
     }
 
     override fun isAllowed(authentication: Authentication, command: Any): Boolean {
@@ -58,5 +65,4 @@ internal class AvroCommandResolver : CommandResolver {
         } catch (e: BeansException) {
             null
         }
-
 }

@@ -1,12 +1,13 @@
 package nl.runnable.gigmatch.app.testset
 
-import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
-import nl.runnable.gigmatch.framework.genre.GenreEntityRepository
+import com.opencsv.bean.CsvToBeanBuilder
 import nl.runnable.gigmatch.framework.genre.SkillEntity
+import nl.runnable.gigmatch.framework.genre.SkillEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
+import java.io.InputStreamReader
 import java.util.*
 
 @Component
@@ -14,22 +15,25 @@ import java.util.*
 class SkillTestSet {
 
     @Autowired
-    private lateinit var repository: GenreEntityRepository
+    private lateinit var repository: SkillEntityRepository
 
     @Value("classpath:/test-set/skills.csv")
     private lateinit var resource: Resource
 
     fun reset() {
-        val rows = csvReader().readAllWithHeader(resource.inputStream)
-        val genres = rows.map {
-            val skillEntity = SkillEntity(UUID.fromString(it["id"] as String))
-            skillEntity.name = it["name"] as String
-            skillEntity.slug = it["slug"] as String
+        val csvToBean = CsvToBeanBuilder<SkillRow>(InputStreamReader(resource.inputStream))
+            .withType(SkillRow::class.java)
+            .withSeparator(',')
+            .withQuoteChar('"')
+            .build()
+        val skills = csvToBean.map {
+            val skillEntity = SkillEntity(it.id)
+            skillEntity.name = it.name
+            skillEntity.slug = it.slug
             skillEntity
         }
 
         repository.deleteAll()
-        repository.saveAll(genres)
+        repository.saveAll(skills)
     }
-
 }

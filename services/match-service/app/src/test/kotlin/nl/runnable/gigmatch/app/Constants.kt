@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.api
+package nl.runnable.gigmatch.app
 
 import org.springframework.http.MediaType
 

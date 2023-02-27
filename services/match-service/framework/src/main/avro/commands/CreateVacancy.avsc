@@ -12,8 +12,15 @@
       }
     },
     {
-      "name": "name",
+      "name": "jobTitle",
       "type": "string"
+    },
+    {
+      "name": "skillId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
     },
     {
       "name": "start",

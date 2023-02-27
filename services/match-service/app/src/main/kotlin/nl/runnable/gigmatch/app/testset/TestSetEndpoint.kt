@@ -34,5 +34,4 @@ class TestSetEndpoint {
         skillTestSet.reset()
         vacancyTestSet.reset()
     }
-
 }

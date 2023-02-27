@@ -41,5 +41,4 @@ class CancelVacancyTest {
             .`when`(CancelVacancy(id))
             .expectException(IllegalStateException::class.java)
     }
-
 }

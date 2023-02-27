@@ -47,5 +47,4 @@ class JwtClaimMappingConfiguration {
 
         return authorities
     }
-
 }

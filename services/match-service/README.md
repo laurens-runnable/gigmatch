@@ -3,7 +3,11 @@
 ## Local development
 
 ```bash
-mvnw spring-boot:run
+# Run in local development environment
+./mvnw spring-boot:run
+
+# Verify (runs tests and ktlint)
+./mvnw verify
 ```
 
 ## Architecture
