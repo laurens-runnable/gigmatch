@@ -2,7 +2,9 @@ package nl.runnable.gigmatch.domain.vacancy
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.Test
 
 class JobTest {
@@ -15,5 +17,12 @@ class JobTest {
         val deserialized = objectMapper.readValue<Job>(json)
 
         deserialized shouldBeEqualTo job
+    }
+
+    @Test
+    fun `cannot be created with empty Skills`() {
+        invoking {
+            Job("Java developer", emptySet())
+        } shouldThrow IllegalArgumentException::class
     }
 }

@@ -5,9 +5,12 @@ import nl.runnable.gigmatch.app.receiveEvent
 import nl.runnable.gigmatch.app.testset.SkillTestSet
 import nl.runnable.gigmatch.app.toByteArray
 import nl.runnable.gigmatch.commands.CreateVacancy
+import nl.runnable.gigmatch.commands.RateType
 import nl.runnable.gigmatch.commands.TestCommand
+import nl.runnable.gigmatch.commands.toEventCounterpart
 import nl.runnable.gigmatch.events.VacancyCreated
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldContain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,6 +29,37 @@ import java.util.*
 @AutoConfigureMockMvc(addFilters = false) // Disables Spring Security filter
 @ActiveProfiles("test")
 class CommandHandlerControllerTests {
+    companion object {
+
+        private fun testVacancyId(): UUID? = UUID.randomUUID()
+
+        private fun testJobTitle() = "Test engineer"
+
+        private fun testSkillId() = UUID.fromString("2baaef78-eb31-4f82-a1c4-883bda3a50ff")
+
+        private fun testStart() = LocalDate.now().plusMonths(2).withDayOfMonth(1)
+
+        private fun testEnd() = testStart().plusMonths(6)
+
+        private fun testRateAmount() = 100
+
+        private fun testRateType() = RateType.HOURLY
+
+        private fun testDeadline() = testStart().minusWeeks(2)
+
+        private fun testCreateVacancy(): CreateVacancy {
+            return CreateVacancy(
+                testVacancyId(),
+                testJobTitle(),
+                testSkillId(),
+                testStart(),
+                testEnd(),
+                testRateAmount(),
+                testRateType(),
+                testDeadline(),
+            )
+        }
+    }
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -55,18 +89,21 @@ class CommandHandlerControllerTests {
         SecurityContextHolder.getContext().authentication = null
     }
 
-    private fun testSkillId() = UUID.fromString("2baaef78-eb31-4f82-a1c4-883bda3a50ff")
-
     @Test
     fun `should return 202 Accepted and result in VacancyCreated event`() {
-        val vacancyId = UUID.randomUUID()
-        val jobTitle = "Test engineer"
-        val start = LocalDate.now().plusMonths(1)
+        val vacancyId = testVacancyId()
+        val jobTitle = testJobTitle()
+        val skillId = testSkillId()
+        val start = testStart()
+        val end = testEnd()
+        val rateAmount = testRateAmount()
+        val rateType = testRateType()
+        val deadline = testDeadline()
 
         useRecruiterAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = CreateVacancy(vacancyId, jobTitle, testSkillId(), start)
+            val command = CreateVacancy(vacancyId, jobTitle, skillId, start, end, rateAmount, rateType, deadline)
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -77,7 +114,13 @@ class CommandHandlerControllerTests {
         val event = outputDestination.receiveEvent(VacancyCreated::class.java, "match-events")
         event.id.shouldBeEqualTo(vacancyId)
         event.jobTitle.shouldBeEqualTo(jobTitle)
+        event.skills.size.shouldBeEqualTo(1)
+        event.skills.shouldContain(skillId.toString()) // List contains String instance, rather than UUID
         event.start.shouldBeEqualTo(start)
+        event.end.shouldBeEqualTo(end)
+        event.rateAmount.shouldBeEqualTo(rateAmount)
+        event.rateType.shouldBeEqualTo(rateType.toEventCounterpart())
+        event.deadline.shouldBeEqualTo(deadline)
     }
 
     @Test
@@ -85,8 +128,18 @@ class CommandHandlerControllerTests {
         useRecruiterAuthentication()
 
         mockMvc.post("/api/v1/commands") {
+            val invalidSkillId = UUID.randomUUID()
             val command =
-                CreateVacancy(UUID.randomUUID(), "Test engineer", UUID.randomUUID(), LocalDate.now().plusMonths(1))
+                CreateVacancy(
+                    testVacancyId(),
+                    testJobTitle(),
+                    invalidSkillId,
+                    testStart(),
+                    testEnd(),
+                    testRateAmount(),
+                    testRateType(),
+                    testDeadline(),
+                )
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -100,8 +153,7 @@ class CommandHandlerControllerTests {
         useNoAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command =
-                CreateVacancy(UUID.randomUUID(), "Test engineer", testSkillId(), LocalDate.now().plusMonths(1))
+            val command = testCreateVacancy()
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -115,8 +167,7 @@ class CommandHandlerControllerTests {
         useCandidateAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command =
-                CreateVacancy(UUID.randomUUID(), "Test engineer", testSkillId(), LocalDate.now().plusMonths(1))
+            val command = testCreateVacancy()
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()

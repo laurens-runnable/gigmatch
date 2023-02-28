@@ -7,8 +7,22 @@
 ./mvnw spring-boot:run
 
 # Verify (runs tests and ktlint)
-./mvnw verify
+./mvnw clean verify
 ```
+
+## Domain
+
+The Domain represents a freelance job matching platform and is implemented using patterns and idioms from Domain-Driven
+Design.
+
+Of particular note is the use of event-sourced Aggregates to represent *processes*. One particularly important process
+is the [Vacancy](domain/src/main/kotlin/nl/runnable/gigmatch/domain/vacancy/Vacancy.kt).
+
+> Because this project focuses on event-driven microservices, the Domain model is kept relatively simple.
+>
+> I find domain exploration to be rewarding in and of itself, but I won't go too far into full-blown requirements
+> analysis because this is merely a demo project. Instead, I use common-sense judgement to highlight some interesting
+> aspects of the job matching domain.
 
 ## Architecture
 
@@ -17,7 +31,8 @@ known as Ports and Adapters.
 
 ![Architecture](images/hexagonal-architecture.png)
 
-> In Domain-Driven Design the "Framework" layer is also called the "Infrastructure" layer.
+> In Domain-Driven Design the "Framework" layer is also called the "Infrastructure" layer. Personally I find the term
+> "Framework" clearer.
 
 | Module                     | Description                                          |
 |----------------------------|------------------------------------------------------|

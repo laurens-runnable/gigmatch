@@ -6,6 +6,9 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import java.time.LocalDate
 
+/**
+ * The root aggregate for the Vacancy process.
+ */
 class Vacancy {
 
     @AggregateIdentifier
@@ -13,23 +16,33 @@ class Vacancy {
 
     private lateinit var job: Job
 
-    private lateinit var start: LocalDate
+    private lateinit var term: Term
+
+    private lateinit var rate: Rate
+
+    private lateinit var deadline: LocalDate
 
     private lateinit var status: VacancyStatus
 
     @CommandHandler
-    private constructor(command: CreateVacancy, skillSpec: SkillSpec) {
-        require(command.job.skills.isNotEmpty()) { "Skills cannot be empty" }
-
+    private constructor(command: CreateVacancy, skillMustExist: SkillMustExistSpecification) {
         for (skill in command.job.skills) {
-            require(skillSpec.skillExists(skill)) { "Skill does not exist $skill" }
+            require(skillMustExist.isSatisfiedBy(skill)) {
+                "Skill not found $skill"
+            }
+        }
+
+        require(command.deadline.isBefore(command.term.start)) {
+            "Deadline must be before start of term"
         }
 
         AggregateLifecycle.apply(
             VacancyCreated(
                 command.id,
                 command.job,
-                command.start,
+                command.term,
+                command.rate,
+                command.deadline,
             ),
         )
     }
@@ -41,7 +54,9 @@ class Vacancy {
     private fun on(event: VacancyCreated) {
         id = event.id
         job = event.job
-        start = event.start
+        term = event.term
+        rate = event.rate
+        deadline = event.deadline
         status = VacancyStatus.OPEN
     }
 

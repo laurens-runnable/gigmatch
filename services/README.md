@@ -19,3 +19,6 @@ Each service maintains its own version of a given schema. Schemas can evolve ind
 * [dashboard-consumer](dashboard/consumer/src/application/events) events
 * [dashboard](./dashboard/app/server/avro/commands) commands
 * [website-consumer](website/Gigmatch.Website.Consumer/avro/events) events
+
+For the sake of simplicity command and events are kept as 'flat' as possible and don't use any nested types. In general,
+Avro types are intended to be self-contained and used mainly for serialization. I.e. data transfer or storage. 

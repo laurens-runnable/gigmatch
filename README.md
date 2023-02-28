@@ -2,7 +2,7 @@
 
 Personal reference implementation of an event-driven microservice architecture.
 
-The example application is a job matching platform.
+The example application is a freelance job matching platform.
 
 ## Overview
 
@@ -12,10 +12,9 @@ Services are loosely-coupled, maintain their own storage and use their own dedic
 
 | Commands                               | Events                                   |
 |----------------------------------------|------------------------------------------|
-| Represent (user) actions               | Represent changes                        |
+| Represent actions                      | Represent changes                        |
 | Invoked synchronously through REST API | Consumed asynchronously from Event Store |
 | Point-to-point                         | Publish/subscribe                        |
-| Authenticated                          | Not authenticated                        |
 
 ## Codebase
 

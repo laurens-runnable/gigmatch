@@ -8,6 +8,10 @@ class VacancyCreated(
     val id: VacancyId,
     @JsonProperty("job")
     val job: Job,
-    @JsonProperty("start")
-    val start: LocalDate,
+    @JsonProperty("term")
+    val term: Term,
+    @JsonProperty("rate")
+    val rate: Rate,
+    @JsonProperty("deadline")
+    val deadline: LocalDate,
 )

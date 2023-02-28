@@ -23,4 +23,12 @@ class SkillIdTest {
         val deserialized = objectMapper.readValue<SkillId>(json)
         deserialized shouldBeEqualTo skillId
     }
+
+    @Test
+    fun `can be converted to UUID`() {
+        val skillId = SkillId.generateRandom()
+        val uuid = skillId.toUUID()
+
+        skillId.toString().shouldBeEqualTo(uuid.toString())
+    }
 }

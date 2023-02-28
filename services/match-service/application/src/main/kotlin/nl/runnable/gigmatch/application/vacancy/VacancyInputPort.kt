@@ -1,7 +1,6 @@
 package nl.runnable.gigmatch.application.vacancy
 
 import nl.runnable.gigmatch.domain.vacancy.CreateVacancy
-import nl.runnable.gigmatch.domain.vacancy.Job
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -16,5 +15,4 @@ class VacancyInputPort : VacancyUseCase {
     }
 }
 
-private fun VacancyUseCase.CreateVacancyParams.toCommand() =
-    CreateVacancy(id, Job(jobTitle, setOf(skillId)), start)
+private fun VacancyUseCase.CreateVacancyParams.toCommand() = CreateVacancy(id, job, term, rate, deadline)

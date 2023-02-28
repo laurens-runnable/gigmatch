@@ -14,8 +14,8 @@ class CreateVacancyTest {
     fun setup() {
         fixture = AggregateTestFixture(Vacancy::class.java)
 
-        val skillSpec = mock<SkillSpec> {
-            on { skillExists(testSkill()) } doReturn true
+        val skillSpec = mock<SkillMustExistSpecification> {
+            on { isSatisfiedBy(testSkill()) } doReturn true
         }
         fixture.registerInjectableResource(skillSpec)
     }
@@ -28,7 +28,9 @@ class CreateVacancyTest {
                 CreateVacancy(
                     VacancyId.generateRandom(),
                     Job("Test", setOf(testSkill())),
-                    testStart(),
+                    testTerm(),
+                    testRate(),
+                    testDeadline(),
                 ),
             )
             .expectSuccessfulHandlerExecution()
@@ -36,13 +38,33 @@ class CreateVacancyTest {
 
     @Test
     fun `with invalid skill`() {
+        val invalidSkill = SkillId.generateRandom()
         fixture
             .given()
             .`when`(
                 CreateVacancy(
                     VacancyId.generateRandom(),
-                    Job("Test", setOf(SkillId.generateRandom())),
-                    testStart(),
+                    Job("Test", setOf(invalidSkill)),
+                    testTerm(),
+                    testRate(),
+                    testDeadline(),
+                ),
+            )
+            .expectException(IllegalArgumentException::class.java)
+    }
+
+    @Test
+    fun `with invalid deadline`() {
+        val invalidDeadline = testTerm().start.plusDays(1)
+        fixture
+            .given()
+            .`when`(
+                CreateVacancy(
+                    VacancyId.generateRandom(),
+                    Job("Test", setOf(testSkill())),
+                    testTerm(),
+                    testRate(),
+                    invalidDeadline,
                 ),
             )
             .expectException(IllegalArgumentException::class.java)

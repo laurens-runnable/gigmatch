@@ -5,5 +5,7 @@ import java.time.LocalDate
 class CreateVacancy(
     val id: VacancyId,
     val job: Job,
-    val start: LocalDate,
+    val term: Term,
+    val rate: Rate,
+    val deadline: LocalDate,
 )

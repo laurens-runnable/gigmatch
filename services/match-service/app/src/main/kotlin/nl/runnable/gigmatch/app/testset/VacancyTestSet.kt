@@ -2,7 +2,11 @@ package nl.runnable.gigmatch.app.testset
 
 import com.opencsv.bean.CsvToBeanBuilder
 import nl.runnable.gigmatch.application.vacancy.VacancyUseCase
+import nl.runnable.gigmatch.commands.toDomainCounterpart
+import nl.runnable.gigmatch.domain.vacancy.Job
+import nl.runnable.gigmatch.domain.vacancy.Rate
 import nl.runnable.gigmatch.domain.vacancy.SkillId
+import nl.runnable.gigmatch.domain.vacancy.Term
 import nl.runnable.gigmatch.domain.vacancy.VacancyId
 import nl.runnable.gigmatch.events.VacanciesReset
 import nl.runnable.gigmatch.framework.axon.RepositoryHelper
@@ -44,11 +48,16 @@ class VacancyTestSet {
             .withQuoteChar('"')
             .build()
         csvToBean.map {
-            val id = VacancyId(it.id)
-            val jobTitle = it.jobTitle
-            val skillId = SkillId(it.skillId)
-            val start = LocalDate.now().plusMonths(it.monthsFromNow.toLong()).withDayOfMonth(1)
-            VacancyUseCase.CreateVacancyParams(id, jobTitle, skillId, start)
+            val start = LocalDate.now().plusMonths(it.startMonthsFromNow).withDayOfMonth(1)
+            val end = start.plusMonths(it.durationMonths)
+            val deadline = start.minusWeeks(it.deadlineWeeksBefore)
+            VacancyUseCase.CreateVacancyParams(
+                VacancyId(it.id),
+                Job(it.jobTitle, setOf(SkillId(it.skillId))),
+                Term(start, end),
+                Rate(it.rateAmount, it.rateType.toDomainCounterpart()),
+                deadline,
+            )
         }.forEach {
             vacancyUseCase.createVacancy(it)
         }
