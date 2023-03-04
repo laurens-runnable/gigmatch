@@ -60,6 +60,10 @@
         "type": "int",
         "logicalType": "date"
       }
+    },
+    {
+      "name": "listed",
+      "type": "boolean"
     }
   ]
 }

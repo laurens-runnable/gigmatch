@@ -10,6 +10,7 @@ import nl.runnable.gigmatch.commands.TestCommand
 import nl.runnable.gigmatch.commands.toEventCounterpart
 import nl.runnable.gigmatch.events.VacancyCreated
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldBeTrue
 import org.amshove.kluent.shouldContain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -47,6 +48,8 @@ class CommandHandlerControllerTests {
 
         private fun testDeadline() = testStart().minusWeeks(2)
 
+        private fun testListed() = false
+
         private fun testCreateVacancy(): CreateVacancy {
             return CreateVacancy(
                 testVacancyId(),
@@ -57,6 +60,7 @@ class CommandHandlerControllerTests {
                 testRateAmount(),
                 testRateType(),
                 testDeadline(),
+                testListed(),
             )
         }
     }
@@ -103,7 +107,7 @@ class CommandHandlerControllerTests {
         useRecruiterAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = CreateVacancy(vacancyId, jobTitle, skillId, start, end, rateAmount, rateType, deadline)
+            val command = CreateVacancy(vacancyId, jobTitle, skillId, start, end, rateAmount, rateType, deadline, true)
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -121,6 +125,7 @@ class CommandHandlerControllerTests {
         event.rateAmount.shouldBeEqualTo(rateAmount)
         event.rateType.shouldBeEqualTo(rateType.toEventCounterpart())
         event.deadline.shouldBeEqualTo(deadline)
+        event.listed.shouldBeTrue()
     }
 
     @Test
@@ -139,6 +144,7 @@ class CommandHandlerControllerTests {
                     testRateAmount(),
                     testRateType(),
                     testDeadline(),
+                    testListed(),
                 )
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)

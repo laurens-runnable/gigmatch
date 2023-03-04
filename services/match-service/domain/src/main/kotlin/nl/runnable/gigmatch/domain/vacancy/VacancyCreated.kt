@@ -14,4 +14,6 @@ class VacancyCreated(
     val rate: Rate,
     @JsonProperty("deadline")
     val deadline: LocalDate,
+    @JsonProperty("listed")
+    val listed: Boolean,
 )

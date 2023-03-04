@@ -14,6 +14,7 @@ interface VacancyUseCase {
         val term: Term,
         val rate: Rate,
         val deadline: LocalDate,
+        val listed: Boolean,
     )
 
     fun createVacancy(params: CreateVacancyParams)

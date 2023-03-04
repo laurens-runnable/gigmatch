@@ -8,4 +8,5 @@ class CreateVacancy(
     val term: Term,
     val rate: Rate,
     val deadline: LocalDate,
+    val listed: Boolean,
 )

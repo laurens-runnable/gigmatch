@@ -15,4 +15,4 @@ class VacancyInputPort : VacancyUseCase {
     }
 }
 
-private fun VacancyUseCase.CreateVacancyParams.toCommand() = CreateVacancy(id, job, term, rate, deadline)
+private fun VacancyUseCase.CreateVacancyParams.toCommand() = CreateVacancy(id, job, term, rate, deadline, listed)

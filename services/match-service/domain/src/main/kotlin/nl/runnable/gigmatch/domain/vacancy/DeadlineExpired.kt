@@ -1,3 +1,3 @@
 package nl.runnable.gigmatch.domain.vacancy
 
-class VacancyCancelled
+class DeadlineExpired

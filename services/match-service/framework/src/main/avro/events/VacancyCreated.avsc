@@ -15,10 +15,10 @@
       "type": "string"
     },
     {
-      "name":"skills",
-      "type":{
+      "name": "skills",
+      "type": {
         "type": "array",
-        "items":{
+        "items": {
           "type": "string",
           "logicalType": "uuid"
         }
@@ -62,6 +62,10 @@
         "type": "int",
         "logicalType": "date"
       }
+    },
+    {
+      "name": "listed",
+      "type": "boolean"
     }
   ]
 }

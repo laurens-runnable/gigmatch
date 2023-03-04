@@ -30,6 +30,7 @@ internal class VacancyEventHandlers {
                     event.rate.amount,
                     event.rate.type.toFrameworkCounterpart(),
                     event.deadline,
+                    event.listed,
                 ),
             ),
         )

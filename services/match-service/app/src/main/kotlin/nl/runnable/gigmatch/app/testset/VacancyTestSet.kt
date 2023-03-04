@@ -57,6 +57,7 @@ class VacancyTestSet {
                 Term(start, end),
                 Rate(it.rateAmount, it.rateType.toDomainCounterpart()),
                 deadline,
+                false,
             )
         }.forEach {
             vacancyUseCase.createVacancy(it)

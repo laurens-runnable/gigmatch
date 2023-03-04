@@ -30,4 +30,5 @@ private fun CreateVacancy.toDomainParams() =
         Term(start, end),
         Rate(rateAmount, rateType.toDomainCounterpart()),
         deadline,
+        listed,
     )
