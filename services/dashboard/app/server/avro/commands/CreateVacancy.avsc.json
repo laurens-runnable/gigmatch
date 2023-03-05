@@ -2,6 +2,7 @@
   "namespace": "nl.runnable.gigmatch.commands",
   "type": "record",
   "name": "CreateVacancy",
+  "javaAnnotation": "jakarta.annotation.security.RolesAllowed(\"recruiter\")",
   "fields": [
     {
       "name": "id",
@@ -11,8 +12,15 @@
       }
     },
     {
-      "name": "name",
+      "name": "jobTitle",
       "type": "string"
+    },
+    {
+      "name": "skillId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
     },
     {
       "name": "start",
@@ -20,6 +28,42 @@
         "type": "int",
         "logicalType": "date"
       }
+    },
+    {
+      "name": "end",
+      "type": {
+        "type": "int",
+        "logicalType": "date"
+      }
+    },
+    {
+      "name": "rateAmount",
+      "type": {
+        "type": "int"
+      }
+    },
+    {
+      "name": "rateType",
+      "type": {
+        "type": "enum",
+        "name": "RateType",
+        "symbols": [
+          "HOURLY",
+          "DAILY",
+          "FIXED"
+        ]
+      }
+    },
+    {
+      "name": "deadline",
+      "type": {
+        "type": "int",
+        "logicalType": "date"
+      }
+    },
+    {
+      "name": "listed",
+      "type": "boolean"
     }
   ]
 }

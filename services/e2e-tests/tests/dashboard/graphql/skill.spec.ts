@@ -31,5 +31,5 @@ test('allSkills() should return skills', async ({
 
   const skills = (await query.json()).data.allSkills
   expect(skills).toBeInstanceOf(Array)
-  expect(skills.length).toBe(4)
+  expect(skills.length).toBe(5)
 })

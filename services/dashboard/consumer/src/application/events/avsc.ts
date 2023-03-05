@@ -5,11 +5,20 @@ import TestSetupStartedSchema from './TestSetupStarted.avsc.json'
 import VacanciesResetSchema from './VacanciesReset.avsc.json'
 import VacancyCreatedSchema from './VacancyCreated.avsc.json'
 import { type EventDeserializer } from './index'
-import { type Schema, Type } from 'avsc'
+import { type Schema, Type, types } from 'avsc'
 import { injectable } from 'inversify'
 
+class LogicalDateType extends types.LogicalType {
+  _fromValue(val: any): Date | undefined {
+    return val !== undefined ? new Date(val * (3600 * 24 * 1000)) : undefined
+  }
+}
+
 export const VacanciesResetType = Type.forSchema(VacanciesResetSchema as Schema)
-export const VacancyCreatedType = Type.forSchema(VacancyCreatedSchema as Schema)
+export const VacancyCreatedType = Type.forSchema(
+  VacancyCreatedSchema as Schema,
+  { logicalTypes: { date: LogicalDateType } }
+)
 export const SkillCreatedOrUpdatedType = Type.forSchema(
   SkillCreatedOrUpdatedSchema as Schema
 )

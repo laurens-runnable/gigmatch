@@ -12,6 +12,12 @@ export const typeDefs = /* GraphQL */ `
   scalar Date
   scalar UUID
 
+  enum RateType {
+    HOURLY
+    DAILY
+    FIXED
+  }
+
   type UserDetails {
     firstName: String
     lastName: String
@@ -25,8 +31,13 @@ export const typeDefs = /* GraphQL */ `
 
   type Vacancy {
     id: UUID!
-    name: String!
-    start: Date
+    jobTitle: String!
+    start: Date!
+    end: Date!
+    rateAmount: Int!
+    rateType: RateType!
+    deadline: Date!
+    listed: Boolean!
   }
 
   type Query {
@@ -36,7 +47,16 @@ export const typeDefs = /* GraphQL */ `
   }
 
   type Mutation {
-    createVacancy(name: String!, start: Date): Vacancy
+    createVacancy(
+      jobTitle: String!
+      skillId: String!
+      start: Date!
+      end: Date!
+      rateAmount: Int!
+      rateType: RateType!
+      deadline: Date!
+      listed: Boolean!
+    ): Vacancy
   }
 `
 

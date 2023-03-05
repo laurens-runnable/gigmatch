@@ -24,7 +24,7 @@ export class VacancyCreatedHandler implements EventHandler {
   }
 
   async handleEvent({ payload }: Event): Promise<void> {
-    payload.start = new Date(payload.start)
+    console.log(JSON.stringify(payload, null, 2))
     await this._repository.updateVacancy(payload)
   }
 }

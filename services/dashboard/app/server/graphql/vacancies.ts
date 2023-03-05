@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto'
 import { H3Event } from 'h3'
-import { toDateInt } from '~/server/avro'
 import { CreateVacancy } from '~/server/avro/commands'
 import { createMatchServiceClient } from '~/server/lib/axios'
 import { getDb } from '~/server/lib/mongo'
@@ -19,8 +18,14 @@ export async function fetchActiveVacancies(): Promise<Vacancy[]> {
 }
 
 export type CreateVacancyParams = {
-  name: string
+  jobTitle: string
+  skillId: string
   start: Date
+  end: Date
+  rateAmount: number
+  rateType: string
+  deadline: Date
+  listed: boolean
 }
 
 export async function createVacancy(
@@ -28,12 +33,28 @@ export async function createVacancy(
   event: H3Event
 ) {
   const id = randomUUID()
-  const { name, start } = params
-  const body = CreateVacancy.toBuffer({
+  const {
+    jobTitle,
+    skillId,
+    start,
+    end,
+    rateAmount,
+    rateType,
+    deadline,
+    listed,
+  } = params
+  const value = {
     id,
-    name,
-    start: toDateInt(start),
-  })
+    jobTitle,
+    skillId,
+    start,
+    end,
+    rateAmount,
+    rateType,
+    deadline,
+    listed,
+  }
+  const body = CreateVacancy.toBuffer(value)
 
   const client = await createMatchServiceClient(event)
   await client.post('/api/v1/commands', body, {
@@ -42,9 +63,5 @@ export async function createVacancy(
     },
   })
 
-  return {
-    id,
-    name,
-    start,
-  }
+  return value
 }
