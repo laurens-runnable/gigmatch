@@ -32,7 +32,9 @@ file static class VacancyCreatedExtensions
         new()
         {
             Id = ev.id,
-            Name = ev.name,
+            JobTitle = ev.jobTitle,
+            Skills = ev.skills.Select(x => new Guid(x)).ToArray(),
             Start = ev.start,
+            End = ev.end,
         };
 }
