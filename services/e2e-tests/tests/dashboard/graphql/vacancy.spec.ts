@@ -70,7 +70,6 @@ test('createVacancy() should return vacancy', async ({
             rateAmount: 100
             rateType: HOURLY
             deadline: "2023-06-15"
-            listed: true
           ) {
             id
             jobTitle
@@ -79,7 +78,6 @@ test('createVacancy() should return vacancy', async ({
             rateAmount
             rateType
             deadline
-            listed
           }
         }
       `),

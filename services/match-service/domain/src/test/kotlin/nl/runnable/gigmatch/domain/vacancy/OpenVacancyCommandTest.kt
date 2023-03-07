@@ -14,7 +14,7 @@ import org.mockito.kotlin.verifyNoMoreInteractions
 import java.time.Instant
 import java.time.LocalDate
 
-class CreateVacancyTest {
+class OpenVacancyCommandTest {
 
     private lateinit var fixture: AggregateTestFixture<Vacancy>
 
@@ -38,13 +38,12 @@ class CreateVacancyTest {
         fixture
             .given()
             .whenever(
-                CreateVacancy(
+                OpenVacancyCommand(
                     VacancyId.generateRandom(),
                     Job("Test", setOf(testSkill())),
                     testTerm(),
                     testRate(),
                     testDeadline(),
-                    testListed(),
                 ),
             )
             .expectSuccessfulHandlerExecution()
@@ -59,13 +58,12 @@ class CreateVacancyTest {
         fixture
             .given()
             .whenever(
-                CreateVacancy(
+                OpenVacancyCommand(
                     VacancyId.generateRandom(),
                     Job("Test", setOf(invalidSkill)),
                     testTerm(),
                     testRate(),
                     testDeadline(),
-                    testListed(),
                 ),
             )
             .expectException(IllegalArgumentException::class.java)
@@ -78,13 +76,12 @@ class CreateVacancyTest {
         fixture
             .given()
             .whenever(
-                CreateVacancy(
+                OpenVacancyCommand(
                     VacancyId.generateRandom(),
                     Job("Test", setOf(testSkill())),
                     testTerm(),
                     testRate(),
                     invalidDeadline,
-                    testListed(),
                 ),
             )
             .expectException(IllegalArgumentException::class.java)
@@ -97,13 +94,12 @@ class CreateVacancyTest {
         fixture
             .given()
             .whenever(
-                CreateVacancy(
+                OpenVacancyCommand(
                     VacancyId.generateRandom(),
                     Job("Test", setOf(testSkill())),
                     testTerm(),
                     testRate(),
                     invalidDeadline,
-                    testListed(),
                 ),
             )
             .expectException(IllegalArgumentException::class.java)

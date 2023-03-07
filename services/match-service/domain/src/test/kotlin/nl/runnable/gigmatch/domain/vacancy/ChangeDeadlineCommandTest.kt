@@ -15,7 +15,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-class ChangeDeadlineTest {
+class ChangeDeadlineCommandTest {
 
     private lateinit var fixture: AggregateTestFixture<Vacancy>
 
@@ -34,7 +34,7 @@ class ChangeDeadlineTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .whenever(ChangeDeadline.shiftedBy(id, 1, ChronoUnit.DAYS))
+            .whenever(ChangeDeadlineCommand.shiftedBy(id, 1, ChronoUnit.DAYS))
             .expectSuccessfulHandlerExecution()
 
         verify(eventScheduler).schedule(any<Instant>(), any())
@@ -46,8 +46,8 @@ class ChangeDeadlineTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .andGiven(VacancyClosed())
-            .whenever(ChangeDeadline.shiftedBy(id, 1, ChronoUnit.DAYS))
+            .andGiven(VacancyClosedEvent())
+            .whenever(ChangeDeadlineCommand.shiftedBy(id, 1, ChronoUnit.DAYS))
             .expectException(IllegalStateException::class.java)
     }
 
@@ -56,7 +56,7 @@ class ChangeDeadlineTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .whenever(ChangeDeadline.shiftedBy(id, -6, ChronoUnit.MONTHS))
+            .whenever(ChangeDeadlineCommand.shiftedBy(id, -6, ChronoUnit.MONTHS))
             .expectException(IllegalArgumentException::class.java)
     }
 
@@ -65,7 +65,7 @@ class ChangeDeadlineTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .whenever(ChangeDeadline.toNewDate(id, LocalDate.now().plusMonths(2)))
+            .whenever(ChangeDeadlineCommand.toNewDate(id, LocalDate.now().plusMonths(2)))
             .expectSuccessfulHandlerExecution()
 
         verify(eventScheduler).schedule(any<Instant>(), any())
@@ -77,7 +77,7 @@ class ChangeDeadlineTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .whenever(ChangeDeadline.toNewDate(id, LocalDate.now().minusDays(1)))
+            .whenever(ChangeDeadlineCommand.toNewDate(id, LocalDate.now().minusDays(1)))
             .expectException(IllegalArgumentException::class.java)
     }
 
@@ -85,7 +85,7 @@ class ChangeDeadlineTest {
     fun `cannot be instantiated with an offset that is not date-based`() {
         invoking {
             val id = VacancyId.generateRandom()
-            ChangeDeadline.shiftedBy(id, 1, ChronoUnit.MINUTES)
+            ChangeDeadlineCommand.shiftedBy(id, 1, ChronoUnit.MINUTES)
         } shouldThrow java.lang.IllegalArgumentException::class
     }
 }

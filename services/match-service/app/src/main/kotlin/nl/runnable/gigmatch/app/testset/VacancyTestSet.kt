@@ -51,16 +51,15 @@ class VacancyTestSet {
             val start = LocalDate.now().plusMonths(it.startMonthsFromNow).withDayOfMonth(1)
             val end = start.plusMonths(it.durationMonths)
             val deadline = start.minusWeeks(it.deadlineWeeksBefore)
-            VacancyUseCase.CreateVacancyParams(
+            VacancyUseCase.OpenVacancyParams(
                 VacancyId(it.id),
                 Job(it.jobTitle, setOf(SkillId(it.skillId))),
                 Term(start, end),
                 Rate(it.rateAmount, it.rateType.toDomainCounterpart()),
                 deadline,
-                false,
             )
         }.forEach {
-            vacancyUseCase.createVacancy(it)
+            vacancyUseCase.openVacancy(it)
         }
     }
 }

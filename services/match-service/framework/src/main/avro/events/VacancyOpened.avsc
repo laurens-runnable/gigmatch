@@ -1,7 +1,7 @@
 {
   "namespace": "nl.runnable.gigmatch.events",
   "type": "record",
-  "name": "VacancyCreated",
+  "name": "VacancyOpened",
   "fields": [
     {
       "name": "id",
@@ -62,10 +62,6 @@
         "type": "int",
         "logicalType": "date"
       }
-    },
-    {
-      "name": "listed",
-      "type": "boolean"
     }
   ]
 }

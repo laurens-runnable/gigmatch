@@ -5,7 +5,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-class ChangeDeadline private constructor(
+class ChangeDeadlineCommand private constructor(
     @TargetAggregateIdentifier
     private val id: VacancyId,
     private val offset: DateOffset?,
@@ -23,8 +23,8 @@ class ChangeDeadline private constructor(
 
     companion object {
         fun shiftedBy(id: VacancyId, amount: Int, unit: ChronoUnit) =
-            ChangeDeadline(id, DateOffset(amount.toLong(), unit), null)
+            ChangeDeadlineCommand(id, DateOffset(amount.toLong(), unit), null)
 
-        fun toNewDate(id: VacancyId, date: LocalDate) = ChangeDeadline(id, null, date)
+        fun toNewDate(id: VacancyId, date: LocalDate) = ChangeDeadlineCommand(id, null, date)
     }
 }

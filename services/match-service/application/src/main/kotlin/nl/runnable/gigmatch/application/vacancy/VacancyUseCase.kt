@@ -8,14 +8,13 @@ import java.time.LocalDate
 
 interface VacancyUseCase {
 
-    class CreateVacancyParams(
+    class OpenVacancyParams(
         val id: VacancyId,
         val job: Job,
         val term: Term,
         val rate: Rate,
         val deadline: LocalDate,
-        val listed: Boolean,
     )
 
-    fun createVacancy(params: CreateVacancyParams)
+    fun openVacancy(params: OpenVacancyParams)
 }

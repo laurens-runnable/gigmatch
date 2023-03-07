@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 
-class CloseVacancyTest {
+class CloseVacancyCommandTest {
 
     private lateinit var fixture: AggregateTestFixture<Vacancy>
 
@@ -18,31 +18,31 @@ class CloseVacancyTest {
     }
 
     @Test
-    fun `for vacancy that is open`() {
+    fun `should be successful for vacancy that is open`() {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .whenever(CloseVacancy(id))
+            .whenever(CloseVacancyCommand(id))
             .expectSuccessfulHandlerExecution()
     }
 
     @Test
-    fun `for vacancy that is closed`() {
+    fun `should be unsuccessful for vacancy that is closed`() {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .andGiven(VacancyClosed())
-            .whenever(CloseVacancy(id))
+            .andGiven(VacancyClosedEvent())
+            .whenever(CloseVacancyCommand(id))
             .expectException(IllegalStateException::class.java)
     }
 
     @Test
-    fun `for vacancy that is cancelled`() {
+    fun `should be unsuccessful for vacancy that is cancelled`() {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .andGiven(VacancyCancelled())
-            .whenever(CloseVacancy(id))
+            .andGiven(VacancyCancelledEvent())
+            .whenever(CloseVacancyCommand(id))
             .expectException(IllegalStateException::class.java)
     }
 }

@@ -37,7 +37,6 @@ export const typeDefs = /* GraphQL */ `
     rateAmount: Int!
     rateType: RateType!
     deadline: Date!
-    listed: Boolean!
   }
 
   type Query {
@@ -55,7 +54,6 @@ export const typeDefs = /* GraphQL */ `
       rateAmount: Int!
       rateType: RateType!
       deadline: Date!
-      listed: Boolean!
     ): Vacancy
   }
 `

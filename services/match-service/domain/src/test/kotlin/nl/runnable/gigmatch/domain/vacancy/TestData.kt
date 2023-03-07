@@ -16,7 +16,5 @@ fun testRate() = Rate(100, Rate.Type.HOURLY)
 
 fun testDeadline(): LocalDate = testTerm().start.minusWeeks(2)
 
-fun testListed(): Boolean = false
-
 fun testVacancyCreated(id: VacancyId) =
-    VacancyCreated(id, testJob(), testTerm(), testRate(), testDeadline(), testListed())
+    VacancyOpenedEvent(id, testJob(), testTerm(), testRate(), testDeadline())

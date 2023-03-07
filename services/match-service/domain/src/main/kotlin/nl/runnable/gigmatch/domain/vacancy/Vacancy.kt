@@ -8,9 +8,7 @@ import org.axonframework.eventhandling.scheduling.ScheduleToken
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 /**
@@ -31,16 +29,10 @@ class Vacancy {
 
     private var deadlineScheduleToken: ScheduleToken? = null
 
-    private lateinit var listedAt: Instant
-
-    private var listed = false
-
-    private var listedAtScheduleToken: ScheduleToken? = null
-
-    private lateinit var status: VacancyStatus
+    private lateinit var status: Status
 
     @CommandHandler
-    private constructor(command: CreateVacancy, skillMustExist: SkillMustExistSpecification) {
+    private constructor(command: OpenVacancyCommand, skillMustExist: SkillMustExistSpecification) {
         for (skill in command.job.skills) {
             require(skillMustExist.isSatisfiedBy(skill)) {
                 "Skill not found $skill"
@@ -55,13 +47,12 @@ class Vacancy {
         }
 
         AggregateLifecycle.apply(
-            VacancyCreated(
+            VacancyOpenedEvent(
                 command.id,
                 command.job,
                 command.term,
                 command.rate,
                 command.deadline,
-                command.listed,
             ),
         )
     }
@@ -70,47 +61,46 @@ class Vacancy {
     private constructor()
 
     @EventSourcingHandler
-    private fun on(event: VacancyCreated, eventScheduler: EventScheduler) {
+    private fun on(event: VacancyOpenedEvent, eventScheduler: EventScheduler) {
         id = event.id
         job = event.job
         term = event.term
         rate = event.rate
         deadline = event.deadline
-        listed = event.listed
-        status = VacancyStatus.OPEN
+        status = Status.OPEN
 
         scheduleDeadlineIfLive(eventScheduler)
     }
 
     @CommandHandler
-    private fun handle(command: CloseVacancy) {
-        check(status == VacancyStatus.OPEN) {
+    private fun handle(command: CloseVacancyCommand) {
+        check(status == Status.OPEN) {
             "Vacancy status must be open"
         }
 
-        AggregateLifecycle.apply(VacancyClosed())
+        AggregateLifecycle.apply(VacancyClosedEvent())
     }
 
     @EventSourcingHandler
-    private fun on(event: VacancyClosed) {
-        status = VacancyStatus.CLOSED
+    private fun on(event: VacancyClosedEvent) {
+        status = Status.CLOSED
     }
 
     @CommandHandler
-    private fun handle(command: CancelVacancy) {
-        check(status == VacancyStatus.OPEN) { "Vacancy status must be open" }
+    private fun handle(command: CancelVacancyCommand) {
+        check(status == Status.OPEN) { "Vacancy status must be open" }
 
-        AggregateLifecycle.apply(VacancyCancelled())
+        AggregateLifecycle.apply(VacancyCancelledEvent())
     }
 
     @EventSourcingHandler
-    private fun on(event: VacancyCancelled) {
-        status = VacancyStatus.CANCELLED
+    private fun on(event: VacancyCancelledEvent) {
+        status = Status.CANCELLED
     }
 
     @CommandHandler
-    private fun handle(command: ChangeDeadline, scheduler: EventScheduler) {
-        check(status == VacancyStatus.OPEN) {
+    private fun handle(command: ChangeDeadlineCommand, scheduler: EventScheduler) {
+        check(status == Status.OPEN) {
             "Vacancy status must be open"
         }
 
@@ -119,46 +109,26 @@ class Vacancy {
             "New deadline must be after today"
         }
 
-        AggregateLifecycle.apply(DeadlineChanged(newDeadline))
+        AggregateLifecycle.apply(DeadlineChangedEvent(newDeadline))
     }
 
     @EventSourcingHandler
-    private fun on(event: DeadlineChanged, eventScheduler: EventScheduler) {
+    private fun on(event: DeadlineChangedEvent, eventScheduler: EventScheduler) {
         deadline = event.newDeadline
 
         scheduleDeadlineIfLive(eventScheduler)
     }
 
     @EventSourcingHandler
-    private fun on(event: DeadlineExpired) {
-        listed = true
-        status = VacancyStatus.EXPIRED
+    private fun on(event: DeadlineExpiredEvent) {
+        status = Status.EXPIRED
     }
 
     private fun scheduleDeadlineIfLive(eventScheduler: EventScheduler) {
         if (AggregateLifecycle.isLive()) {
             // Schedule at 06:00 in the morning
             val instant = deadline.toInstantAt(TimeOffset(6, ChronoUnit.HOURS))
-            deadlineScheduleToken = eventScheduler.schedule(instant, DeadlineExpired())
+            deadlineScheduleToken = eventScheduler.schedule(instant, DeadlineExpiredEvent())
         }
-    }
-
-    @CommandHandler
-    private fun handle(command: ScheduleVacancyListing) {
-        AggregateLifecycle.apply(VacancyListingScheduled(command.startListingAt))
-    }
-
-    @EventSourcingHandler
-    private fun on(event: VacancyListingScheduled, eventScheduler: EventScheduler) {
-        listedAt = event.newListedAt.toInstant(ZoneOffset.UTC)
-
-        if (AggregateLifecycle.isLive()) {
-            listedAtScheduleToken = eventScheduler.schedule(listedAt, VacancyListed())
-        }
-    }
-
-    @EventSourcingHandler
-    private fun on(event: VacancyListed) {
-        listed = true
     }
 }

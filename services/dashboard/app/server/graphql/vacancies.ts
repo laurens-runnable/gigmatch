@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'
 import { H3Event } from 'h3'
-import { CreateVacancy } from '~/server/avro/commands'
+import { OpenVacancy } from '~/server/avro/commands'
 import { createMatchServiceClient } from '~/server/lib/axios'
 import { getDb } from '~/server/lib/mongo'
 
@@ -25,7 +25,6 @@ export type CreateVacancyParams = {
   rateAmount: number
   rateType: string
   deadline: Date
-  listed: boolean
 }
 
 export async function createVacancy(
@@ -33,16 +32,8 @@ export async function createVacancy(
   event: H3Event
 ) {
   const id = randomUUID()
-  const {
-    jobTitle,
-    skillId,
-    start,
-    end,
-    rateAmount,
-    rateType,
-    deadline,
-    listed,
-  } = params
+  const { jobTitle, skillId, start, end, rateAmount, rateType, deadline } =
+    params
   const value = {
     id,
     jobTitle,
@@ -52,14 +43,13 @@ export async function createVacancy(
     rateAmount,
     rateType,
     deadline,
-    listed,
   }
-  const body = CreateVacancy.toBuffer(value)
+  const body = OpenVacancy.toBuffer(value)
 
   const client = await createMatchServiceClient(event)
   await client.post('/api/v1/commands', body, {
     headers: {
-      'X-gm.type': CreateVacancy.name,
+      'X-gm.type': OpenVacancy.name,
     },
   })
 

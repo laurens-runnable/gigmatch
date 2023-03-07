@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 
-class CancelVacancyTest {
+class CancelVacancyCommandTest {
 
     private lateinit var fixture: AggregateTestFixture<Vacancy>
 
@@ -22,7 +22,7 @@ class CancelVacancyTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .whenever(CancelVacancy(id))
+            .whenever(CancelVacancyCommand(id))
             .expectSuccessfulHandlerExecution()
     }
 
@@ -31,8 +31,8 @@ class CancelVacancyTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .andGiven(VacancyClosed())
-            .whenever(CancelVacancy(id))
+            .andGiven(VacancyClosedEvent())
+            .whenever(CancelVacancyCommand(id))
             .expectException(IllegalStateException::class.java)
     }
 
@@ -41,8 +41,8 @@ class CancelVacancyTest {
         val id = VacancyId.generateRandom()
         fixture
             .given(testVacancyCreated(id))
-            .andGiven(VacancyCancelled())
-            .whenever(CancelVacancy(id))
+            .andGiven(VacancyCancelledEvent())
+            .whenever(CancelVacancyCommand(id))
             .expectException(IllegalStateException::class.java)
     }
 }

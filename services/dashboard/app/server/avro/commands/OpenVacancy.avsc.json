@@ -1,7 +1,7 @@
 {
   "namespace": "nl.runnable.gigmatch.commands",
   "type": "record",
-  "name": "CreateVacancy",
+  "name": "OpenVacancy",
   "javaAnnotation": "jakarta.annotation.security.RolesAllowed(\"recruiter\")",
   "fields": [
     {
@@ -60,10 +60,6 @@
         "type": "int",
         "logicalType": "date"
       }
-    },
-    {
-      "name": "listed",
-      "type": "boolean"
     }
   ]
 }

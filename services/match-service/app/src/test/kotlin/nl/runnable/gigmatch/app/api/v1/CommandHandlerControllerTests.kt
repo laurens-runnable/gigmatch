@@ -4,13 +4,12 @@ import nl.runnable.gigmatch.app.AVRO_MEDIA_TYPE
 import nl.runnable.gigmatch.app.receiveEvent
 import nl.runnable.gigmatch.app.testset.SkillTestSet
 import nl.runnable.gigmatch.app.toByteArray
-import nl.runnable.gigmatch.commands.CreateVacancy
+import nl.runnable.gigmatch.commands.OpenVacancy
 import nl.runnable.gigmatch.commands.RateType
 import nl.runnable.gigmatch.commands.TestCommand
 import nl.runnable.gigmatch.commands.toEventCounterpart
-import nl.runnable.gigmatch.events.VacancyCreated
+import nl.runnable.gigmatch.events.VacancyOpened
 import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldBeTrue
 import org.amshove.kluent.shouldContain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -48,10 +47,8 @@ class CommandHandlerControllerTests {
 
         private fun testDeadline() = testStart().minusWeeks(2)
 
-        private fun testListed() = false
-
-        private fun testCreateVacancy(): CreateVacancy {
-            return CreateVacancy(
+        private fun testOpenVacancy(): OpenVacancy {
+            return OpenVacancy(
                 testVacancyId(),
                 testJobTitle(),
                 testSkillId(),
@@ -60,7 +57,6 @@ class CommandHandlerControllerTests {
                 testRateAmount(),
                 testRateType(),
                 testDeadline(),
-                testListed(),
             )
         }
     }
@@ -94,7 +90,7 @@ class CommandHandlerControllerTests {
     }
 
     @Test
-    fun `should return 202 Accepted and result in VacancyCreated event`() {
+    fun `should return 202 Accepted and result in VacancyOpened event`() {
         val vacancyId = testVacancyId()
         val jobTitle = testJobTitle()
         val skillId = testSkillId()
@@ -107,7 +103,7 @@ class CommandHandlerControllerTests {
         useRecruiterAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = CreateVacancy(vacancyId, jobTitle, skillId, start, end, rateAmount, rateType, deadline, true)
+            val command = OpenVacancy(vacancyId, jobTitle, skillId, start, end, rateAmount, rateType, deadline)
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -115,7 +111,7 @@ class CommandHandlerControllerTests {
             status { isAccepted() }
         }
 
-        val event = outputDestination.receiveEvent(VacancyCreated::class.java, "match-events")
+        val event = outputDestination.receiveEvent(VacancyOpened::class.java, "match-events")
         event.id.shouldBeEqualTo(vacancyId)
         event.jobTitle.shouldBeEqualTo(jobTitle)
         event.skills.size.shouldBeEqualTo(1)
@@ -125,7 +121,6 @@ class CommandHandlerControllerTests {
         event.rateAmount.shouldBeEqualTo(rateAmount)
         event.rateType.shouldBeEqualTo(rateType.toEventCounterpart())
         event.deadline.shouldBeEqualTo(deadline)
-        event.listed.shouldBeTrue()
     }
 
     @Test
@@ -135,7 +130,7 @@ class CommandHandlerControllerTests {
         mockMvc.post("/api/v1/commands") {
             val invalidSkillId = UUID.randomUUID()
             val command =
-                CreateVacancy(
+                OpenVacancy(
                     testVacancyId(),
                     testJobTitle(),
                     invalidSkillId,
@@ -144,7 +139,6 @@ class CommandHandlerControllerTests {
                     testRateAmount(),
                     testRateType(),
                     testDeadline(),
-                    testListed(),
                 )
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
@@ -159,7 +153,7 @@ class CommandHandlerControllerTests {
         useNoAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = testCreateVacancy()
+            val command = testOpenVacancy()
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -173,7 +167,7 @@ class CommandHandlerControllerTests {
         useCandidateAuthentication()
 
         mockMvc.post("/api/v1/commands") {
-            val command = testCreateVacancy()
+            val command = testOpenVacancy()
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -214,7 +208,7 @@ class CommandHandlerControllerTests {
 
         mockMvc.post("/api/v1/commands") {
             contentType = AVRO_MEDIA_TYPE
-            header("X-gm.type", CreateVacancy::class.java.name)
+            header("X-gm.type", OpenVacancy::class.java.name)
             content = ByteArray(4)
         }.andExpect {
             status { isBadRequest() }

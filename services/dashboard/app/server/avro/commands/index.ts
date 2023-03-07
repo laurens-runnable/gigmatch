@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/default
 import avsc from 'avsc'
-import CreateVacancySchema from './CreateVacancy.avsc.json'
+import OpenVacancySchema from './OpenVacancy.avsc.json'
 
 // eslint-disable-next-line import/no-named-as-default-member
 const { Type, types } = avsc
@@ -12,6 +12,6 @@ class LogicalDateType extends types.LogicalType {
 }
 
 // @ts-ignore
-export const CreateVacancy = Type.forSchema(CreateVacancySchema, {
+export const OpenVacancy = Type.forSchema(OpenVacancySchema, {
   logicalTypes: { date: LogicalDateType },
 })

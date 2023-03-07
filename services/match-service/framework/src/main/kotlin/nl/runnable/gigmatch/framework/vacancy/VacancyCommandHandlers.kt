@@ -1,7 +1,7 @@
 package nl.runnable.gigmatch.framework.vacancy
 
 import nl.runnable.gigmatch.application.vacancy.VacancyUseCase
-import nl.runnable.gigmatch.commands.CreateVacancy
+import nl.runnable.gigmatch.commands.OpenVacancy
 import nl.runnable.gigmatch.commands.toDomainCounterpart
 import nl.runnable.gigmatch.domain.vacancy.Job
 import nl.runnable.gigmatch.domain.vacancy.Rate
@@ -15,20 +15,17 @@ import java.util.function.Consumer
 
 @Configuration
 internal class VacancyCommandHandlers {
-    @Bean("nl.runnable.gigmatch.commands.CreateVacancy$COMMAND_HANDLER_SUFFIX")
-    fun createVacancy(useCase: VacancyUseCase) = Consumer<CreateVacancy> { command ->
-        with(command) {
-            useCase.createVacancy(command.toDomainParams())
-        }
+    @Bean("nl.runnable.gigmatch.commands.OpenVacancy$COMMAND_HANDLER_SUFFIX")
+    fun handleOpenVacancy(useCase: VacancyUseCase) = Consumer<OpenVacancy> { command ->
+        useCase.openVacancy(command.toDomainParams())
     }
 }
 
-private fun CreateVacancy.toDomainParams() =
-    VacancyUseCase.CreateVacancyParams(
+private fun OpenVacancy.toDomainParams() =
+    VacancyUseCase.OpenVacancyParams(
         VacancyId(id),
         Job(jobTitle, setOf(SkillId(skillId))),
         Term(start, end),
         Rate(rateAmount, rateType.toDomainCounterpart()),
         deadline,
-        listed,
     )

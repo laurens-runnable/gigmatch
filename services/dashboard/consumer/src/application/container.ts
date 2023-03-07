@@ -27,7 +27,7 @@ import {
   TestSetupCompletedType,
   TestSetupStartedType,
   VacanciesResetType,
-  VacancyCreatedType,
+  VacancyOpenedType,
 } from './events/avsc'
 import {
   ContainerEventHandlerRegistry,
@@ -90,7 +90,7 @@ export function createContainer(config: Config): Container {
     .bind<EventHandler>(VacanciesResetType.name as string)
     .to(VacanciesResetHandler)
   container
-    .bind<EventHandler>(VacancyCreatedType.name as string)
+    .bind<EventHandler>(VacancyOpenedType.name as string)
     .to(VacancyCreatedHandler)
 
   if (config.testSynchronization.isEnabled) {

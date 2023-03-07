@@ -4,13 +4,13 @@ using SolTechnology.Avro;
 
 namespace Gigmatch.Website.Consumer.Events;
 
-internal class VacancyCreatedHandler : IEventHandler
+internal class VacancyOpenedHandler : IEventHandler
 {
-    private readonly ILogger<VacancyCreatedHandler> _logger;
+    private readonly ILogger<VacancyOpenedHandler> _logger;
 
     private readonly IVacancyRepository _vacancyRepository;
 
-    public VacancyCreatedHandler(ILogger<VacancyCreatedHandler> logger, IVacancyRepository _vacancyRepository)
+    public VacancyOpenedHandler(ILogger<VacancyOpenedHandler> logger, IVacancyRepository _vacancyRepository)
     {
         _logger = logger;
         this._vacancyRepository = _vacancyRepository;
@@ -18,7 +18,7 @@ internal class VacancyCreatedHandler : IEventHandler
 
     public Task HandleEventAsync(byte[] data)
     {
-        var ev = AvroConvert.DeserializeHeadless<VacancyCreated>(data);
+        var ev = AvroConvert.DeserializeHeadless<VacancyOpened>(data);
 
         var vacancy = ev.ToVacancy();
         _logger.LogDebug("Saving vacancy {id}", vacancy.Id);
@@ -26,9 +26,9 @@ internal class VacancyCreatedHandler : IEventHandler
     }
 }
 
-file static class VacancyCreatedExtensions
+file static class VacancyOpenedExtensions
 {
-    internal static Vacancy ToVacancy(this VacancyCreated ev) =>
+    internal static Vacancy ToVacancy(this VacancyOpened ev) =>
         new()
         {
             Id = ev.id,

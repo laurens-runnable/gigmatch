@@ -3,7 +3,7 @@ import SkillDeletedSchema from './SkillDeleted.avsc.json'
 import TestSetupCompletedSchema from './TestSetupCompleted.avsc.json'
 import TestSetupStartedSchema from './TestSetupStarted.avsc.json'
 import VacanciesResetSchema from './VacanciesReset.avsc.json'
-import VacancyCreatedSchema from './VacancyCreated.avsc.json'
+import VacancyOpenedSchema from './VacancyOpened.avsc.json'
 import { type EventDeserializer } from './index'
 import { type Schema, Type, types } from 'avsc'
 import { injectable } from 'inversify'
@@ -15,8 +15,8 @@ class LogicalDateType extends types.LogicalType {
 }
 
 export const VacanciesResetType = Type.forSchema(VacanciesResetSchema as Schema)
-export const VacancyCreatedType = Type.forSchema(
-  VacancyCreatedSchema as Schema,
+export const VacancyOpenedType = Type.forSchema(
+  VacancyOpenedSchema as Schema,
   { logicalTypes: { date: LogicalDateType } }
 )
 export const SkillCreatedOrUpdatedType = Type.forSchema(
@@ -37,7 +37,7 @@ export class AsvcEventDeserializer implements EventDeserializer {
   constructor() {
     this._typesByName = {
       [VacanciesResetType.name as string]: VacanciesResetType,
-      [VacancyCreatedType.name as string]: VacancyCreatedType,
+      [VacancyOpenedType.name as string]: VacancyOpenedType,
       [SkillCreatedOrUpdatedType.name as string]: SkillCreatedOrUpdatedType,
       [SkillDeletedType.name as string]: SkillDeletedType,
       [TestSetupStartedType.name as string]: TestSetupStartedType,

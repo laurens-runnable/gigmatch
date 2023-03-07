@@ -1,5 +1,5 @@
 package nl.runnable.gigmatch.domain.vacancy
 
-enum class VacancyStatus {
+enum class Status {
     OPEN, CLOSED, CANCELLED, EXPIRED
 }

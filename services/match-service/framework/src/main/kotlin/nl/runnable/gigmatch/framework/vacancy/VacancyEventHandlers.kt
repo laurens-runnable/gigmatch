@@ -7,8 +7,8 @@ import org.axonframework.eventhandling.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.stream.function.StreamBridge
 import org.springframework.stereotype.Component
-import nl.runnable.gigmatch.domain.vacancy.VacancyCreated as VacancyCreatedDomainEvent
-import nl.runnable.gigmatch.events.VacancyCreated as VacancyCreatedSystemEvent
+import nl.runnable.gigmatch.domain.vacancy.VacancyOpenedEvent as VacancyCreatedDomainEvent
+import nl.runnable.gigmatch.events.VacancyOpened as VacancyOpenedSystemEvent
 
 @Component
 internal class VacancyEventHandlers {
@@ -21,7 +21,7 @@ internal class VacancyEventHandlers {
         streamBridge.send(
             MATCH_EVENTS,
             TypedMessage(
-                VacancyCreatedSystemEvent(
+                VacancyOpenedSystemEvent(
                     event.id.toUUID(),
                     event.job.title,
                     event.job.skills.map { it.toUUID() }.toList(),
@@ -30,7 +30,6 @@ internal class VacancyEventHandlers {
                     event.rate.amount,
                     event.rate.type.toFrameworkCounterpart(),
                     event.deadline,
-                    event.listed,
                 ),
             ),
         )

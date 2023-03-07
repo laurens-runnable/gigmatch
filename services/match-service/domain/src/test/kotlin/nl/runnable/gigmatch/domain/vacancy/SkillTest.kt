@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.amshove.kluent.invoking
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.Test
+import java.lang.IllegalArgumentException
 
 class SkillTest {
     @Test
@@ -22,13 +24,13 @@ class SkillTest {
     fun `cannot be instantiated with an empty name`() {
         invoking {
             Skill(SkillId.generateRandom(), "", "test")
-        }
+        } shouldThrow IllegalArgumentException::class
     }
 
     @Test
     fun `cannot be instantiated with an empty slug`() {
         invoking {
             Skill(SkillId.generateRandom(), "Test", "")
-        }
+        } shouldThrow IllegalArgumentException::class
     }
 }

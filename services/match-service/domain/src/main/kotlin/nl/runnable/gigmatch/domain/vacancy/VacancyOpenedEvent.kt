@@ -3,7 +3,7 @@ package nl.runnable.gigmatch.domain.vacancy
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
-class VacancyCreated(
+class VacancyOpenedEvent(
     @JsonProperty("id")
     val id: VacancyId,
     @JsonProperty("job")
@@ -14,6 +14,4 @@ class VacancyCreated(
     val rate: Rate,
     @JsonProperty("deadline")
     val deadline: LocalDate,
-    @JsonProperty("listed")
-    val listed: Boolean,
 )

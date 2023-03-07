@@ -1,6 +1,6 @@
 package nl.runnable.gigmatch.application.vacancy
 
-import nl.runnable.gigmatch.domain.vacancy.CreateVacancy
+import nl.runnable.gigmatch.domain.vacancy.OpenVacancyCommand
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -10,9 +10,9 @@ class VacancyInputPort : VacancyUseCase {
     @Autowired
     private lateinit var outputPort: VacancyOutputPort
 
-    override fun createVacancy(params: VacancyUseCase.CreateVacancyParams) {
+    override fun openVacancy(params: VacancyUseCase.OpenVacancyParams) {
         outputPort.send(params.toCommand())
     }
 }
 
-private fun VacancyUseCase.CreateVacancyParams.toCommand() = CreateVacancy(id, job, term, rate, deadline, listed)
+private fun VacancyUseCase.OpenVacancyParams.toCommand() = OpenVacancyCommand(id, job, term, rate, deadline)

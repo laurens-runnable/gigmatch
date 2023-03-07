@@ -1,8 +1,8 @@
 package nl.runnable.gigmatch.application.vacancy
 
-import nl.runnable.gigmatch.domain.vacancy.CreateVacancy
+import nl.runnable.gigmatch.domain.vacancy.OpenVacancyCommand
 
 interface VacancyOutputPort {
 
-    fun send(command: CreateVacancy)
+    fun send(command: OpenVacancyCommand)
 }

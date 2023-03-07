@@ -2,7 +2,7 @@ package nl.runnable.gigmatch.app.testset
 
 import nl.runnable.gigmatch.app.receiveEvent
 import nl.runnable.gigmatch.events.RateType
-import nl.runnable.gigmatch.events.VacancyCreated
+import nl.runnable.gigmatch.events.VacancyOpened
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContain
 import org.junit.jupiter.api.Test
@@ -26,11 +26,11 @@ class VacancyTestSetTest {
     private lateinit var outputDestination: OutputDestination
 
     @Test
-    fun `reset() should generate VacancyCreated event`() {
+    fun `reset() should generate VacancyOpened event`() {
         skillTestSet.reset()
         vacancyTestSet.reset()
 
-        val event = outputDestination.receiveEvent(VacancyCreated::class.java, "match-events")
+        val event = outputDestination.receiveEvent(VacancyOpened::class.java, "match-events")
         event.id.shouldBeEqualTo(UUID.fromString("d3a02f50-e0be-4bbd-bc82-eec4ca8453a4"))
         event.jobTitle.shouldBeEqualTo("Java developer")
         event.skills.size.shouldBeEqualTo(1)

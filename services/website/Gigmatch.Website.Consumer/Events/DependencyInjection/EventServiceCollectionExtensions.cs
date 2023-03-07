@@ -8,7 +8,7 @@ internal static class EventServiceCollectionExtensions
     {
         services.AddSingleton<SkillCreatedOrUpdatedHandler>();
         services.AddSingleton<SkillDeletedHandler>();
-        services.AddSingleton<VacancyCreatedHandler>();
+        services.AddSingleton<VacancyOpenedHandler>();
         services.AddSingleton<VacanciesResetHandler>();
 
         services.AddSingleton<EventHandlerResolver>(s => avroType =>
@@ -18,7 +18,7 @@ internal static class EventServiceCollectionExtensions
             {
                 nameof(SkillCreatedOrUpdated) => s.GetRequiredService<SkillCreatedOrUpdatedHandler>(),
                 nameof(SkillDeleted) => s.GetRequiredService<SkillDeletedHandler>(),
-                nameof(VacancyCreated) => s.GetRequiredService<VacancyCreatedHandler>(),
+                nameof(VacancyOpened) => s.GetRequiredService<VacancyOpenedHandler>(),
                 nameof(VacanciesReset) => s.GetRequiredService<VacanciesResetHandler>(),
                 _ => null
             };
