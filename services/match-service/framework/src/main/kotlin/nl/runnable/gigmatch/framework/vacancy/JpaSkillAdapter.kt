@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.framework.genre
+package nl.runnable.gigmatch.framework.vacancy
 
 import nl.runnable.gigmatch.application.vacancy.SkillOutputPort
 import nl.runnable.gigmatch.domain.vacancy.Skill

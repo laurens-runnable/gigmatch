@@ -40,7 +40,7 @@ class OpenVacancyCommandTest {
             .whenever(
                 OpenVacancyCommand(
                     VacancyId.generateRandom(),
-                    Job("Test", setOf(testSkill())),
+                    Job("Test", setOf(testExperience())),
                     testTerm(),
                     testRate(),
                     testDeadline(),
@@ -60,7 +60,7 @@ class OpenVacancyCommandTest {
             .whenever(
                 OpenVacancyCommand(
                     VacancyId.generateRandom(),
-                    Job("Test", setOf(invalidSkill)),
+                    Job("Test", setOf(Experience(invalidSkill, Experience.Level.MEDIOR))),
                     testTerm(),
                     testRate(),
                     testDeadline(),
@@ -78,7 +78,7 @@ class OpenVacancyCommandTest {
             .whenever(
                 OpenVacancyCommand(
                     VacancyId.generateRandom(),
-                    Job("Test", setOf(testSkill())),
+                    Job("Test", setOf(testExperience())),
                     testTerm(),
                     testRate(),
                     invalidDeadline,
@@ -96,7 +96,7 @@ class OpenVacancyCommandTest {
             .whenever(
                 OpenVacancyCommand(
                     VacancyId.generateRandom(),
-                    Job("Test", setOf(testSkill())),
+                    Job("Test", setOf(testExperience())),
                     testTerm(),
                     testRate(),
                     invalidDeadline,

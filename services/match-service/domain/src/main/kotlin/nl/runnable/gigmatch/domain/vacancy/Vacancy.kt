@@ -33,9 +33,9 @@ class Vacancy {
 
     @CommandHandler
     private constructor(command: OpenVacancyCommand, skillMustExist: SkillMustExistSpecification) {
-        for (skill in command.job.skills) {
-            require(skillMustExist.isSatisfiedBy(skill)) {
-                "Skill not found $skill"
+        for (skillId in command.job.experience.map { it.skillId }) {
+            require(skillMustExist.isSatisfiedBy(skillId)) {
+                "Skill not found $skillId"
             }
         }
 

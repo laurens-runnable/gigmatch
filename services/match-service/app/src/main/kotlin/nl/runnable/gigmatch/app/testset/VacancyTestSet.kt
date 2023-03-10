@@ -3,6 +3,7 @@ package nl.runnable.gigmatch.app.testset
 import com.opencsv.bean.CsvToBeanBuilder
 import nl.runnable.gigmatch.application.vacancy.VacancyUseCase
 import nl.runnable.gigmatch.commands.toDomainCounterpart
+import nl.runnable.gigmatch.domain.vacancy.Experience
 import nl.runnable.gigmatch.domain.vacancy.Job
 import nl.runnable.gigmatch.domain.vacancy.Rate
 import nl.runnable.gigmatch.domain.vacancy.SkillId
@@ -53,7 +54,7 @@ class VacancyTestSet {
             val deadline = start.minusWeeks(it.deadlineWeeksBefore)
             VacancyUseCase.OpenVacancyParams(
                 VacancyId(it.id),
-                Job(it.jobTitle, setOf(SkillId(it.skillId))),
+                Job(it.jobTitle, setOf(Experience(SkillId(it.skillId), it.experienceLevel))),
                 Term(start, end),
                 Rate(it.rateAmount, it.rateType.toDomainCounterpart()),
                 deadline,

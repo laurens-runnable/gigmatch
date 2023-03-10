@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.framework.genre
+package nl.runnable.gigmatch.framework.vacancy
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

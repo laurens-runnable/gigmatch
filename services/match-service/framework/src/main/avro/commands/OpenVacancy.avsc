@@ -16,10 +16,32 @@
       "type": "string"
     },
     {
-      "name": "skillId",
+      "name": "experience",
       "type": {
-        "type": "string",
-        "logicalType": "uuid"
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Experience",
+          "fields": [
+            {
+              "name": "skillId",
+              "type": "string",
+              "logicalType": "uuid"
+            },
+            {
+              "name": "level",
+              "type": {
+                "type": "enum",
+                "name": "ExperienceLevel",
+                "symbols": [
+                  "JUNIOR",
+                  "MEDIOR",
+                  "SENIOR"
+                ]
+              }
+            }
+          ]
+        }
       }
     },
     {

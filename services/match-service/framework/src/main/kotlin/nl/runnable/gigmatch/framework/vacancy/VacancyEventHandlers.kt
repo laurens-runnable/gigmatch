@@ -24,7 +24,7 @@ internal class VacancyEventHandlers {
                 VacancyOpenedSystemEvent(
                     event.id.toUUID(),
                     event.job.title,
-                    event.job.skills.map { it.toUUID() }.toList(),
+                    event.job.experience.map { it.toFrameworkCounterpart() }.toList(),
                     event.term.start,
                     event.term.end,
                     event.rate.amount,

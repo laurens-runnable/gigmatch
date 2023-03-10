@@ -5,7 +5,9 @@ import java.util.*
 
 fun testSkill() = SkillId(UUID.fromString("23134f5f-f865-4a98-995d-9368e1869aa7"))
 
-fun testJob() = Job("Kotlin developer", setOf(testSkill()))
+fun testExperience() = Experience(testSkill(), Experience.Level.MEDIOR)
+
+fun testJob() = Job("Kotlin developer", setOf(testExperience()))
 
 fun testTerm(): Term {
     val start = LocalDate.now().plusMonths(2).withDayOfMonth(1)

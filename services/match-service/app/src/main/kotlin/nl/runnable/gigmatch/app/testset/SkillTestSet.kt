@@ -1,8 +1,8 @@
 package nl.runnable.gigmatch.app.testset
 
 import com.opencsv.bean.CsvToBeanBuilder
-import nl.runnable.gigmatch.framework.genre.SkillEntity
-import nl.runnable.gigmatch.framework.genre.SkillEntityRepository
+import nl.runnable.gigmatch.framework.vacancy.SkillEntity
+import nl.runnable.gigmatch.framework.vacancy.SkillEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource

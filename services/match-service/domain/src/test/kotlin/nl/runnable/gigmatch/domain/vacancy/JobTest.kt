@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 class JobTest {
     @Test
     fun `supports JSON serialization`() {
-        val job = Job("Java developer", setOf(SkillId.generateRandom()))
+        val job = Job("Java developer", setOf(Experience(SkillId.generateRandom(), Experience.Level.MEDIOR)))
         val objectMapper = ObjectMapper()
 
         val json = objectMapper.writeValueAsString(job)

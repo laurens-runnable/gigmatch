@@ -123,6 +123,8 @@ export class KafkaEventStore implements EventStore {
 
   async disconnect(): Promise<void> {
     if (this._consumer != null) {
+      const { topic } = this._config
+      this._logger.info("Unsubscribing from topic '%s'", topic)
       await this._consumer.stop()
       await this._consumer.disconnect()
       this._consumer = null

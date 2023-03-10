@@ -4,13 +4,14 @@ import nl.runnable.gigmatch.app.AVRO_MEDIA_TYPE
 import nl.runnable.gigmatch.app.receiveEvent
 import nl.runnable.gigmatch.app.testset.SkillTestSet
 import nl.runnable.gigmatch.app.toByteArray
+import nl.runnable.gigmatch.commands.Experience
+import nl.runnable.gigmatch.commands.ExperienceLevel
 import nl.runnable.gigmatch.commands.OpenVacancy
 import nl.runnable.gigmatch.commands.RateType
 import nl.runnable.gigmatch.commands.TestCommand
 import nl.runnable.gigmatch.commands.toEventCounterpart
 import nl.runnable.gigmatch.events.VacancyOpened
 import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldContain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +36,7 @@ class CommandHandlerControllerTests {
 
         private fun testJobTitle() = "Test engineer"
 
-        private fun testSkillId() = UUID.fromString("2baaef78-eb31-4f82-a1c4-883bda3a50ff")
+        private fun testExperience() = Experience("2baaef78-eb31-4f82-a1c4-883bda3a50ff", ExperienceLevel.SENIOR)
 
         private fun testStart() = LocalDate.now().plusMonths(2).withDayOfMonth(1)
 
@@ -51,7 +52,7 @@ class CommandHandlerControllerTests {
             return OpenVacancy(
                 testVacancyId(),
                 testJobTitle(),
-                testSkillId(),
+                listOf(testExperience()),
                 testStart(),
                 testEnd(),
                 testRateAmount(),
@@ -93,7 +94,6 @@ class CommandHandlerControllerTests {
     fun `should return 202 Accepted and result in VacancyOpened event`() {
         val vacancyId = testVacancyId()
         val jobTitle = testJobTitle()
-        val skillId = testSkillId()
         val start = testStart()
         val end = testEnd()
         val rateAmount = testRateAmount()
@@ -102,8 +102,10 @@ class CommandHandlerControllerTests {
 
         useRecruiterAuthentication()
 
+        val experience = testExperience()
         mockMvc.post("/api/v1/commands") {
-            val command = OpenVacancy(vacancyId, jobTitle, skillId, start, end, rateAmount, rateType, deadline)
+            val command =
+                OpenVacancy(vacancyId, jobTitle, listOf(experience), start, end, rateAmount, rateType, deadline)
             contentType = AVRO_MEDIA_TYPE
             header("X-gm.type", command.javaClass.name)
             content = command.toByteArray()
@@ -112,15 +114,15 @@ class CommandHandlerControllerTests {
         }
 
         val event = outputDestination.receiveEvent(VacancyOpened::class.java, "match-events")
-        event.id.shouldBeEqualTo(vacancyId)
-        event.jobTitle.shouldBeEqualTo(jobTitle)
-        event.skills.size.shouldBeEqualTo(1)
-        event.skills.shouldContain(skillId.toString()) // List contains String instance, rather than UUID
-        event.start.shouldBeEqualTo(start)
-        event.end.shouldBeEqualTo(end)
-        event.rateAmount.shouldBeEqualTo(rateAmount)
-        event.rateType.shouldBeEqualTo(rateType.toEventCounterpart())
-        event.deadline.shouldBeEqualTo(deadline)
+        event.id shouldBeEqualTo vacancyId
+        event.jobTitle shouldBeEqualTo jobTitle
+        event.experience.size shouldBeEqualTo 1
+        event.experience.first().skillId shouldBeEqualTo experience.skillId
+        event.start shouldBeEqualTo start
+        event.end shouldBeEqualTo end
+        event.rateAmount shouldBeEqualTo rateAmount
+        event.rateType shouldBeEqualTo rateType.toEventCounterpart()
+        event.deadline shouldBeEqualTo deadline
     }
 
     @Test
@@ -133,7 +135,7 @@ class CommandHandlerControllerTests {
                 OpenVacancy(
                     testVacancyId(),
                     testJobTitle(),
-                    invalidSkillId,
+                    listOf(Experience(invalidSkillId.toString(), ExperienceLevel.SENIOR)),
                     testStart(),
                     testEnd(),
                     testRateAmount(),

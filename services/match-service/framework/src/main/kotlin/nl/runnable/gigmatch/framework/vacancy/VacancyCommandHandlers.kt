@@ -5,7 +5,6 @@ import nl.runnable.gigmatch.commands.OpenVacancy
 import nl.runnable.gigmatch.commands.toDomainCounterpart
 import nl.runnable.gigmatch.domain.vacancy.Job
 import nl.runnable.gigmatch.domain.vacancy.Rate
-import nl.runnable.gigmatch.domain.vacancy.SkillId
 import nl.runnable.gigmatch.domain.vacancy.Term
 import nl.runnable.gigmatch.domain.vacancy.VacancyId
 import nl.runnable.gigmatch.framework.COMMAND_HANDLER_SUFFIX
@@ -24,7 +23,7 @@ internal class VacancyCommandHandlers {
 private fun OpenVacancy.toDomainParams() =
     VacancyUseCase.OpenVacancyParams(
         VacancyId(id),
-        Job(jobTitle, setOf(SkillId(skillId))),
+        Job(jobTitle, experience.map { it.toDomainCounterpart() }.toSet()),
         Term(start, end),
         Rate(rateAmount, rateType.toDomainCounterpart()),
         deadline,

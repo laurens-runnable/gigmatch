@@ -21,9 +21,18 @@ function handleLifecycleError(err: Error): void {
 
 application.startup().then(monitorApplication).catch(handleLifecycleError)
 
-process.on('SIGINT', () => {
+const shutdownApplication = (): void => {
   application
     .shutdown()
-    .then(() => {})
+    .then(() => {
+    })
     .catch(handleLifecycleError)
-})
+}
+
+if (process.env.TS_NODE_DEV === 'true') {
+  // Listen for SIGTERM when running under ts-node-dev
+  process.on('SIGTERM', shutdownApplication)
+} else {
+  // Otherwise listen for SIGINT
+  process.on('SIGINT', shutdownApplication)
+}
