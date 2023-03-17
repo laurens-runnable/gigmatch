@@ -44,6 +44,7 @@ achieve this.
 
 1. Tests signal the start and completion of their setup by sending commands to `match-service`. These commands result in
    `TestSetupStarted` and `TestSetupCompleted` events respectively.
-2. In response to these events, `dashboard-consumer` updates a dedicated synchronization table. (Which happens to be a
-   MongoDB collection.)
-3. The test then polls the synchronization table for setup completion, throwing an exception in case of a timeout.
+2. In response to these events, `dashboard-consumer` and `website-consumer` update their respective synchronization
+   tables. (These synchronization tables are MongoDB and Elasticsearch collections.)
+3. The test then polls the respective synchronization table for setup completion, throwing an exception in case of a
+   timeout.

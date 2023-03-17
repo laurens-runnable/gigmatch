@@ -10,7 +10,7 @@ npm run dev
 # Build
 npm run build
 
-# Run, with test synchronization enabled (see below)
+# Run, with test synchronization enabled
 npm run start-e2e
 
 # Format code (using Prettier)
@@ -21,16 +21,6 @@ npm run lint
 
 # Build Docker image
 ./bin/build-image.sh
-```
-
-## Configuration
-
-See [config.ts](./src/config.ts) for the environment variables and their defaults.
-
-[Test synchronization](../../e2e-tests/README.md#test-synchronization) should be enabled when running end-to-end tests:
-
-```
-GIGMATCH_TEST_SYNCHRONIZATION=true
 ```
 
 ## Actuator endpoints

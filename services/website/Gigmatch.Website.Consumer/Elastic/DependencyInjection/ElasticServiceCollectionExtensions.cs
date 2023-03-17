@@ -16,6 +16,7 @@ internal static class ElasticServiceCollectionExtensions
         });
         services.AddSingleton<ISkillRepository, ElasticSkillRepository>();
         services.AddSingleton<IVacancyRepository, ElasticVacancyRepository>();
+        services.AddSingleton<ITestSetupSynchronization, ElasticTestSetupSynchronization>();
         return services;
     }
 }

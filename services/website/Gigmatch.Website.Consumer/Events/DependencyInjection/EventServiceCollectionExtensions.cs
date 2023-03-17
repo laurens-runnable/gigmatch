@@ -10,6 +10,8 @@ internal static class EventServiceCollectionExtensions
         services.AddSingleton<SkillDeletedHandler>();
         services.AddSingleton<VacancyOpenedHandler>();
         services.AddSingleton<VacanciesResetHandler>();
+        services.AddSingleton<TestSetupStartedHandler>();
+        services.AddSingleton<TestSetupCompletedHandler>();
 
         services.AddSingleton<EventHandlerResolver>(s => avroType =>
         {
@@ -20,6 +22,8 @@ internal static class EventServiceCollectionExtensions
                 nameof(SkillDeleted) => s.GetRequiredService<SkillDeletedHandler>(),
                 nameof(VacancyOpened) => s.GetRequiredService<VacancyOpenedHandler>(),
                 nameof(VacanciesReset) => s.GetRequiredService<VacanciesResetHandler>(),
+                nameof(TestSetupStarted) => s.GetRequiredService<TestSetupStartedHandler>(),
+                nameof(TestSetupCompleted) => s.GetRequiredService<TestSetupCompletedHandler>(),
                 _ => null
             };
         });

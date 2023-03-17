@@ -1,36 +1,19 @@
+import { Client } from '@elastic/elasticsearch'
 import { type APIRequestContext, expect } from '@playwright/test'
-import { type Db, MongoClient } from 'mongodb'
 import { v4 as uuidv4 } from 'uuid'
 
-interface MongoConfig {
-  readonly url: string
-  readonly username: string
-  readonly password: string
-  readonly database: string
-}
-
-let _db: any
-
-async function getMongoDb({
-  url,
-  username,
-  password,
-  database,
-}: MongoConfig): Promise<Db> {
-  if (_db === undefined) {
-    url = url.replace(
-      /^mongodb:\/\/(.+)$/,
-      `mongodb://${username}:${password}@$1`
-    )
-    const client = await MongoClient.connect(url)
-    _db = client.db(database)
-  }
-  return _db as Db
-}
+let _client: Client
 
 interface TestSetupDocument {
   readonly id: string
   readonly isActive: boolean
+}
+
+function getClient(url: string): Client {
+  if (_client === undefined) {
+    _client = new Client({ node: url })
+  }
+  return _client
 }
 
 async function testSetupSynchronization(
@@ -38,19 +21,17 @@ async function testSetupSynchronization(
   timeout = 5000,
   pollInterval = 100
 ): Promise<void> {
-  const db = await getMongoDb({
-    url: 'mongodb://localhost',
-    username: 'root',
-    password: 'root',
-    database: 'gigmatch',
-  })
-
-  const collection = db.collection<TestSetupDocument>('test_setup')
   let timePassed = 0
   while (true) {
-    const testSetup = await collection.findOne({ id })
-    if (testSetup !== null && !testSetup.isActive) {
-      await collection.deleteOne({ id })
+    const client = getClient('http://localhost:9200')
+    const {
+      hits: { hits },
+    } = await client.search<TestSetupDocument>({
+      index: 'test-setup',
+      query: { match: { id } },
+    })
+    if (hits.length === 1 && hits[0]._source?.isActive === false) {
+      await client.delete({ index: 'test-setup', id })
       break
     }
 
@@ -67,7 +48,7 @@ async function testSetupSynchronization(
   }
 }
 
-export default class TestSetup {
+export default class WebsiteTestSetup {
   private readonly request: APIRequestContext
   private _id: string | null = uuidv4()
 
