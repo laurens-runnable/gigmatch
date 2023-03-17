@@ -10,7 +10,6 @@ export interface MongoConfig {
   readonly username: string
   readonly password: string
   readonly database: string
-  readonly useTestSetupCollection: boolean
 }
 
 export const MONGO_CONFIG_TYPE = Symbol.for('MongoConfigg')
@@ -72,9 +71,7 @@ export class MongoRepository implements Repository {
     this._db = client.db(database)
     this._skillCollection = this._db.collection<Skill>('skill')
     this._vacancyCollection = this._db.collection<Vacancy>('vacancy')
-    if (this._mongoConfig.useTestSetupCollection) {
-      this._testSetupCollection = this._db?.collection<TestSetup>('test_setup')
-    }
+    this._testSetupCollection = this._db.collection<TestSetup>('test_setup')
     await this._skillCollection.createIndex('id')
     await this._vacancyCollection.createIndex('id')
   }

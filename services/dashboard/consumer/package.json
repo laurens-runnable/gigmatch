@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "build": "tsc --build",
-    "start-e2e": "GIGMATCH_TEST_SYNCHRONIZATION=true node build/index.js ",
     "format": "prettier --write .",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ."
   },

@@ -10,9 +10,6 @@ npm run dev
 # Build
 npm run build
 
-# Run, with test synchronization enabled
-npm run start-e2e
-
 # Format code (using Prettier)
 npm run format
 

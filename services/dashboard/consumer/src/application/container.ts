@@ -93,14 +93,12 @@ export function createContainer(config: Config): Container {
     .bind<EventHandler>(VacancyOpenedType.name as string)
     .to(VacancyCreatedHandler)
 
-  if (config.testSynchronization.isEnabled) {
-    container
-      .bind<EventHandler>(TestSetupStartedType.name as string)
-      .to(TestSetupStartedHandler)
-    container
-      .bind<EventHandler>(TestSetupCompletedType.name as string)
-      .to(TestSetupCompletedHandler)
-  }
+  container
+    .bind<EventHandler>(TestSetupStartedType.name as string)
+    .to(TestSetupStartedHandler)
+  container
+    .bind<EventHandler>(TestSetupCompletedType.name as string)
+    .to(TestSetupCompletedHandler)
 
   container.bind<Application>(APPLICATION_TYPE).to(Application)
 
