@@ -1,4 +1,5 @@
 using Gigmatch.Website.Consumer.Model;
+using Gigmatch.Website.Model;
 using Nest;
 
 namespace Gigmatch.Website.Consumer.Elastic;

@@ -1,3 +1,4 @@
+using Gigmatch.Website.Model;
 using Gigmatch.Website.Mvc.Models;
 using Nest;
 

@@ -1,4 +1,5 @@
 using Gigmatch.Website.Consumer.Model;
+using Gigmatch.Website.Model;
 using Microsoft.Extensions.Logging;
 using SolTechnology.Avro;
 

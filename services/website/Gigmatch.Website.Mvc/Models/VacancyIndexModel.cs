@@ -1,3 +1,5 @@
+using Gigmatch.Website.Model;
+
 namespace Gigmatch.Website.Mvc.Models;
 
 public class VacancyIndexModel

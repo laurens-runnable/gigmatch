@@ -17,7 +17,7 @@ internal class VacanciesResetHandler : IEventHandler
 
     public async Task HandleEventAsync(byte[] data)
     {
-        // var ev = AvroConvert.DeserializeHeadless<VacanciesReset>(data);
+        _logger.LogInformation("Deleting all vacancies");
         await _vacancyRepository.DeleteAllVacanciesAsync();
     }
 }

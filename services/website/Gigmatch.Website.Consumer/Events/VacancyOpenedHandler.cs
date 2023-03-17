@@ -1,4 +1,5 @@
 using Gigmatch.Website.Consumer.Model;
+using Gigmatch.Website.Model;
 using Microsoft.Extensions.Logging;
 using SolTechnology.Avro;
 
@@ -10,31 +11,52 @@ internal class VacancyOpenedHandler : IEventHandler
 
     private readonly IVacancyRepository _vacancyRepository;
 
-    public VacancyOpenedHandler(ILogger<VacancyOpenedHandler> logger, IVacancyRepository _vacancyRepository)
+    private readonly ISkillRepository _skillRepository;
+
+    public VacancyOpenedHandler(ILogger<VacancyOpenedHandler> logger, IVacancyRepository vacancyRepository,
+        ISkillRepository skillRepository)
     {
         _logger = logger;
-        this._vacancyRepository = _vacancyRepository;
+        _vacancyRepository = vacancyRepository;
+        _skillRepository = skillRepository;
     }
 
-    public Task HandleEventAsync(byte[] data)
+    public async Task HandleEventAsync(byte[] data)
     {
         var ev = AvroConvert.DeserializeHeadless<VacancyOpened>(data);
 
-        var vacancy = ev.ToVacancy();
+        var vacancy = await ev.ToVacancy(_skillRepository);
         _logger.LogDebug("Saving vacancy {id}", vacancy.Id);
-        return _vacancyRepository.SaveVacancyAsync(vacancy);
+        await _vacancyRepository.SaveVacancyAsync(vacancy);
     }
 }
 
 file static class VacancyOpenedExtensions
 {
-    internal static Vacancy ToVacancy(this VacancyOpened ev) =>
-        new()
+    internal static async Task<Vacancy> ToVacancy(this VacancyOpened ev, ISkillRepository skillRepository)
+    {
+        var experienceItems = new List<Vacancy.ExperienceItem>();
+        foreach (var experience in ev.experience)
+        {
+            var skill = await skillRepository.FindSkillAsync(experience.skillId);
+            if (skill != null)
+            {
+                experienceItems.Add(new Vacancy.ExperienceItem
+                {
+                    Skill = skill,
+                    Level = (int)experience.level
+                });
+            }
+        }
+
+        return new Vacancy
         {
             Id = ev.id,
             JobTitle = ev.jobTitle,
-            Skills = ev.skills.Select(x => new Guid(x)).ToArray(),
+            Experience = experienceItems,
             Start = ev.start,
             End = ev.end,
+            Deadline = ev.deadline
         };
+    }
 }

@@ -1,3 +1,5 @@
+using Gigmatch.Website.Model;
+
 namespace Gigmatch.Website.Consumer.Model;
 
 internal interface IVacancyRepository

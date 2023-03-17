@@ -1,6 +1,6 @@
-namespace Gigmatch.Website.Consumer.Model;
+namespace Gigmatch.Website.Model;
 
-internal class Skill
+public class Skill
 {
     public Guid Id { get; set; }
 

@@ -19,14 +19,18 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.json" />
+        <None Remove="appsettings.json"/>
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="avro\events" />
+        <Folder Include="avro\events"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Gigmatch.Website.Model\Gigmatch.Website.Model.csproj"/>
     </ItemGroup>
 
 </Project>
