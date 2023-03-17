@@ -24,8 +24,7 @@ application.startup().then(monitorApplication).catch(handleLifecycleError)
 const shutdownApplication = (): void => {
   application
     .shutdown()
-    .then(() => {
-    })
+    .then(() => {})
     .catch(handleLifecycleError)
 }
 

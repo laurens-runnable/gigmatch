@@ -2,11 +2,7 @@ import { DateResolver, UUIDResolver } from 'graphql-scalars'
 import { H3Event } from 'h3'
 import { fetchSkills } from './skills'
 import { fetchCurrentUserDetails } from './user-details'
-import {
-  CreateVacancyParams,
-  createVacancy,
-  fetchActiveVacancies,
-} from './vacancies'
+import { createVacancy, fetchActiveVacancies } from './vacancies'
 
 export const typeDefs = /* GraphQL */ `
   scalar Date
@@ -16,6 +12,12 @@ export const typeDefs = /* GraphQL */ `
     HOURLY
     DAILY
     FIXED
+  }
+
+  enum ExperienceLevel {
+    JUNIOR
+    MEDIOR
+    SENIOR
   }
 
   type UserDetails {
@@ -45,16 +47,23 @@ export const typeDefs = /* GraphQL */ `
     activeVacancies: [Vacancy]!
   }
 
+  input ExperienceInput {
+    skillId: UUID!
+    level: ExperienceLevel!
+  }
+
+  input VacancyInput {
+    jobTitle: String!
+    start: Date!
+    end: Date!
+    experience: [ExperienceInput!]!
+    rateAmount: Int!
+    rateType: RateType!
+    deadline: Date!
+  }
+
   type Mutation {
-    createVacancy(
-      jobTitle: String!
-      skillId: String!
-      start: Date!
-      end: Date!
-      rateAmount: Int!
-      rateType: RateType!
-      deadline: Date!
-    ): Vacancy
+    createVacancy(vacancy: VacancyInput!): Vacancy
   }
 `
 
@@ -72,12 +81,8 @@ export const resolvers = {
     activeVacancies: () => fetchActiveVacancies(),
   },
   Mutation: {
-    createVacancy: (
-      _: unknown,
-      params: CreateVacancyParams,
-      context: H3EventContext
-    ) => {
-      return createVacancy(params, context.event)
+    createVacancy: (_: unknown, {vacancy}: any, context: H3EventContext) => {
+      return createVacancy(vacancy, context.event)
     },
   },
 }

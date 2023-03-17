@@ -63,13 +63,20 @@ test('createVacancy() should return vacancy', async ({
       query: print(gql`
         mutation {
           createVacancy(
-            jobTitle: "Kotlin developer"
-            skillId: "0cbfbd6a-8e4a-43cb-8aea-f75b71b32c35"
-            start: "2023-07-01"
-            end: "2023-12-31"
-            rateAmount: 100
-            rateType: HOURLY
-            deadline: "2023-06-15"
+            vacancy: {
+              jobTitle: "Kotlin developer"
+              start: "2023-07-01"
+              end: "2023-12-31"
+              experience: [
+                {
+                  skillId: "0cbfbd6a-8e4a-43cb-8aea-f75b71b32c35"
+                  level: SENIOR
+                }
+              ]
+              rateAmount: 100
+              rateType: HOURLY
+              deadline: "2023-06-15"
+            }
           ) {
             id
             jobTitle
@@ -95,6 +102,6 @@ test('createVacancy() should return vacancy', async ({
 
   await testSetup.completion()
 
-  // const vacancies = await queryActiveVacancies(page)
-  // expect(vacancies.length).toBe(2)
+  const vacancies = await queryActiveVacancies(page)
+  expect(vacancies.length).toBe(2)
 })

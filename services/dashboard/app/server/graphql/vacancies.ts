@@ -17,41 +17,32 @@ export async function fetchActiveVacancies(): Promise<Vacancy[]> {
   return documents.toArray()
 }
 
-export type CreateVacancyParams = {
-  jobTitle: string
+export interface ExperienceInput {
   skillId: string
+  experienceLevel: string
+}
+
+export interface CreateVacancyInput {
+  jobTitle: string
   start: Date
   end: Date
+  experience: Array<ExperienceInput>
   rateAmount: number
   rateType: string
   deadline: Date
 }
 
-export async function createVacancy(
-  params: CreateVacancyParams,
-  event: H3Event
-) {
+export async function createVacancy(vacancy: CreateVacancyInput, event: H3Event) {
   const id = randomUUID()
-  const { jobTitle, skillId, start, end, rateAmount, rateType, deadline } =
-    params
-  const value = {
-    id,
-    jobTitle,
-    skillId,
-    start,
-    end,
-    rateAmount,
-    rateType,
-    deadline,
-  }
-  const body = OpenVacancy.toBuffer(value)
+  const output = { id, ...vacancy }
 
   const client = await createMatchServiceClient(event)
-  await client.post('/api/v1/commands', body, {
+  const buffer = OpenVacancy.toBuffer(output)
+  await client.post('/api/v1/commands', buffer, {
     headers: {
       'X-gm.type': OpenVacancy.name,
     },
   })
 
-  return value
+  return output
 }

@@ -15,10 +15,9 @@ class LogicalDateType extends types.LogicalType {
 }
 
 export const VacanciesResetType = Type.forSchema(VacanciesResetSchema as Schema)
-export const VacancyOpenedType = Type.forSchema(
-  VacancyOpenedSchema as Schema,
-  { logicalTypes: { date: LogicalDateType } }
-)
+export const VacancyOpenedType = Type.forSchema(VacancyOpenedSchema as Schema, {
+  logicalTypes: { date: LogicalDateType },
+})
 export const SkillCreatedOrUpdatedType = Type.forSchema(
   SkillCreatedOrUpdatedSchema as Schema
 )
