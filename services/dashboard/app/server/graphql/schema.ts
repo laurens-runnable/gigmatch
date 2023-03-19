@@ -81,7 +81,7 @@ export const resolvers = {
     activeVacancies: () => fetchActiveVacancies(),
   },
   Mutation: {
-    createVacancy: (_: unknown, {vacancy}: any, context: H3EventContext) => {
+    createVacancy: (_: unknown, { vacancy }: any, context: H3EventContext) => {
       return createVacancy(vacancy, context.event)
     },
   },

@@ -32,7 +32,10 @@ export interface CreateVacancyInput {
   deadline: Date
 }
 
-export async function createVacancy(vacancy: CreateVacancyInput, event: H3Event) {
+export async function createVacancy(
+  vacancy: CreateVacancyInput,
+  event: H3Event
+) {
   const id = randomUUID()
   const output = { id, ...vacancy }
 

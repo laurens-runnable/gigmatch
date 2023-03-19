@@ -18,13 +18,13 @@
         <ktlint.version>0.48.2</ktlint.version>
         <!-- Dependencies -->
         <avro.version>1.11.1</avro.version>
-        <axon.version>4.7.1</axon.version>
+        <axon.version>4.7.3</axon.version>
         <hamcrest.version>2.2</hamcrest.version>
         <jobrunr.version>5.3.3</jobrunr.version>
         <junit.version>5.9.2</junit.version>
         <kluent.version>1.72</kluent.version>
         <opencsv.version>5.7.1</opencsv.version>
-        <postgresql.version>42.5.4</postgresql.version>
+        <postgresql.version>42.6.0</postgresql.version>
         <slf4j.version>2.0.6</slf4j.version>
         <spring-boot.version>3.0.4</spring-boot.version>
         <spring-cloud.version>2022.0.1</spring-cloud.version>
