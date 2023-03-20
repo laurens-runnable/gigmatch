@@ -1,107 +1,81 @@
 import { testDashboard as test } from '../../fixtures'
 import { gql } from '@apollo/client/core'
-import { type Page, expect } from '@playwright/test'
-import { print } from 'graphql/index'
+import { expect } from '@playwright/test'
 
-function activeVacancies(): string {
-  return print(gql`
-    query {
-      activeVacancies {
-        id
-        jobTitle
-        start
-        end
-        rateAmount
-        rateType
-        deadline
+const CREATE_VACANCY = gql`
+  mutation {
+    createVacancy(
+      vacancy: {
+        jobTitle: "Kotlin developer"
+        start: "2023-07-01"
+        end: "2023-12-31"
+        experience: [
+          { skillId: "0cbfbd6a-8e4a-43cb-8aea-f75b71b32c35", level: SENIOR }
+        ]
+        rateAmount: 100
+        rateType: HOURLY
+        deadline: "2023-06-15"
       }
+    ) {
+      id
+      jobTitle
+      experience {
+        skillId
+        level
+      }
+      isOpen
     }
-  `)
-}
+  }
+`
 
-async function queryActiveVacancies(page: Page): Promise<any> {
-  const { request } = page.context()
-  const query = await request.post('/dashboard/api/graphql', {
-    data: {
-      query: activeVacancies(),
-    },
+const OPEN_VACANCY = gql`
+  mutation OpenVacancy($id: UUID!) {
+    openVacancy(id: $id)
+  }
+`
+
+// noinspection JSUnusedLocalSymbols
+test('vacancy creation', async ({
+  page,
+  user,
+  testSet,
+  testSetup,
+  graphql,
+}) => {
+  const {
+    data: { createVacancy },
+  } = await graphql.client.mutate({
+    mutation: CREATE_VACANCY,
   })
 
-  expect(query.status()).toBe(200)
+  const { id } = createVacancy
+  expect(id.length).toBeGreaterThan(0)
+  expect(createVacancy.experience.length).toBe(1)
+  expect(createVacancy.jobTitle).toStrictEqual('Kotlin developer')
+  expect(createVacancy.isOpen).toStrictEqual(false)
 
-  const response = await query.json()
-  expect(response.errors).toBeUndefined()
+  await graphql.client.mutate({
+    mutation: OPEN_VACANCY,
+    variables: { id },
+  })
 
-  const vacancies = (await query.json()).data.activeVacancies
-  expect(vacancies).toBeInstanceOf(Array)
-  return vacancies
-}
-// noinspection JSUnusedLocalSymbols
-
-test('activeVacancies() should return vacancies', async ({
-  page,
-  user,
-  testSet,
-  testSetup,
-}) => {
   await testSetup.completion()
 
-  const vacancies = await queryActiveVacancies(page)
-  expect(vacancies.length).toBe(1)
-})
-
-// noinspection JSUnusedLocalSymbols
-test('createVacancy() should return vacancy', async ({
-  page,
-  user,
-  testSet,
-  testSetup,
-}) => {
-  const { request } = page.context()
-  const mutation = await request.post('/dashboard/api/graphql', {
-    data: {
-      query: print(gql`
-        mutation {
-          createVacancy(
-            vacancy: {
-              jobTitle: "Kotlin developer"
-              start: "2023-07-01"
-              end: "2023-12-31"
-              experience: [
-                {
-                  skillId: "0cbfbd6a-8e4a-43cb-8aea-f75b71b32c35"
-                  level: SENIOR
-                }
-              ]
-              rateAmount: 100
-              rateType: HOURLY
-              deadline: "2023-06-15"
-            }
-          ) {
-            id
-            jobTitle
-            start
-            end
-            rateAmount
-            rateType
-            deadline
-          }
+  const {
+    data: { vacancies },
+  } = await graphql.client.query({
+    query: gql`
+      query FindVacancy($id: UUID!) {
+        vacancies(filter: { id: [$id] }) {
+          id
+          isOpen
         }
-      `),
-    },
+      }
+    `,
+    variables: { id },
   })
 
-  expect(mutation.status()).toBe(200)
-
-  const response = await mutation.json()
-  expect(response.errors).toBeUndefined()
-
-  const vacancy = response.data.createVacancy
-  expect(vacancy.id.length).toBeGreaterThan(0)
-  expect(vacancy.jobTitle).toStrictEqual('Kotlin developer')
-
-  await testSetup.completion()
-
-  const vacancies = await queryActiveVacancies(page)
-  expect(vacancies.length).toBe(2)
+  expect(vacancies.length).toBe(1)
+  const [vacancy] = vacancies
+  expect(vacancy.isOpen).toStrictEqual(true)
 })

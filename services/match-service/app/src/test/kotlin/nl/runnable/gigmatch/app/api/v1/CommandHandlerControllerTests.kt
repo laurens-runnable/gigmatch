@@ -2,7 +2,6 @@ package nl.runnable.gigmatch.app.api.v1
 
 import nl.runnable.gigmatch.app.AVRO_MEDIA_TYPE
 import nl.runnable.gigmatch.app.receiveEvent
-import nl.runnable.gigmatch.app.testset.SkillTestSet
 import nl.runnable.gigmatch.app.toByteArray
 import nl.runnable.gigmatch.commands.Experience
 import nl.runnable.gigmatch.commands.ExperienceLevel
@@ -15,14 +14,17 @@ import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.stream.binder.test.OutputDestination
+import org.springframework.core.io.Resource
 import org.springframework.security.authentication.TestingAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
+import java.io.InputStreamReader
 import java.time.LocalDate
 import java.util.*
 
@@ -36,7 +38,10 @@ class CommandHandlerControllerTests {
 
         private fun testJobTitle() = "Test engineer"
 
-        private fun testExperience() = Experience("2baaef78-eb31-4f82-a1c4-883bda3a50ff", ExperienceLevel.SENIOR)
+        private fun testExperience() = Experience(
+            UUID.fromString("2baaef78-eb31-4f82-a1c4-883bda3a50ff"),
+            ExperienceLevel.SENIOR,
+        )
 
         private fun testStart() = LocalDate.now().plusMonths(2).withDayOfMonth(1)
 
@@ -66,14 +71,17 @@ class CommandHandlerControllerTests {
     private lateinit var mockMvc: MockMvc
 
     @Autowired
-    private lateinit var skillTestSet: SkillTestSet
+    private lateinit var skillImporter: SkillImporter
+
+    @Value("classpath:/skills.csv")
+    private lateinit var skillsCsv: Resource
 
     @Autowired
     private lateinit var outputDestination: OutputDestination
 
     @BeforeEach
     fun resetTestSets() {
-        skillTestSet.reset()
+        skillImporter.importFromCsv(InputStreamReader(skillsCsv.inputStream))
     }
 
     private fun useRecruiterAuthentication() {
@@ -135,7 +143,7 @@ class CommandHandlerControllerTests {
                 OpenVacancy(
                     testVacancyId(),
                     testJobTitle(),
-                    listOf(Experience(invalidSkillId.toString(), ExperienceLevel.SENIOR)),
+                    listOf(Experience(invalidSkillId, ExperienceLevel.SENIOR)),
                     testStart(),
                     testEnd(),
                     testRateAmount(),

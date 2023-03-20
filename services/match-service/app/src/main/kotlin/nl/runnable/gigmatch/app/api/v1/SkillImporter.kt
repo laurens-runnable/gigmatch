@@ -1,27 +1,20 @@
-package nl.runnable.gigmatch.app.testset
+package nl.runnable.gigmatch.app.api.v1
 
 import com.opencsv.bean.CsvToBeanBuilder
 import nl.runnable.gigmatch.framework.vacancy.SkillEntity
 import nl.runnable.gigmatch.framework.vacancy.SkillEntityRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
-import java.io.InputStreamReader
-import java.util.*
+import java.io.Reader
 
 @Component
-@TestSetProfile
-class SkillTestSet {
+class SkillImporter {
 
     @Autowired
     private lateinit var repository: SkillEntityRepository
 
-    @Value("classpath:/test-set/skills.csv")
-    private lateinit var resource: Resource
-
-    fun reset() {
-        val csvToBean = CsvToBeanBuilder<SkillRow>(InputStreamReader(resource.inputStream))
+    fun importFromCsv(csv: Reader) {
+        val csvToBean = CsvToBeanBuilder<SkillRow>(csv)
             .withType(SkillRow::class.java)
             .withSeparator(',')
             .withQuoteChar('"')

@@ -1,6 +1,7 @@
+import { type SkillDocument, type VacancyDocument } from '../../../shared/mongo'
 import { RETRY_CONFIG_TYPE, RetryConfig } from '../config'
 import { LOGGER_TYPE, Logger } from '../logger'
-import { type Repository, type Skill, type Vacancy } from './index'
+import { type Repository } from './index'
 import { inject, injectable } from 'inversify'
 import { type Collection, type Db, MongoClient } from 'mongodb'
 import promiseRetry from 'promise-retry'
@@ -26,8 +27,8 @@ export class MongoRepository implements Repository {
   private readonly _logger: Logger
   private _client: MongoClient | null = null
   private _db: Db | null = null
-  private _skillCollection?: Collection<Skill>
-  private _vacancyCollection?: Collection<Vacancy>
+  private _skillCollection?: Collection<SkillDocument>
+  private _vacancyCollection?: Collection<VacancyDocument>
   private _testSetupCollection?: Collection<TestSetup>
 
   constructor(
@@ -69,8 +70,8 @@ export class MongoRepository implements Repository {
     this._logger.info("Using database '%s'", database)
     this._client = client
     this._db = client.db(database)
-    this._skillCollection = this._db.collection<Skill>('skill')
-    this._vacancyCollection = this._db.collection<Vacancy>('vacancy')
+    this._skillCollection = this._db.collection<SkillDocument>('skill')
+    this._vacancyCollection = this._db.collection<VacancyDocument>('vacancy')
     this._testSetupCollection = this._db.collection<TestSetup>('test_setup')
     await this._skillCollection.createIndex('id')
     await this._vacancyCollection.createIndex('id')
@@ -86,7 +87,7 @@ export class MongoRepository implements Repository {
     await this._skillCollection?.deleteOne({ id })
   }
 
-  async updateSkill(skill: Skill): Promise<void> {
+  async updateSkill(skill: SkillDocument): Promise<void> {
     await this._skillCollection?.findOneAndUpdate(
       { id: skill.id },
       { $set: skill },
@@ -98,8 +99,12 @@ export class MongoRepository implements Repository {
     await this._vacancyCollection?.deleteMany({})
   }
 
-  async updateVacancy(vacancy: Vacancy): Promise<void> {
-    await this._vacancyCollection?.insertOne(vacancy)
+  async updateVacancy(vacancy: VacancyDocument): Promise<void> {
+    await this._vacancyCollection?.updateOne(
+      { id: vacancy.id },
+      { $set: vacancy },
+      { upsert: true }
+    )
   }
 
   async startTestSetup(id: string): Promise<void> {

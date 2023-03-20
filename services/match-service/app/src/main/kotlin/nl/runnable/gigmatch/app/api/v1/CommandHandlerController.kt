@@ -9,17 +9,19 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.io.InputStream
 
 @RestController
+@RequestMapping("/api/v1/commands", consumes = ["application/avro"])
 class CommandHandlerController {
 
     @Autowired
     private lateinit var commandResolver: CommandResolver
 
-    @PostMapping("/api/v1/commands", consumes = ["application/avro"])
+    @PostMapping
     fun handleCommand(input: InputStream, @RequestHeader("X-gm.type") type: String): ResponseEntity<Void> {
         val authentication =
             SecurityContextHolder.getContext().authentication ?: return ResponseEntity<Void>(HttpStatus.UNAUTHORIZED)

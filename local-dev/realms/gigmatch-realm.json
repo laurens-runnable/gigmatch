@@ -75,6 +75,19 @@
       "containerId" : "07f03a24-0d16-4aef-84f9-73eb4295f63d",
       "attributes" : { }
     }, {
+      "id" : "ee2f622f-8794-4529-960c-b7db2e728182",
+      "name" : "admin",
+      "description" : "",
+      "composite" : true,
+      "composites" : {
+        "client" : {
+          "gigmatch-admin" : [ "admin" ]
+        }
+      },
+      "clientRole" : false,
+      "containerId" : "07f03a24-0d16-4aef-84f9-73eb4295f63d",
+      "attributes" : { }
+    }, {
       "id" : "101b8d39-9429-4dd7-8613-5a414c1837fa",
       "name" : "recruiter",
       "description" : "",
@@ -268,6 +281,21 @@
         "composite" : false,
         "clientRole" : true,
         "containerId" : "a1f1a627-f629-404a-ac8c-4e778ba15587",
+        "attributes" : { }
+      } ],
+      "gigmatch-admin" : [ {
+        "id" : "d8ecf1b0-9c42-4d27-a586-42c78028a3a9",
+        "name" : "admin",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "11ec7e78-5255-478b-a45b-475dab8fe39f",
+        "attributes" : { }
+      }, {
+        "id" : "79ae5496-97ef-4b25-829e-40132e43a879",
+        "name" : "uma_protection",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "11ec7e78-5255-478b-a45b-475dab8fe39f",
         "attributes" : { }
       } ],
       "gigmatch-dashboard" : [ {
@@ -559,6 +587,107 @@
     "nodeReRegistrationTimeout" : 0,
     "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
     "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+  }, {
+    "id" : "11ec7e78-5255-478b-a45b-475dab8fe39f",
+    "clientId" : "gigmatch-admin",
+    "name" : "Gigmatch Admin client",
+    "description" : "",
+    "rootUrl" : "",
+    "adminUrl" : "",
+    "baseUrl" : "",
+    "surrogateAuthRequired" : false,
+    "enabled" : true,
+    "alwaysDisplayInConsole" : false,
+    "clientAuthenticatorType" : "client-secret",
+    "secret" : "secret",
+    "redirectUris" : [ "http://localhost:*" ],
+    "webOrigins" : [ "*" ],
+    "notBefore" : 0,
+    "bearerOnly" : false,
+    "consentRequired" : false,
+    "standardFlowEnabled" : true,
+    "implicitFlowEnabled" : false,
+    "directAccessGrantsEnabled" : true,
+    "serviceAccountsEnabled" : true,
+    "authorizationServicesEnabled" : true,
+    "publicClient" : false,
+    "frontchannelLogout" : true,
+    "protocol" : "openid-connect",
+    "attributes" : {
+      "post.logout.redirect.uris" : "http://localhost*",
+      "client.secret.creation.time" : "1679323422",
+      "oauth2.device.authorization.grant.enabled" : "false",
+      "backchannel.logout.revoke.offline.tokens" : "false",
+      "use.refresh.tokens" : "true",
+      "tls-client-certificate-bound-access-tokens" : "false",
+      "oidc.ciba.grant.enabled" : "false",
+      "backchannel.logout.session.required" : "true",
+      "client_credentials.use_refresh_token" : "false",
+      "acr.loa.map" : "{}",
+      "require.pushed.authorization.requests" : "false",
+      "display.on.consent.screen" : "false",
+      "token.response.type.bearer.lower-case" : "false"
+    },
+    "authenticationFlowBindingOverrides" : { },
+    "fullScopeAllowed" : false,
+    "nodeReRegistrationTimeout" : -1,
+    "protocolMappers" : [ {
+      "id" : "b9297b27-3ca0-42a4-a683-f629ba3b77f8",
+      "name" : "Client IP Address",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usersessionmodel-note-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "user.session.note" : "clientAddress",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "clientAddress",
+        "jsonType.label" : "String"
+      }
+    }, {
+      "id" : "ceabc746-0e9a-4d70-a12b-9ef6e54dd042",
+      "name" : "Client ID",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usersessionmodel-note-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "user.session.note" : "clientId",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "clientId",
+        "jsonType.label" : "String"
+      }
+    }, {
+      "id" : "26f0184e-b1f4-4d29-9f49-68729fc1eedd",
+      "name" : "Client Host",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-usersessionmodel-note-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "user.session.note" : "clientHost",
+        "id.token.claim" : "true",
+        "access.token.claim" : "true",
+        "claim.name" : "clientHost",
+        "jsonType.label" : "String"
+      }
+    } ],
+    "defaultClientScopes" : [ "roles", "profile" ],
+    "optionalClientScopes" : [ "web-origins", "acr", "address", "phone", "offline_access", "microprofile-jwt", "email" ],
+    "authorizationSettings" : {
+      "allowRemoteResourceManagement" : true,
+      "policyEnforcementMode" : "ENFORCING",
+      "resources" : [ {
+        "name" : "Default Resource",
+        "type" : "urn:gigmatch-admin:resources:default",
+        "ownerManagedAccess" : false,
+        "attributes" : { },
+        "_id" : "4f1b482a-0193-49b4-a6e9-9794bbf0d82e",
+        "uris" : [ "/*" ]
+      } ],
+      "policies" : [ ],
+      "scopes" : [ ],
+      "decisionStrategy" : "UNANIMOUS"
+    }
   }, {
     "id" : "ce02b3a9-374b-4fe0-a07f-d9e1f6e44089",
     "clientId" : "gigmatch-dashboard",
@@ -2024,6 +2153,28 @@
     "policies" : [ ]
   },
   "users" : [ {
+    "id" : "446c58b2-a205-4399-9441-e1ae25665427",
+    "createdTimestamp" : 1679323868530,
+    "username" : "admin1",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "",
+    "lastName" : "",
+    "credentials" : [ {
+      "id" : "96e9a46a-94c6-4e5f-969f-0c2ac292fdcb",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1679323897619,
+      "secretData" : "{\"value\":\"usagBz4LpF9KpMJMHH5YuPUUC1Yxo+WF3xP2pWBoN8uFk/FkVVTk4UeICxq/U0noRrVC+3Iyydcdzw7SoBxMTQ==\",\"salt\":\"a/44nIObXeo1oOTgVLgB+g==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-gigmatch", "admin" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "773d4d2f-177e-4965-be41-23b0c3ddd2a5",
     "createdTimestamp" : 1675428680295,
     "username" : "candidate1",

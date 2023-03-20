@@ -1,3 +1,4 @@
+import { type VacancyDocument } from '../../../../shared/mongo'
 import { REPOSITORY_TYPE, Repository } from '../../repository'
 import { type Event, type EventHandler } from './index'
 import { inject, injectable } from 'inversify'
@@ -24,6 +25,11 @@ export class VacancyCreatedHandler implements EventHandler {
   }
 
   async handleEvent({ payload }: Event): Promise<void> {
-    await this._repository.updateVacancy(payload)
+    const vacancy: VacancyDocument = {
+      ...payload,
+      isOpen: true,
+    }
+
+    await this._repository.updateVacancy(vacancy)
   }
 }

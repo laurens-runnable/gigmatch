@@ -15,6 +15,7 @@
     "@elastic/elasticsearch": "8.6.0",
     "@playwright/test": "1.29.2",
     "@trivago/prettier-plugin-sort-imports": "4.0.0",
+    "@types/node-fetch": "2.6.2",
     "eslint": "8.33.0",
     "eslint-config-standard-with-typescript": "34.0.0",
     "eslint-plugin-import": "2.27.5",
@@ -22,6 +23,8 @@
     "eslint-plugin-promise": "6.1.1",
     "graphql": "16.6.0",
     "mongodb": "5.0.0",
+    "node-fetch": "2.6.9",
+    "openid-client": "5.4.0",
     "prettier": "2.8.2",
     "uuid": "9.0.0"
   }

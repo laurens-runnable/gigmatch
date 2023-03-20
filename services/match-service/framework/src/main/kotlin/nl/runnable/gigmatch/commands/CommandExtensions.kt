@@ -3,7 +3,6 @@ package nl.runnable.gigmatch.commands
 import nl.runnable.gigmatch.domain.vacancy.Experience.Level
 import nl.runnable.gigmatch.domain.vacancy.Rate
 import nl.runnable.gigmatch.domain.vacancy.SkillId
-import java.util.*
 import nl.runnable.gigmatch.events.RateType as EventRateType
 
 fun RateType.toDomainCounterpart() = when (this) {
@@ -25,4 +24,4 @@ fun ExperienceLevel.toDomainCounterpart() = when (this) {
 }
 
 fun Experience.toDomainCounterpart() =
-    nl.runnable.gigmatch.domain.vacancy.Experience(SkillId(UUID.fromString(skillId)), level.toDomainCounterpart())
+    nl.runnable.gigmatch.domain.vacancy.Experience(SkillId(skillId), level.toDomainCounterpart())

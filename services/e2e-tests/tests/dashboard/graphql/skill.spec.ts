@@ -1,35 +1,25 @@
 import { testDashboard as test } from '../../fixtures'
 import { gql } from '@apollo/client/core'
 import { expect } from '@playwright/test'
-import { print } from 'graphql/index'
 
 // noinspection JSUnusedLocalSymbols
-test('allSkills() should return skills', async ({
-  page,
-  user,
-  testSet,
-  testSetup,
-}) => {
+test('skills() query', async ({ page, user, testSet, testSetup, graphql }) => {
   await testSetup.completion()
 
-  const { request } = page.context()
-  const query = await request.post('/dashboard/api/graphql', {
-    data: {
-      query: print(gql`
-        query {
-          allSkills {
-            id
-            name
-            slug
-          }
+  const {
+    data: { skills },
+  } = await graphql.client.query({
+    query: gql`
+      query {
+        skills {
+          id
+          name
+          slug
         }
-      `),
-    },
+      }
+    `,
   })
 
-  expect(query.status()).toBe(200)
-
-  const skills = (await query.json()).data.allSkills
   expect(skills).toBeInstanceOf(Array)
   expect(skills.length).toBe(5)
 })

@@ -1,21 +1,10 @@
 import { randomUUID } from 'crypto'
 import { H3Event } from 'h3'
+import { VacancyDocument } from '~/../shared/mongo'
 import { OpenVacancy } from '~/server/avro/commands'
 import { createMatchServiceClient } from '~/server/lib/axios'
 import { getDb } from '~/server/lib/mongo'
-
-export interface Vacancy {
-  id: string
-  name: string
-  start: Date
-}
-
-export async function fetchActiveVacancies(): Promise<Vacancy[]> {
-  const db = await getDb()
-  const coll = db.collection<Vacancy>('vacancy')
-  const documents = coll.find().sort({ name: 1 })
-  return documents.toArray()
-}
+import { useJwt } from '~/server/lib/session'
 
 export interface ExperienceInput {
   skillId: string
@@ -33,19 +22,52 @@ export interface CreateVacancyInput {
 }
 
 export async function createVacancy(
-  vacancy: CreateVacancyInput,
+  input: CreateVacancyInput,
   event: H3Event
-) {
+): Promise<VacancyDocument | null> {
   const id = randomUUID()
-  const output = { id, ...vacancy }
+  const { sub: userId } = await useJwt(event)
+
+  const doc: VacancyDocument = { id, userId, isOpen: false, ...input }
+  const db = await getDb()
+  const coll = db.collection<VacancyDocument>('vacancy')
+  await coll.insertOne(doc)
+
+  return doc
+}
+
+export async function openVacancy(id: string, event: H3Event): Promise<void> {
+  const db = await getDb()
+  const coll = db.collection<VacancyDocument>('vacancy')
+  const doc = await coll.findOne({ id })
+  if (doc === undefined) {
+    throw new Error(`Vacancy not found: ${id}`)
+  }
 
   const client = await createMatchServiceClient(event)
-  const buffer = OpenVacancy.toBuffer(output)
+  const buffer = OpenVacancy.toBuffer(doc)
   await client.post('/api/v1/commands', buffer, {
     headers: {
       'X-gm.type': OpenVacancy.name,
     },
   })
+}
 
-  return output
+export interface VacancyFilter {
+  id: [string]
+}
+
+export async function queryVacancies(
+  filter: VacancyFilter,
+  event: H3Event
+): Promise<VacancyDocument[]> {
+  const { sub: userId } = await useJwt(event)
+
+  const db = await getDb()
+  const coll = db.collection<VacancyDocument>('vacancy')
+  const documents = coll
+    .find({ id: { $in: filter.id } }, userId)
+    .sort({ name: 1 })
+
+  return documents.toArray()
 }

@@ -1,4 +1,5 @@
 import DashboardTestSetup from './dashboard-test-setup'
+import GraphqlContext from './graphql-context'
 import TestSet from './test-set'
 import User from './user'
 import WebsiteTestSetup from './website-test-setup'
@@ -8,6 +9,7 @@ interface Fixture {
   user: User
   testSet: TestSet
   testSetup: DashboardTestSetup
+  graphql: GraphqlContext
 }
 
 const testSet = async ({ request }: any, use: any): Promise<void> => {
@@ -31,6 +33,12 @@ export const testDashboard = base.extend<Fixture>({
     const testSetup = new DashboardTestSetup(request)
     await testSetup.start()
     await use(testSetup)
+  },
+
+  graphql: async ({ page, baseURL }: any, use: any): Promise<void> => {
+    const uri = `${baseURL as string}/dashboard/api/graphql`
+    const context = new GraphqlContext(page, uri)
+    await use(context)
   },
 })
 

@@ -1,4 +1,4 @@
-package nl.runnable.gigmatch.app.testset
+package nl.runnable.gigmatch.app.api.v1
 
 import com.opencsv.bean.CsvBindByName
 import java.util.*

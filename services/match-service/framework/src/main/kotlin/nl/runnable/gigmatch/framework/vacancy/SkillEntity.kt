@@ -8,7 +8,7 @@ import nl.runnable.gigmatch.framework.jpa.JpaEntity
 import java.util.*
 
 @Entity
-@Table(name = "genre")
+@Table(name = "skill")
 @EntityListeners(SkillEntityListener::class)
 class SkillEntity(id: UUID) : JpaEntity(id) {
 

@@ -1,12 +1,18 @@
 import { DateResolver, UUIDResolver } from 'graphql-scalars'
 import { H3Event } from 'h3'
-import { fetchSkills } from './skills'
-import { fetchCurrentUserDetails } from './user-details'
-import { createVacancy, fetchActiveVacancies } from './vacancies'
+import { querySkills } from './skills'
+import { queryCurrentUserDetails } from './user-details'
+import {
+  VacancyFilter,
+  createVacancy,
+  openVacancy,
+  queryVacancies,
+} from './vacancies'
 
 export const typeDefs = /* GraphQL */ `
   scalar Date
   scalar UUID
+  scalar Void
 
   enum RateType {
     HOURLY
@@ -31,20 +37,31 @@ export const typeDefs = /* GraphQL */ `
     slug: String!
   }
 
+  type Experience {
+    skillId: UUID!
+    level: ExperienceLevel!
+  }
+
   type Vacancy {
     id: UUID!
     jobTitle: String!
     start: Date!
     end: Date!
+    experience: [Experience!]!
     rateAmount: Int!
     rateType: RateType!
     deadline: Date!
+    isOpen: Boolean!
+  }
+
+  input VacancyFilter {
+    id: [UUID!]
   }
 
   type Query {
     currentUser: UserDetails!
-    allSkills: [Skill]!
-    activeVacancies: [Vacancy]!
+    skills: [Skill]!
+    vacancies(filter: VacancyFilter): [Vacancy]!
   }
 
   input ExperienceInput {
@@ -64,6 +81,7 @@ export const typeDefs = /* GraphQL */ `
 
   type Mutation {
     createVacancy(vacancy: VacancyInput!): Vacancy
+    openVacancy(id: UUID!): Void
   }
 `
 
@@ -71,18 +89,30 @@ interface H3EventContext {
   event: H3Event
 }
 
+const QUERIES = {
+  currentUser: (_: unknown, __: unknown, context: H3EventContext) =>
+    queryCurrentUserDetails(context.event),
+
+  skills: () => querySkills(),
+
+  vacancies: (
+    _: unknown,
+    { filter }: { filter: VacancyFilter },
+    context: H3EventContext
+  ) => queryVacancies(filter, context.event),
+}
+
+const MUTATIONS = {
+  createVacancy: (_: unknown, { vacancy }: any, context: H3EventContext) =>
+    createVacancy(vacancy, context.event),
+
+  openVacancy: (_: unknown, { id }: { id: string }, context: H3EventContext) =>
+    openVacancy(id, context.event),
+}
+
 export const resolvers = {
   UUID: UUIDResolver,
   Date: DateResolver,
-  Query: {
-    currentUser: (_: unknown, __: unknown, context: H3EventContext) =>
-      fetchCurrentUserDetails(context.event),
-    allSkills: () => fetchSkills(),
-    activeVacancies: () => fetchActiveVacancies(),
-  },
-  Mutation: {
-    createVacancy: (_: unknown, { vacancy }: any, context: H3EventContext) => {
-      return createVacancy(vacancy, context.event)
-    },
-  },
+  Query: QUERIES,
+  Mutation: MUTATIONS,
 }

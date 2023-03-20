@@ -1,7 +1,8 @@
 package nl.runnable.gigmatch.events
 
-import nl.runnable.gigmatch.domain.vacancy.Experience
 import nl.runnable.gigmatch.domain.vacancy.Rate
+import nl.runnable.gigmatch.domain.vacancy.Experience as DomainExperience
+import nl.runnable.gigmatch.events.Experience as FrameworkExperience
 
 fun Rate.Type.toFrameworkCounterpart() = when (this) {
     Rate.Type.HOURLY -> RateType.HOURLY
@@ -9,13 +10,13 @@ fun Rate.Type.toFrameworkCounterpart() = when (this) {
     Rate.Type.FIXED -> RateType.FIXED
 }
 
-fun Experience.Level.toFrameworkCounterpart() = when (this) {
-    Experience.Level.JUNIOR -> ExperienceLevel.JUNIOR
-    Experience.Level.MEDIOR -> ExperienceLevel.MEDIOR
-    Experience.Level.SENIOR -> ExperienceLevel.SENIOR
+fun DomainExperience.Level.toFrameworkCounterpart() = when (this) {
+    DomainExperience.Level.JUNIOR -> ExperienceLevel.JUNIOR
+    DomainExperience.Level.MEDIOR -> ExperienceLevel.MEDIOR
+    DomainExperience.Level.SENIOR -> ExperienceLevel.SENIOR
 }
 
-fun Experience.toFrameworkCounterpart() = Experience(
-    skillId.toString(),
+fun DomainExperience.toFrameworkCounterpart() = FrameworkExperience(
+    skillId.toUUID(),
     level.toFrameworkCounterpart(),
 )

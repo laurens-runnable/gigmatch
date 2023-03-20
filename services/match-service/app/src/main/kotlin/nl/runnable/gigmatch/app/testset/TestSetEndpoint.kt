@@ -20,9 +20,6 @@ class TestSetEndpoint {
     }
 
     @Autowired
-    private lateinit var skillTestSet: SkillTestSet
-
-    @Autowired
     private lateinit var vacancyTestSet: VacancyTestSet
 
     /**
@@ -31,7 +28,6 @@ class TestSetEndpoint {
     @WriteOperation
     fun reset() {
         logger.info("Resetting test set")
-        skillTestSet.reset()
         vacancyTestSet.reset()
     }
 }

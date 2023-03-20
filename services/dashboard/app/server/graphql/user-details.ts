@@ -1,7 +1,6 @@
 import KcAdminClient from '@keycloak/keycloak-admin-client'
 import { H3Event } from 'h3'
-import jwtDecode from 'jwt-decode'
-import { useSession } from '~/server/lib/session'
+import { useJwt } from '~/server/lib/session'
 
 export interface UserDetails {
   firstName?: string
@@ -33,14 +32,9 @@ async function findUserDetails(id: string): Promise<UserDetails> {
   }
 }
 
-export async function fetchCurrentUserDetails(
+export async function queryCurrentUserDetails(
   event: H3Event
 ): Promise<UserDetails> {
-  const session = await useSession(event)
-  if (!session.accessToken) {
-    throw new Error('Current user not found')
-  }
-
-  const jwt = jwtDecode<any>(session.accessToken)
+  const jwt = await useJwt(event)
   return await findUserDetails(jwt.sub)
 }
