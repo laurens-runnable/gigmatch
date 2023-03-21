@@ -1,7 +1,7 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 import { H3Event } from 'h3'
-import { useSession } from '~/server/lib/session'
+import { useSession } from '~/server/utils/session'
 
 export async function createMatchServiceClient(event: H3Event) {
   const {

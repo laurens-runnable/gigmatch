@@ -1,7 +1,7 @@
 import { H3Event } from 'h3'
 import { Client, Issuer, custom, generators } from 'openid-client'
-import { useSession } from '~/server/lib/session'
-import { useAppUrl } from '~/server/lib/url'
+import { useSession } from '~/server/utils/session'
+import { useAppUrl } from '~/utils/url'
 
 custom.setHttpOptionsDefaults({
   timeout: 10000,

@@ -14,6 +14,7 @@ const apolloClient = new ApolloClient({
 })
 provide(DefaultApolloClient, apolloClient)
 </script>
+
 <template>
   <div>
     <NuxtLayout>

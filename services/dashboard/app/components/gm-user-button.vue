@@ -2,7 +2,6 @@
 import { useQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { UserDetails } from '~/server/graphql/user-details'
-import { useAppUrl } from '~/server/lib/url'
 
 const { result, loading, error } = useQuery(gql`
   query {
@@ -22,7 +21,7 @@ const displayName = computed<string | undefined>(() => {
   }
 })
 
-const items = [
+const menuItems = [
   {
     title: 'Logout',
     handle() {
@@ -32,18 +31,11 @@ const items = [
 ]
 </script>
 <template>
-  <v-btn
-    v:if="displayName"
-    color="info"
-    size="32"
-    :title="displayName"
-    class="gm-user"
-  >
-    <v-icon icon="mdi-account" />
+  <v-btn v:if="displayName" color="white" block class="gm-user">
     <v-menu activator="parent">
       <v-list>
         <v-list-item
-          v-for="(item, index) in items"
+          v-for="(item, index) in menuItems"
           :key="index"
           :value="index"
           class="gm-logout"
@@ -53,5 +45,7 @@ const items = [
         </v-list-item>
       </v-list>
     </v-menu>
+    <v-icon icon="mdi-account" size="1.25rem" start />
+    {{ displayName }}
   </v-btn>
 </template>

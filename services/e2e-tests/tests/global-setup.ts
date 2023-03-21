@@ -1,3 +1,4 @@
+import { fetchAdminAccessToken } from './admin'
 import {
   type APIRequestContext,
   type FullConfig,
@@ -6,7 +7,6 @@ import {
 } from '@playwright/test'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { fetchAdminAccessToken } from './admin'
 
 async function populateReferenceData(
   request: APIRequestContext,

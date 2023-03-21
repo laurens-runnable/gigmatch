@@ -1,5 +1,3 @@
-import { getDb } from '~/server/lib/mongo'
-
 export interface Skill {
   id: string
   name: string

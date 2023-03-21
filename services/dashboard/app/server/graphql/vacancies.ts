@@ -2,9 +2,6 @@ import { randomUUID } from 'crypto'
 import { H3Event } from 'h3'
 import { VacancyDocument } from '~/../shared/mongo'
 import { OpenVacancy } from '~/server/avro/commands'
-import { createMatchServiceClient } from '~/server/lib/axios'
-import { getDb } from '~/server/lib/mongo'
-import { useJwt } from '~/server/lib/session'
 
 export interface ExperienceInput {
   skillId: string

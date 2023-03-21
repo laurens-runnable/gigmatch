@@ -1,6 +1,4 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode'
-import { renewTokens, startAuthorizationFlow } from '~/server/lib/open-id'
-import { useSession } from '~/server/lib/session'
 
 function isExpired(accessToken: string) {
   const jwt = jwtDecode<JwtPayload>(accessToken)

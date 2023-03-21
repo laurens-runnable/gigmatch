@@ -1,4 +1,4 @@
-import { testDashboard as test } from '../fixtures'
+import { testDashboard as test } from '../../fixtures'
 import { expect } from '@playwright/test'
 
 // noinspection JSUnusedLocalSymbols

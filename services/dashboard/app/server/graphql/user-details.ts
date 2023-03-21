@@ -1,6 +1,5 @@
 import KcAdminClient from '@keycloak/keycloak-admin-client'
 import { H3Event } from 'h3'
-import { useJwt } from '~/server/lib/session'
 
 export interface UserDetails {
   firstName?: string

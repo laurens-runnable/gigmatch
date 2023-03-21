@@ -2,6 +2,7 @@
 
 export default defineNuxtConfig({
   ssr: false,
+  modules: ['@nuxtjs/i18n'],
   alias: {
     'dashboard-shared': './node_modules/@gigmatch/dashboard-shared',
   },
@@ -39,4 +40,19 @@ export default defineNuxtConfig({
   css: ['vuetify/lib/styles/main.sass'],
   build: { transpile: ['vuetify'] },
   vite: { define: { 'process.env.DEBUG': false } },
+  i18n: {
+    langDir: 'i18n',
+    locales: [
+      {
+        code: 'en',
+        file: 'en.js',
+        dir: 'ltr',
+      },
+    ],
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    vueI18n: {
+      legacy: false,
+    },
+  },
 })
