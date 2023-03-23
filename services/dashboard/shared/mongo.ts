@@ -1,19 +1,20 @@
 export interface ExperienceItem {
-  skillId: string
-  experienceLevel: string
+  readonly skillId: string
+  readonly experienceLevel: string
 }
 
 export interface VacancyDocument {
-  id: string
-  jobTitle: string
-  start: Date
-  end: Date
-  rateAmount: number
-  rateType: string
-  deadline: Date
-  userId: string
-  isOpen: boolean
-  experience: Array<ExperienceItem>
+  readonly id: string
+  readonly jobTitle: string
+  readonly start: Date
+  readonly end: Date
+  readonly rateAmount: number
+  readonly rateType: string
+  readonly deadline: Date
+  readonly experience: Array<ExperienceItem>
+  readonly isPending: boolean
+  readonly isOpen: boolean
+  readonly userId: string
 }
 
 export interface SkillDocument {

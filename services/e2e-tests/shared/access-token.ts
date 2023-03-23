@@ -1,9 +1,13 @@
 import fetch from 'node-fetch'
 
-export async function fetchAdminAccessToken(baseURL: string): Promise<string> {
+export async function fetchAccessToken(
+  baseURL: string,
+  username: string,
+  password: string
+): Promise<string> {
   const params = new URLSearchParams()
-  params.append('username', 'admin1')
-  params.append('password', 'admin1')
+  params.append('username', username)
+  params.append('password', password)
   params.append('grant_type', 'password')
   params.append('client_id', 'gigmatch-admin')
   params.append('client_secret', 'secret')

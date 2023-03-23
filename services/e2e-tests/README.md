@@ -48,3 +48,12 @@ achieve this.
    tables. (These synchronization tables are MongoDB and Elasticsearch collections.)
 3. The test then polls the respective synchronization table for setup completion, throwing an exception in case of a
    timeout.
+
+## Test data
+
+To generate test data
+
+```bash
+# Run `test-data` script
+npm run generate-vacancies
+```

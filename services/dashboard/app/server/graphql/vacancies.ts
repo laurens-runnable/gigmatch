@@ -25,7 +25,13 @@ export async function createVacancy(
   const id = randomUUID()
   const { sub: userId } = await useJwt(event)
 
-  const doc: VacancyDocument = { id, userId, isOpen: false, ...input }
+  const doc: VacancyDocument = {
+    ...input,
+    id,
+    isPending: true,
+    isOpen: false,
+    userId,
+  }
   const db = await getDb()
   const coll = db.collection<VacancyDocument>('vacancy')
   await coll.insertOne(doc)
@@ -50,21 +56,29 @@ export async function openVacancy(id: string, event: H3Event): Promise<void> {
   })
 }
 
-export interface VacancyFilter {
-  id: [string]
+export interface VacancyFilterInput {
+  id?: string[]
+  type?: string
 }
 
 export async function queryVacancies(
-  filter: VacancyFilter,
+  input: VacancyFilterInput,
   event: H3Event
 ): Promise<VacancyDocument[]> {
   const { sub: userId } = await useJwt(event)
 
+  const filter: any = {
+    isOpen: input.type === 'OPEN',
+    isPending: input.type === 'PENDING',
+  }
+  const ids = input.id ?? []
+  if (ids.length > 0) {
+    filter.id = { $in: ids }
+  }
+
   const db = await getDb()
   const coll = db.collection<VacancyDocument>('vacancy')
-  const documents = coll
-    .find({ id: { $in: filter.id } }, userId)
-    .sort({ name: 1 })
+  const documents = coll.find(filter, userId).sort({ name: 1 })
 
   return documents.toArray()
 }

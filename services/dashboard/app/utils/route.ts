@@ -5,9 +5,5 @@ export function useRouteTitle() {
   const { path } = router.currentRoute.value
 
   const { t } = useI18n()
-  const title = t(`route.${path}.title`)
-
-  useSeoMeta({ title })
-
-  return title
+  return t(`route.${path}.title`)
 }

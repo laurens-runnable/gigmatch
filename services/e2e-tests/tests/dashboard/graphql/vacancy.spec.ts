@@ -65,14 +65,14 @@ test('vacancy creation', async ({
     data: { vacancies },
   } = await graphql.client.query({
     query: gql`
-      query FindVacancy($id: UUID!) {
-        vacancies(filter: { id: [$id] }) {
+      query FindVacancy($id: UUID!, $type: VacancyType) {
+        vacancies(filter: { id: [$id], type: $type }) {
           id
           isOpen
         }
       }
     `,
-    variables: { id },
+    variables: { id, type: 'OPEN' },
   })
 
   expect(vacancies.length).toBe(1)

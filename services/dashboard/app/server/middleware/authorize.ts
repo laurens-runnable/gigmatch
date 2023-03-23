@@ -1,4 +1,5 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode'
+import { useAccessToken } from '~/server/utils/access-token'
 
 function isExpired(accessToken: string) {
   const jwt = jwtDecode<JwtPayload>(accessToken)
@@ -13,9 +14,9 @@ export default defineEventHandler(async (event) => {
     return
   }
 
-  const session = await useSession(event)
-  if (session.accessToken) {
-    if (isExpired(session.accessToken)) {
+  const accessToken = await useAccessToken(event)
+  if (accessToken !== null) {
+    if (isExpired(accessToken)) {
       try {
         await renewTokens(event)
       } catch (e) {

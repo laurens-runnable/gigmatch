@@ -9,7 +9,7 @@ export default {
     matches: 'Matches',
   },
   route: {
-    '/': {
+    '/home': {
       title: 'Home',
     },
     '/vacancies': {
@@ -20,6 +20,16 @@ export default {
     },
     '/matches': {
       title: 'Matches',
+    },
+  },
+  vacancies: {
+    jobTitle: 'Job title',
+    deadline: 'Deadline',
+    term: 'Term',
+    types: {
+      OPEN: 'Open',
+      CLOSED: 'Closed',
+      PENDING: 'Pending',
     },
   },
 }

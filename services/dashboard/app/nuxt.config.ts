@@ -1,12 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: 'Gigmatch',
+    },
+  },
   ssr: false,
+  typescript: { strict: true },
+  hooks: {
+    'pages:extend'(pages) {
+      pages.push({
+        path: '/',
+        redirect: '/home',
+      })
+    },
+  },
   modules: ['@nuxtjs/i18n'],
   alias: {
     'dashboard-shared': './node_modules/@gigmatch/dashboard-shared',
   },
-  typescript: { strict: true },
   runtimeConfig: {
     session: {
       cookieName: 'gm.cookie',
@@ -45,7 +58,7 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'en',
-        file: 'en.js',
+        file: 'en_messages.js',
         dir: 'ltr',
       },
     ],

@@ -53,7 +53,9 @@ const items: NavItem[] = [
     </v-navigation-drawer>
 
     <v-main>
-      <slot />
+      <v-container fluid>
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>

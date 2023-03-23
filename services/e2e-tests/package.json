@@ -4,28 +4,42 @@
   "private": true,
   "scripts": {
     "test": "npx playwright test",
+    "test-dashboard": "npx playwright test dashboard --project=chromium",
+    "test-website": "npx playwright test website --project=chromium",
     "test-chromium": "npx playwright test --project=chromium",
     "test-firefox": "npx playwright test --project=firefox",
     "test-webkit": "npx playwright test --project=webkit",
     "format": "prettier --write .",
-    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ."
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",
+    "generate-vacancies": "npx ts-node ./test-data/index.ts generate-vacancies"
   },
   "devDependencies": {
     "@apollo/client": "3.7.2",
     "@elastic/elasticsearch": "8.6.0",
+    "@faker-js/faker": "7.6.0",
     "@playwright/test": "1.29.2",
     "@trivago/prettier-plugin-sort-imports": "4.0.0",
     "@types/node-fetch": "2.6.2",
+    "@types/yargs": "17.0.23",
+    "@typescript-eslint/eslint-plugin": "5.55.0",
+    "@typescript-eslint/parser": "5.55.0",
     "eslint": "8.33.0",
     "eslint-config-standard-with-typescript": "34.0.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-n": "15.6.1",
     "eslint-plugin-promise": "6.1.1",
     "graphql": "16.6.0",
+    "inversify": "6.0.1",
     "mongodb": "5.0.0",
     "node-fetch": "2.6.9",
     "openid-client": "5.4.0",
     "prettier": "2.8.2",
-    "uuid": "9.0.0"
+    "ts-node-dev": "2.0.0",
+    "uuid": "9.0.0",
+    "winston": "3.8.2",
+    "yargs": "17.7.1"
+  },
+  "dependencies": {
+    "reflect-metadata": "0.1.13"
   }
 }

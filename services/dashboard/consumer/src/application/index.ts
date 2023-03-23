@@ -8,13 +8,6 @@ import { EVENT_DESERIALIZER_TYPE, EventDeserializer } from './events'
 import { EVENT_HANDLER_REGISTRY_TYPE, EventHandlerRegistry } from './handlers'
 import { inject, injectable } from 'inversify'
 
-export const APPLICATION_TYPE = Symbol.for('Application')
-
-export function createApplication(config: Config): Application {
-  const container = createContainer(config)
-  return container.get<Application>(APPLICATION_TYPE)
-}
-
 @injectable()
 export class Application {
   private readonly _logger: Logger
@@ -93,4 +86,11 @@ export class Application {
     const eventHandler = this._eventHandlerRegistry.resolveEventHandler(type)
     await eventHandler.handleEvent({ type, payload })
   }
+}
+
+export const APPLICATION_TYPE = Symbol.for('Application')
+
+export function createApplication(config: Config): Application {
+  const container = createContainer(config)
+  return container.get<Application>(APPLICATION_TYPE)
 }

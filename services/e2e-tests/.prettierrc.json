@@ -10,5 +10,6 @@
     "^[./]",
     "<THIRD_PARTY_MODULES>"
   ],
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"]
 }

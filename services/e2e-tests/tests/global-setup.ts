@@ -1,4 +1,4 @@
-import { fetchAdminAccessToken } from './admin'
+import { fetchAccessToken } from '../shared/access-token'
 import {
   type APIRequestContext,
   type FullConfig,
@@ -13,7 +13,7 @@ async function populateReferenceData(
   baseURL: string,
   accessToken: string
 ): Promise<void> {
-  const csv = await fs.readFile(path.join(__dirname, './skills.csv'))
+  const csv = await fs.readFile(path.join(__dirname, '../shared/skills.csv'))
   const data = csv.toString()
   const populateSkills = await request.post(
     `${baseURL}/matches/api/v1/reference-data/skills`,
@@ -35,7 +35,7 @@ export default async function (config: FullConfig): Promise<void> {
 
   const baseURL = config.projects[0].use.baseURL as string
 
-  const accessToken = await fetchAdminAccessToken(baseURL)
+  const accessToken = await fetchAccessToken(baseURL, 'admin1', 'admin1')
   await populateReferenceData(request, baseURL, accessToken)
 
   await browser.close()

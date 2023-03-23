@@ -38,6 +38,6 @@
     "jwt-decode": "3.1.2",
     "mongodb": "5.1.0",
     "openid-client": "5.4.0",
-    "vuetify": "3.1.10"
+    "vuetify": "3.1.11"
   }
 }

@@ -3,7 +3,7 @@ import { H3Event } from 'h3'
 import { querySkills } from './skills'
 import { queryCurrentUserDetails } from './user-details'
 import {
-  VacancyFilter,
+  VacancyFilterInput,
   createVacancy,
   openVacancy,
   queryVacancies,
@@ -54,14 +54,21 @@ export const typeDefs = /* GraphQL */ `
     isOpen: Boolean!
   }
 
-  input VacancyFilter {
+  enum VacancyType {
+    OPEN
+    CLOSED
+    PENDING
+  }
+
+  input VacancyFilterInput {
     id: [UUID!]
+    type: VacancyType
   }
 
   type Query {
     currentUser: UserDetails!
     skills: [Skill]!
-    vacancies(filter: VacancyFilter): [Vacancy]!
+    vacancies(filter: VacancyFilterInput): [Vacancy]!
   }
 
   input ExperienceInput {
@@ -97,7 +104,7 @@ const QUERIES = {
 
   vacancies: (
     _: unknown,
-    { filter }: { filter: VacancyFilter },
+    { filter }: { filter: VacancyFilterInput },
     context: H3EventContext
   ) => queryVacancies(filter, context.event),
 }

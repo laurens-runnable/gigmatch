@@ -28,6 +28,7 @@ export class VacancyCreatedHandler implements EventHandler {
     const vacancy: VacancyDocument = {
       ...payload,
       isOpen: true,
+      isPending: false,
     }
 
     await this._repository.updateVacancy(vacancy)

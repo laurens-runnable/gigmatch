@@ -1,6 +1,5 @@
 import { H3Event } from 'h3'
 import { IronSessionData, getIronSession } from 'iron-session'
-import jwtDecode from 'jwt-decode'
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -31,12 +30,4 @@ export async function useSession(event: H3Event): Promise<IronSessionData> {
   })
   event.context.session = session
   return session
-}
-
-export async function useJwt(event: H3Event): Promise<any> {
-  const session = await useSession(event)
-  if (!session.accessToken) {
-    throw new Error('Access token not found')
-  }
-  return jwtDecode<any>(session.accessToken)
 }
