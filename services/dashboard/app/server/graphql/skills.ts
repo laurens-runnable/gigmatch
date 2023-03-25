@@ -5,7 +5,7 @@ export interface Skill {
 }
 
 export async function querySkills(): Promise<Skill[]> {
-  const db = await getDb()
+  const db = await useDb()
   const coll = db.collection<Skill>('skill')
   const documents = coll.find().sort({ name: 1 })
   return documents.toArray()

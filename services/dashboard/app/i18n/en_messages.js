@@ -27,9 +27,8 @@ export default {
     deadline: 'Deadline',
     term: 'Term',
     types: {
-      OPEN: 'Open',
+      ACTIVE: 'Active',
       CLOSED: 'Closed',
-      PENDING: 'Pending',
     },
   },
 }

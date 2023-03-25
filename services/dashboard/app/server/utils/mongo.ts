@@ -2,7 +2,7 @@ import { Db, MongoClient } from 'mongodb'
 
 let db: Db
 
-export async function getDb(): Promise<Db> {
+export async function useDb(): Promise<Db> {
   if (!db) {
     const {
       mongo: { url, database },

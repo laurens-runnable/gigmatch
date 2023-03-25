@@ -28,11 +28,10 @@ export async function createVacancy(
   const doc: VacancyDocument = {
     ...input,
     id,
-    isPending: true,
-    isOpen: false,
+    status: 'PENDING',
     userId,
   }
-  const db = await getDb()
+  const db = await useDb()
   const coll = db.collection<VacancyDocument>('vacancy')
   await coll.insertOne(doc)
 
@@ -40,7 +39,7 @@ export async function createVacancy(
 }
 
 export async function openVacancy(id: string, event: H3Event): Promise<void> {
-  const db = await getDb()
+  const db = await useDb()
   const coll = db.collection<VacancyDocument>('vacancy')
   const doc = await coll.findOne({ id })
   if (doc === undefined) {
@@ -61,24 +60,36 @@ export interface VacancyFilterInput {
   type?: string
 }
 
-export async function queryVacancies(
-  input: VacancyFilterInput,
-  event: H3Event
-): Promise<VacancyDocument[]> {
+async function createFilter(input: VacancyFilterInput, event: H3Event): any {
   const { sub: userId } = await useJwt(event)
 
-  const filter: any = {
-    isOpen: input.type === 'OPEN',
-    isPending: input.type === 'PENDING',
-  }
+  const filter: any = { userId }
+
   const ids = input.id ?? []
   if (ids.length > 0) {
     filter.id = { $in: ids }
   }
 
-  const db = await getDb()
+  switch (input.type) {
+    case 'ACTIVE':
+      filter.status = { $in: ['OPEN', 'PENDING'] }
+      break
+    case 'CLOSED':
+      filter.status = 'CLOSED'
+      break
+  }
+
+  return filter
+}
+
+export async function queryVacancies(
+  input: VacancyFilterInput,
+  event: H3Event
+): Promise<VacancyDocument[]> {
+  const db = await useDb()
   const coll = db.collection<VacancyDocument>('vacancy')
-  const documents = coll.find(filter, userId).sort({ name: 1 })
+  const filter = await createFilter(input, event)
+  const documents = coll.find(filter).sort({ name: 1 })
 
   return documents.toArray()
 }

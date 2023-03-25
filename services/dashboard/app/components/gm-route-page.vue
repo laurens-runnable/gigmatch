@@ -10,7 +10,9 @@ useSeoMeta({ title: `${routeTitle} - ${appTitle}` })
 <template>
   <v-row>
     <v-col>
-      <slot :route-title="routeTitle" :app-title="appTitle" />
+      <slot :route-title="routeTitle" :app-title="appTitle">
+        <h1>{{ routeTitle }}</h1>
+      </slot>
     </v-col>
   </v-row>
 </template>

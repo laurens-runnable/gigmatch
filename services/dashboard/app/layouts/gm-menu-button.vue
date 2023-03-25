@@ -31,7 +31,13 @@ const menuItems = [
 ]
 </script>
 <template>
-  <v-btn v:if="displayName" color="white" block class="gm-user">
+  <v-btn
+    v:if="displayName"
+    class="gm-user"
+    icon
+    :title="displayName"
+    variant="plain"
+  >
     <v-menu activator="parent">
       <v-list>
         <v-list-item
@@ -45,7 +51,6 @@ const menuItems = [
         </v-list-item>
       </v-list>
     </v-menu>
-    <v-icon icon="mdi-account" size="1.25rem" start />
-    {{ displayName }}
+    <v-icon>mdi-account</v-icon>
   </v-btn>
 </template>

@@ -37,12 +37,6 @@ const CREATE_VACANCY = gql`
       }
     ) {
       id
-      jobTitle
-      experience {
-        skillId
-        level
-      }
-      isOpen
     }
   }
 `

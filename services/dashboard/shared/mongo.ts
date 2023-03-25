@@ -12,8 +12,7 @@ export interface VacancyDocument {
   readonly rateType: string
   readonly deadline: Date
   readonly experience: Array<ExperienceItem>
-  readonly isPending: boolean
-  readonly isOpen: boolean
+  readonly status: string
   readonly userId: string
 }
 

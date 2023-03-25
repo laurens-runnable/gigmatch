@@ -16,7 +16,7 @@ const { result } = useQuery(
       }
     }
   `,
-  { type: props.type?.toUpperCase() }
+  { type: props.type }
 )
 
 const { t } = useI18n()

@@ -19,11 +19,11 @@ const CREATE_VACANCY = gql`
     ) {
       id
       jobTitle
+      status
       experience {
         skillId
         level
       }
-      isOpen
     }
   }
 `
@@ -52,7 +52,7 @@ test('vacancy creation', async ({
   expect(id.length).toBeGreaterThan(0)
   expect(createVacancy.experience.length).toBe(1)
   expect(createVacancy.jobTitle).toStrictEqual('Kotlin developer')
-  expect(createVacancy.isOpen).toStrictEqual(false)
+  expect(createVacancy.status).toStrictEqual('PENDING')
 
   await graphql.client.mutate({
     mutation: OPEN_VACANCY,
@@ -66,16 +66,16 @@ test('vacancy creation', async ({
   } = await graphql.client.query({
     query: gql`
       query FindVacancy($id: UUID!, $type: VacancyType) {
-        vacancies(filter: { id: [$id], type: $type }) {
+        vacancies(filter: { id: [$id], status: $type }) {
           id
-          isOpen
+          status
         }
       }
     `,
-    variables: { id, type: 'OPEN' },
+    variables: { id, status: 'ACTIVE' },
   })
 
   expect(vacancies.length).toBe(1)
   const [vacancy] = vacancies
-  expect(vacancy.isOpen).toStrictEqual(true)
+  expect(vacancy.status).toStrictEqual('OPEN')
 })

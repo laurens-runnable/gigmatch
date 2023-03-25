@@ -45,19 +45,18 @@ export const typeDefs = /* GraphQL */ `
   type Vacancy {
     id: UUID!
     jobTitle: String!
+    status: String!
     start: Date!
     end: Date!
     experience: [Experience!]!
     rateAmount: Int!
     rateType: RateType!
     deadline: Date!
-    isOpen: Boolean!
   }
 
   enum VacancyType {
-    OPEN
+    ACTIVE
     CLOSED
-    PENDING
   }
 
   input VacancyFilterInput {

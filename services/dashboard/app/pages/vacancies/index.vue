@@ -8,7 +8,7 @@ interface TabItem {
   label: string
 }
 
-const vacancyTypes = ['OPEN', 'CLOSED', 'PENDING']
+const vacancyTypes = ['ACTIVE', 'CLOSED']
 const { t } = useI18n()
 const tabItems: TabItem[] = vacancyTypes.map((option) => ({
   value: option,
@@ -44,7 +44,11 @@ const filter = ref('open')
       </v-toolbar>
       <v-card-text>
         <v-window v-model="filter">
-          <v-window-item v-for="type in vacancyTypes" :key="type" :value="type">
+          <v-window-item
+            v-for="type in vacancyTypes"
+            :key="type"
+            :value="type"
+          >
             <gm-vacancies-table :type="type" />
           </v-window-item>
         </v-window>
