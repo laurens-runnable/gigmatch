@@ -66,7 +66,7 @@ test('vacancy creation', async ({
   } = await graphql.client.query({
     query: gql`
       query FindVacancy($id: UUID!, $type: VacancyType) {
-        vacancies(filter: { id: [$id], status: $type }) {
+        vacancies(filter: { id: [$id], type: $type }) {
           id
           status
         }
