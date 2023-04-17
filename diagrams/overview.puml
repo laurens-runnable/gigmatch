@@ -23,8 +23,8 @@ System_Boundary(c1, "Gigmatch") {
     Container(match_service, "Match Service", "Spring Boot, Axon", "Core business logic", $tags = "microservice")
     ContainerDb(match_db, "Match\ndatabase", "PostgreSQL", "Source data", $tags = "storage")
 
-    Container(website_consumer, "Website\nconsumer", ".NET", "Handle events\nrelevant to Candidates", $tags = "consumer")
-    Container(website, "Website", "ASP.NET Core MVC", "* Browse vacancies\n*Apply for jobs", $tags = "microfrontend")
+    Container(website_consumer, "Website\nconsumer", "Quarkus", "Handle events\nrelevant to Candidates", $tags = "consumer")
+    Container(website, "Website", "Quarkus Qute", "* Browse vacancies\n*Apply for jobs", $tags = "microfrontend")
     ContainerDb(vacancy_search_engine, "Website\nsearch engine", "Elasticsearch", "Projections", $tags = "storage")
 
     Container(keycloak, "Identity / Access\nmanagement", "Keycloak", $tags = "authentication")

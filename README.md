@@ -28,7 +28,6 @@ Services are loosely-coupled, maintain their own storage and use their own dedic
 ### Requirements
 
 * OpenJDK 17
-* .NET 7
 * Node.js 18
 * Docker
 

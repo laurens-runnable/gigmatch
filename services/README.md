@@ -1,13 +1,13 @@
 # Services
 
-| Component                                               | Description                  | Implementation        | Storage       |
-|---------------------------------------------------------|------------------------------|-----------------------|---------------|
-| [match-service](./match-service)                        | Match Service                | Spring Boot, Axon     | PostgreSQL    |
-| [dashboard](./dashboard/app)                            | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
-| [dashboard-consumer](./dashboard/consumer)              | Event consumer for dashboard | Node.js               |               |
-| [website](./website/Gigmatch.Website.Mvc)               | Website                      | ASP.NET Core MVC      | Elasticsearch |
-| [website-consumer](./website/Gigmatch.Website.Consumer) | Event consumer for website   | .NET                  |               |
-| [e2e-tests](./e2e-tests)                                | End-to-end tests             | Playwright            |               |
+| Component                                  | Description                  | Implementation        | Storage       |
+|--------------------------------------------|------------------------------|-----------------------|---------------|
+| [match-service](./match-service)           | Match Service                | Spring Boot, Axon     | PostgreSQL    |
+| [dashboard](./dashboard/app)               | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
+| [dashboard-consumer](./dashboard/consumer) | Event consumer for dashboard | Node.js               |               |
+| [website](./website/server)                | Website                      | Quarkus Qute          | Elasticsearch |
+| [website-consumer](./website/consumer)     | Event consumer for website   | Quarkus               |               |
+| [e2e-tests](./e2e-tests)                   | End-to-end tests             | Playwright            |               |
 
 ## Avro schemas
 
