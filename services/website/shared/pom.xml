@@ -9,22 +9,17 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>website-server</artifactId>
+    <artifactId>website-shared</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>website-shared</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-elasticsearch-rest-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive-qute</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-oidc</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,14 @@
 # Website
 
 ```bash
+# Make sure 'website-shared' artifact can be found 
+mvn clean install
+
 # Start consumer
-./mvnw -pl consumer -am quarkus:dev
+cd consumer
+mvn quarkus:dev
 
 # Start server
-./mvnw -pl server -am quarkus:dev
+cd server
+mvn quarkus:dev
 ```
