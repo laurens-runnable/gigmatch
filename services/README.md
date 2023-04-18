@@ -1,13 +1,13 @@
 # Services
 
-| Component                                               | Description                  | Implementation        | Storage       |
-|---------------------------------------------------------|------------------------------|-----------------------|---------------|
-| [match-service](./match-service)                        | Match Service                | Spring Boot, Axon     | PostgreSQL    |
-| [dashboard](./dashboard/app)                            | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
-| [dashboard-consumer](./dashboard/consumer)              | Event consumer for dashboard | Node.js               |               |
-| [website](./website/Gigmatch.Website.Mvc)               | Website                      | ASP.NET Core MVC      | Elasticsearch |
-| [website-consumer](./website/Gigmatch.Website.Consumer) | Event consumer for website   | .NET                  |               |
-| [e2e-tests](./e2e-tests)                                | End-to-end tests             | Playwright            |               |
+| Component                                  | Description                  | Implementation        | Storage       |
+|--------------------------------------------|------------------------------|-----------------------|---------------|
+| [match-service](./match-service)           | Match Service                | Spring Boot, Axon     | PostgreSQL    |
+| [dashboard](./dashboard/app)               | Dashboard                    | Nuxt, Vue.js, GraphQL | MongoDB       |
+| [dashboard-consumer](./dashboard/consumer) | Event consumer for dashboard | Node.js               |               |
+| [website](./website/server)                | Website                      | Quarkus Qute          | Elasticsearch |
+| [website-consumer](./website/consumer)     | Event consumer for website   | Quarkus               |               |
+| [e2e-tests](./e2e-tests)                   | End-to-end tests             | Playwright            |               |
 
 ## Avro schemas
 
@@ -18,41 +18,4 @@ Each service maintains its own version of a given schema.
 * [match-service](./match-service/framework/src/main/avro) commands and events
 * [dashboard-consumer](dashboard/consumer/src/application/events) events
 * [dashboard](./dashboard/app/server/avro/commands) commands
-* [website-consumer](website/Gigmatch.Website.Consumer/avro/events) events
-
-### Type differences
-
-There may be slight differences between schemas used by consumers, depending on the level of support in the respective
-Avro library.
-
-For example, the [VacancyOpened event](./match-service/framework/src/main/avro/events/VacancyOpened.avsc) defines
-a `skills` property with a logical type of `uuid`:
-
-```json
-{
-  "name": "skills",
-  "type": {
-    "type": "array",
-    "items": {
-      "type": "string",
-      "logicalType": "uuid"
-    }
-  }
-}
-```
-
-The property of the corresponding generated Java code is of type `java.util.List<java.util.UUID>`.
-
-`AvroConvert` (.NET) does not seem to support logical types for arrays, at least not for code generation. To solve this,
-the [VacancyOpened event](./website/Gigmatch.Website.Consumer/avro/events/VacancyOpened.avsc) used by website-consumer
-defines this property as a `string` instead:
-
-```json
-{
-  "name": "skills",
-  "type": {
-    "type": "array",
-    "items": "string"
-  }
-}
-```
+* [website-consumer](website/consumer/src/main/avro/events) events

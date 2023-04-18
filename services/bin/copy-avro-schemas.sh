@@ -17,4 +17,4 @@ do
 done
 
 echo "Copying Avro schemas to website-consumer"
-cp ./match-service/framework/src/main/avro/events/*.avsc ./website/Gigmatch.Website.Consumer/avro/events
+cp ./match-service/framework/src/main/avro/events/*.avsc ./website/consumer/src/main/avro/events
