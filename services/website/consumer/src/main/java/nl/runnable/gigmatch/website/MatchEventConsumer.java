@@ -8,6 +8,7 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Message;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @Slf4j
@@ -22,18 +23,23 @@ public class MatchEventConsumer {
     @Incoming("match-events")
     CompletionStage<Void> consumeMessage(Message<byte[]> message) {
         final var metadata = KafkaMetadataUtil.readIncomingKafkaMetadata(message).orElseThrow();
-        final var headerValue = metadata.getHeaders().lastHeader("gm.type").value();
-        final var type = new String(headerValue, StandardCharsets.UTF_8);
 
-        if (eventHandlerResolver.canHandle(type)) {
-            final var eventHandler = eventHandlerResolver.resolveEventHandler(type);
-            final var payload = eventHandlerResolver.deserializePayload(type, message.getPayload());
-            eventHandler.accept(payload);
-        } else {
-            log.trace("Cannot handle message of type '{}'", type);
+        final var headerValue = metadata.getHeaders().lastHeader("gm.type").value();
+        final var eventType = new String(headerValue, StandardCharsets.UTF_8);
+
+        if (!eventHandlerResolver.canHandle(eventType)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Cannot handle event '{}'|{}", eventType, metadata.getOffset());
+            }
+            return CompletableFuture.completedStage(null).thenRun(message::ack);
         }
 
-        return message.ack();
+        if (log.isDebugEnabled()) {
+            log.debug("Handling event '{}'|{}", eventType, metadata.getOffset());
+        }
+        final var eventHandler = eventHandlerResolver.resolveEventHandler(eventType);
+        final var payload = eventHandlerResolver.deserializePayload(eventType, message.getPayload());
+        return eventHandler.handleEvent(payload).thenRun(message::ack);
     }
 
 }

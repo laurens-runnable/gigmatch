@@ -1,34 +1,30 @@
 package nl.runnable.gigmatch.website.events;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-import jakarta.inject.Singleton;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import nl.runnable.gigmatch.elasticsearch.ElasticsearchRepository;
-import nl.runnable.gigmatch.model.TestSetup;
 import nl.runnable.gigmatch.events.TestSetupStarted;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.RestClient;
+import nl.runnable.gigmatch.model.TestSetup;
+import nl.runnable.gigmatch.model.TestSetupRepository;
 
-import java.util.function.Consumer;
+import java.util.concurrent.CompletionStage;
 
 import static nl.runnable.gigmatch.website.events.EventConstants.HANDLER_SUFFIX;
 
-@Singleton
+@ApplicationScoped
 @Named("nl.runnable.gigmatch.events.TestSetupStarted" + HANDLER_SUFFIX)
 @Slf4j
-public class TestSetupStartedHandler extends ElasticsearchRepository implements Consumer<TestSetupStarted> {
+public class TestSetupStartedHandler implements EventHandler<TestSetupStarted> {
 
-    public TestSetupStartedHandler(@NonNull RestClient restClient) {
-        super(restClient);
+    private final TestSetupRepository testSetupRepository;
+
+    public TestSetupStartedHandler(@NonNull TestSetupRepository testSetupRepository) {
+        this.testSetupRepository = testSetupRepository;
     }
 
     @Override
-    public void accept(TestSetupStarted event) {
-        final var testSetup = new TestSetup(event.getId(), false);
-        final var endpoint = "/test-setup/_doc/%s".formatted(testSetup.getId());
-        final var request = new Request("PUT", endpoint);
-        performRequest(request, testSetup);
+    public CompletionStage<Void> handleEvent(TestSetupStarted event) {
+        return testSetupRepository.saveTestSetup(new TestSetup(event.getId(), true));
     }
-
 }

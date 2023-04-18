@@ -1,39 +1,36 @@
 package nl.runnable.gigmatch.website.events;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.inject.Singleton;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import nl.runnable.gigmatch.elasticsearch.ElasticsearchRepository;
-import nl.runnable.gigmatch.model.Vacancy;
 import nl.runnable.gigmatch.events.VacancyOpened;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.RestClient;
+import nl.runnable.gigmatch.model.Vacancy;
+import nl.runnable.gigmatch.model.VacancyRepository;
 
 import java.util.Collections;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletionStage;
 
 import static nl.runnable.gigmatch.website.events.EventConstants.HANDLER_SUFFIX;
 
-@Singleton
+@ApplicationScoped
 @Named("nl.runnable.gigmatch.events.VacancyOpened" + HANDLER_SUFFIX)
 @Slf4j
-public class VacancyOpenedHandler extends ElasticsearchRepository implements Consumer<VacancyOpened> {
+public class VacancyOpenedHandler implements EventHandler<VacancyOpened> {
 
-    protected VacancyOpenedHandler(@NonNull RestClient restClient) {
-        super(restClient);
-    }
+    @Inject
+    VacancyRepository vacancyRepository;
 
     @Override
-    public void accept(VacancyOpened event) {
-        final var doc = createVacancyDocument(event);
-        final var endpoint = "/vacancy/_doc/%s".formatted(doc.getId());
-        final var request = new Request("PUT", endpoint);
-        performRequest(request, doc);
+    public CompletionStage<Void> handleEvent(VacancyOpened event) {
+        if (log.isDebugEnabled()) {
+            log.debug("Saving Vacancy {}", event.getId());
+        }
+        final var vacancy = toVacancy(event);
+        return vacancyRepository.saveVacancy(vacancy);
     }
 
-    private static Vacancy createVacancyDocument(VacancyOpened event) {
+    private static Vacancy toVacancy(VacancyOpened event) {
         return new Vacancy(event.getId(), event.getJobTitle(), Collections.emptyList());
     }
-
 }

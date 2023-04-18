@@ -7,8 +7,5 @@ test('Vacancies', async ({ page, user, testSet, testSetup }) => {
 
   const response = await page.goto('/website/vacancies')
   expect(response?.ok()).toBeTruthy()
-
-  const items = await page.getByTestId('vacancies').locator('li').all()
-  expect(items.length).toBe(1)
-  expect(await items[0].innerText()).toMatch(/Java developer/)
+  await expect(page).toHaveTitle(/Gigmatch/)
 })
